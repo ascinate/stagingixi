@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<svg id="flag" width="46" height="50" viewBox="0 0 46 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; max-height: 100%;">
+<path d="M15.9785 1.43942L32.8357 8.49895C33.6475 8.83892 34.03 9.77262 33.69 10.5844L27.1239 26.2634C26.7839 27.0752 25.8502 27.4577 25.0384 27.1178L8.86947 20.3464" stroke="black" stroke-width="2.3" stroke-dasharray="0,0,0,57.81079864501953"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,57.81079864501953; 
+          0,28.905399322509766,28.905399322509766,0; 
+          57.81079864501953,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"></animate></path>
+<path d="M0.62195 37.0496C0.376614 37.6355 0.652638 38.3093 1.23847 38.5546C1.8243 38.7999 2.49809 38.5239 2.74343 37.9381L0.62195 37.0496ZM15.785 0.84243L0.62195 37.0496L2.74343 37.9381L17.9064 1.73087L15.785 0.84243Z" fill="black" stroke-dasharray="0,0,0,89.02139282226562"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,89.02139282226562; 
+          0,44.51069641113281,44.51069641113281,0; 
+          89.02139282226562,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"></animate></path>
+<path d="M31.6344 15.4824L40.9438 19.3811C41.7556 19.721 42.1381 20.6547 41.7982 21.4665L35.232 37.1455C34.8921 37.9573 33.9584 38.3398 33.1466 37.9999L17.4676 31.4338C16.6558 31.0938 16.2733 30.1601 16.6132 29.3483L18.6651 24.4486" stroke="black" stroke-width="2.3" stroke-dasharray="0,0,0,56.91221237182617"><animate attributeType="XML" attributeName="stroke-dasharray" repeatCount="1" dur="2.5s" values="0,0,0,56.91221237182617; 
+          0,28.456106185913086,28.456106185913086,0; 
+          56.91221237182617,0,0,0" keyTimes="0; 0.5; 1" fill="freeze"></animate></path>
+</svg>
