@@ -1202,6 +1202,7 @@ footer hr{
 }
 .options_names{
   list-style-type: none;
+  gap: 10px;
 }
 .ft-scol{
   color:var(--background) !important;
@@ -1334,12 +1335,11 @@ footer hr{
   border-radius: 10px;
   border: 1px solid #e5e5e5;
   margin-right: 11px;
-  margin-bottom: 13px;
   cursor: pointer;
   transition: all .5s;
   font-size: 13px;
   padding: 6px 12px 6px 20px !important;
-  margin-bottom: 11px !important;
+  margin-bottom: 0 !important;
   font-weight: 400;
   position: relative;
 }
@@ -1383,10 +1383,10 @@ footer hr{
   color: var(--background) !important;
 }
 
-.cate-list-hide > li{
+/* .cate-list-hide > li{
    display: none;
-} 
-.cate-list-hide > li:first-child,
+}  */
+/* .cate-list-hide > li:first-child,
 .cate-list-hide > li:nth-child(1),
 .cate-list-hide > li:nth-child(2),
 .cate-list-hide > li:nth-child(3),
@@ -1394,7 +1394,7 @@ footer hr{
 .cate-list-hide > li:nth-child(5),
 .cate-list-hide > li:last-child{
   display: inline-block !important;
-} 
+}  */
 .btn-mores-btn{
   background: var(--primaycolor) !important;
   border: solid var(--primaycolor) !important;

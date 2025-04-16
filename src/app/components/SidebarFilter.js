@@ -5,12 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function SidebarFilter({ onFilterChange, showCategoryFilter = true }) {
-  const [visibleItems, setVisibleItems] = useState(5)
+  const [showAll, setShowAll] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
 
-  const loadMoreItems = () => {
-    setVisibleItems(prev => prev + 5)
-  }
 
   const [filters, setFilters] = useState({
     categories: [],
@@ -43,6 +40,8 @@ export default function SidebarFilter({ onFilterChange, showCategoryFilter = tru
       onFilterChange(selectedFilters)
     }
   }, [selectedFilters])
+
+ 
 
   const handleCheckboxChange = (filterType, value) => {
     setSelectedFilters(prev => {
@@ -144,34 +143,32 @@ export default function SidebarFilter({ onFilterChange, showCategoryFilter = tru
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(0,0,0,1)"><path d="M21 3C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H21ZM11 13H4V19H11V13ZM20 13H13V19H20V13ZM11 5H4V11H11V5ZM20 5H13V11H20V5Z"></path></svg>
                   <h5 className="ms-2 mb-0"> Categories </h5>
             </div>
-            <ul className='options_names cate-list-hide new-filter-05 p-0 m-0 d-flex flex-wrap align-items-center mt-3'>
-            {filters.categories.map((cat, i) => {
-                const id = `category-${i}`;
-                return (
-                  <li className="cmout form-check position-relative" key={i}>
-                    <input
-                      id={id}
-                      type="checkbox"
-                      className="form-check-input"
-                      onChange={() => handleCheckboxChange('categories', cat)}
-                      checked={selectedFilters.categories.includes(cat)}
-                    />
-                    <label className="form-check-label" htmlFor={id}>
-                      {cat.trim()}
-                    </label>
-                  </li>
-                );
-              })}
-
-              {/* {visibleItems < categories.length && (
-                        <div className="d-block mt-0">
-                          <button className="btn btn-load-more p-0" onClick={loadMoreItems}>Load More</button>
-                        </div>
-              )} */}
-              <li>
-                <Link href="" className='moreb btn'>+ More</Link>
-              </li>
-            </ul>
+                <ul className="options_names p-0 m-0 new-filter-05 d-flex flex-wrap align-items-center mt-4">
+                  {(showAll ? filters.categories : filters.categories.slice(0, 4)).map((cat, i) => (
+                    <li className="cmout form-check position-relative" key={i}>
+                      <input
+                        id={`cat-${i}`}
+                        type="checkbox"
+                        className="form-check-input"
+                        onChange={() => handleCheckboxChange('categories', cat)}
+                        checked={selectedFilters.categories.includes(cat)}
+                      />
+                      <label className="form-check-label" htmlFor={`cat-${i}`}>
+                        {cat.trim()}
+                      </label>
+                    </li>
+                  ))}
+                  {filters.categories.length > 4 && (
+                  <button
+                    type="button"
+                    className="btn btn-sm  px-0"
+                    onClick={() => setShowAll(!showAll)}
+                  >
+                    {showAll ? '+ Less' : '+ More'}
+                  </button>
+                )}
+                </ul>
+                
             </>
             )}
           </>
