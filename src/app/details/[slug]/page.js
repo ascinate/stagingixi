@@ -17,6 +17,8 @@ const id = slug?.split('_').pop();
   const [size, setSize] = useState(200);
   const [relatedIcons, setRelatedIcons] = useState([]);
   const [showToast, setShowToast] = useState(false);
+  const [showCustom, setShowCustom] = useState(false);
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText(renderedSvg);
@@ -194,8 +196,20 @@ const id = slug?.split('_').pop();
                                       <div className="comon-groups-div01 d-flex align-items-center justify-content-between">
                                            <h5 className="m-0"> Size : </h5>
                                            <div className="input-divs d-flex align-items-center">
-                                              <select id="size" className="form-select" value={size} onChange={(e) => setSize(Number(e.target.value))}>
-                                                  <option>-- Select a Size --</option>
+                                             {!showCustom && (
+                                                <select
+                                                  id="size"
+                                                  className="form-select"
+                                                  value={size}
+                                                  onChange={(e) => {
+                                                    if (e.target.value === "custom") {
+                                                      setShowCustom(true);
+                                                    } else {
+                                                      setSize(Number(e.target.value));
+                                                    }
+                                                  }}
+                                                >
+                                                  <option value="">-- Select a Size --</option>
                                                   <option value="12">12px</option>
                                                   <option value="16">16px</option>
                                                   <option value="18">18px</option>
@@ -208,7 +222,21 @@ const id = slug?.split('_').pop();
                                                   <option value="96">96px</option>
                                                   <option value="120">120px</option>
                                                   <option value="240">240px</option>
-                                              </select>
+                                                  <option value="custom">Custom</option>
+                                                </select>
+                                              )}
+                                              {showCustom && (
+                                                <input
+                                                  type="number"
+                                                  className="form-control ms-2"
+                                                  placeholder="Enter custom size"
+                                                  value={size}
+                                                  onChange={(e) => setSize(Number(e.target.value))}
+                                                  style={{ width: "150px" }}
+                                                />
+                                              )}
+
+
                                            </div>
                                       </div>
                                       <div className="comon-groups-div01 d-flex align-items-center justify-content-between">
