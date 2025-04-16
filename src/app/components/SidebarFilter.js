@@ -141,7 +141,7 @@ export default function SidebarFilter({ onFilterChange, showCategoryFilter = tru
               <>
             <div className="d-flex align-items-center">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(0,0,0,1)"><path d="M21 3C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H21ZM11 13H4V19H11V13ZM20 13H13V19H20V13ZM11 5H4V11H11V5ZM20 5H13V11H20V5Z"></path></svg>
-                  <h5 className="ms-2 mb-0"> Categorie </h5>
+                  <h5 className="ms-2 mb-0"> Categories </h5>
             </div>
                 <ul className="options_names p-0 m-0 new-filter-05 d-flex flex-wrap align-items-center mt-4">
                   {(showAll ? filters.categories : filters.categories.slice(0, 4)).map((cat, i) => (

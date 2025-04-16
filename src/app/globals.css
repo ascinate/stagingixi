@@ -1428,7 +1428,6 @@ footer hr{
 }
 .input-divs .form-select{
   border: 2px solid #efefef;
-  font-family: 'Inter', 'Inter Fallback';
   font-size: 16px;
   height: 52px;
 }

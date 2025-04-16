@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
         html {
           font-family: ${sorasans.style.fontFamily};
         }
-        .banner-parts01 h2{
+        .banner-parts01 h2, .form-select{
          font-family: ${sorasans.style.fontFamily};
         }
         button,
@@ -74,12 +74,10 @@ export default function RootLayout({ children }) {
         .comon-types01 h5 a,
         .coun-text,
         .btn,
-        p,
         h5,
         .icon-headings,
         .styles-icons-div h4,
-        .comon-heading-sub,
-        .form-check-label{
+        .comon-heading-sub,{
           font-family: ${inter.style.fontFamily};
         }
          

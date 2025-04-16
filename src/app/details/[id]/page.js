@@ -16,7 +16,7 @@ export default function IconDetailPage() {
   const [showToast, setShowToast] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(icon.icon_svg);
+    navigator.clipboard.writeText(renderedSvg);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000); // hide after 2 sec
   };
@@ -93,34 +93,55 @@ export default function IconDetailPage() {
     const finalSvg = applyColorAndSize(icon.icon_svg);
     const blob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-
+  
     const img = new Image();
-    img.onload = () => {
+    img.onload = async () => {
       const canvas = document.createElement("canvas");
       canvas.width = size;
       canvas.height = size;
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, size, size);
       ctx.drawImage(img, 0, 0, size, size);
-
+  
       const link = document.createElement("a");
       link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
       link.href = canvas.toDataURL(`image/${type}`);
       link.click();
-
+  
       URL.revokeObjectURL(url);
+  
+      // ✅ Call the download count API
+      try {
+        await fetch(`https://iconsguru.ascinatetech.com/admin/api/icon-download/${icon.Id}`, {
+          method: 'POST',
+        });
+      } catch (err) {
+        console.error("Download count error:", err);
+      }
     };
+  
     img.src = url;
   };
+  
 
-  const handleDownloadSVG = () => {
-    const svg = applyColorAndSize(icon.icon_svg);
-    const blob = new Blob([svg], { type: "image/svg+xml" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
-    link.click();
+  const handleDownloadSVG = async () => {
+    try {
+      await fetch(`https://iconsguru.ascinatetech.com/admin/api/icon-download/${icon.Id}`, {
+        method: 'POST',
+      });
+  
+      const svg = applyColorAndSize(icon.icon_svg);
+      const blob = new Blob([svg], { type: "image/svg+xml" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
+      link.click();
+    } catch (error) {
+      console.error("Download tracking failed", error);
+    }
   };
+  
+  
 
   if (!icon) return null;
 
@@ -135,7 +156,6 @@ export default function IconDetailPage() {
                     <nav aria-label="breadcrumb">
                       <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link href="/">Home</Link></li>
-                        <li className="breadcrumb-item"> <Link href="/"> Interface Essential </Link> </li>
                         <li className="breadcrumb-item active" aria-current="page">{icon.icon_name}</li>
                       </ol>
                     </nav>
@@ -198,7 +218,7 @@ export default function IconDetailPage() {
                                       </div>
 
                                       <code className="mt-2 codet p-2 bg-light01 d-inline-block w-100 rounded" style={{ fontSize: '0.75rem', wordBreak: 'break-word' }}>
-                                          {icon.icon_svg}
+                                          {renderedSvg}
                                       </code>
 
 
