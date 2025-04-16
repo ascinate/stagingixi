@@ -7,8 +7,11 @@ import Footer from "@/app/components/Footer";
 import Link from "next/link";
 
 export default function IconDetailPage() {
+
+
   const params = useParams();
-  const id = params?.id;
+const slug = params?.slug;
+const id = slug?.split('_').pop();
   const [icon, setIcon] = useState(null);
   const [color, setColor] = useState(null); // null to preserve original
   const [size, setSize] = useState(200);
@@ -209,7 +212,7 @@ export default function IconDetailPage() {
                                            </div>
                                       </div>
                                       <div className="comon-groups-div01 d-flex align-items-center justify-content-between">
-                                           <h5 className="m-0"> Download : </h5>
+                                           <h5 className="m-0"> Download As: </h5>
                                            <div className="input-divs d-flex justify-content-between align-items-center">
                                                <button type="button" onClick={handleDownloadSVG} className="btn btn-comons01 crm-btn01"> SVG </button>
                                                <button type="button" onClick={() => svgToCanvasDownload("png")} className="btn btn-comons01 crm-btn01"> PNG </button>
@@ -265,7 +268,7 @@ export default function IconDetailPage() {
                         <div className="row row-cols-1 row-cols-lg-6 gy-2 gy-lg-3">
                           {relatedIcons.map((icon) => (
                             <article key={icon.Id} className="col">
-                              <Link href={`/details/${icon.Id}`} className="btn icons-list p-0 position-relative">
+                              <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0 position-relative">
                                 <div
                                   className="svg-img d-grid"
                                   dangerouslySetInnerHTML={{ __html: icon.icon_svg }}

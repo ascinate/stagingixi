@@ -103,7 +103,7 @@ export default function CategorySearchPage() {
                         ) : Array.isArray(icons) && icons.length > 0 ? (
                           icons.map((icon) => (
                             <article key={icon.Id} className="svg-item position-relative">
-                              <Link href={`/details/${icon.Id}`} className="btn icons-list p-0">
+                              <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0">
                                 <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
                               </Link>
                               <div className="hover-divs">
