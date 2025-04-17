@@ -13,8 +13,9 @@ export default function Icons() {
   const staticImages = [
     '/interface.svg',
     '/design-th1.svg',
-    '/food-th.svg',
     '/device.svg',
+    '/documents.svg',
+    '/food-th.svg',
     '/business.svg',
     '/shopping1.svg',
     '/business.svg',
