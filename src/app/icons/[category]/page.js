@@ -30,6 +30,7 @@ export default function CategorySearchPage() {
     types: isType ? [category] : [],
     tag: searchParams.get('tag') || ''
   });
+  const hideCategoryFilter = !!filters.tag; 
 
   useEffect(() => {
     const fetchIcons = async () => {
@@ -105,7 +106,7 @@ export default function CategorySearchPage() {
                   tag: newFilters.tag ?? prev.tag 
                 }));
               }}
-              showCategoryFilter={true}
+              showCategoryFilter={!hideCategoryFilter}
             />
 
 
