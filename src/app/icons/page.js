@@ -17,13 +17,13 @@ export default function Icons() {
     '/device.svg',
     '/business.svg',
     '/shopping1.svg',
-    '/shopping1.svg',
     '/business.svg',
     '/colori.svg',
     '/design-th1.svg',
     '/food-th.svg',
     '/social.svg',
-    '/users.svg'
+    '/users.svg',
+    '/weather.svg', 
   ];
 
   const [icontypes, setCategoryTypes] = useState([]);
@@ -38,7 +38,7 @@ export default function Icons() {
           const updatedData = json.data.map((item, index) => ({
             ...item,
             img: staticImages[index] || '/default.svg',
-            link: `/icon/${encodeURIComponent(item.icon_category.toLowerCase())}`
+            link: `/icon/${encodeURIComponent(item.icon_category.trim().toLowerCase())}`
           }));
           setCategoryTypes(updatedData);
         }

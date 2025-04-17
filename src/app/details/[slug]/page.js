@@ -28,14 +28,14 @@ const id = slug?.split('_').pop();
 
 
 
-  const tags = [
-    { id: 1, title: 'Shopping Bag' , link: '/'  },
-    { id: 2, title: 'Shopping' , link: '/'  },
-    { id: 3, title: 'Online Bag', link: '/',},
-    { id: 4, title: 'Shopper' , link: '/' },
-    { id: 5, title: 'Activity' , link: '/' },
-    { id: 6, title: 'Commerce' , link: '/' },
-  ];
+  // const tags = [
+  //   { id: 1, title: 'Shopping Bag' , link: '/'  },
+  //   { id: 2, title: 'Shopping' , link: '/'  },
+  //   { id: 3, title: 'Online Bag', link: '/',},
+  //   { id: 4, title: 'Shopper' , link: '/' },
+  //   { id: 5, title: 'Activity' , link: '/' },
+  //   { id: 6, title: 'Commerce' , link: '/' },
+  // ];
 
   useEffect(() => {
     if (!id) return;
@@ -312,11 +312,21 @@ const id = slug?.split('_').pop();
                       <div className="styles-icons-div comon-rows d-block w-100 mb-5 pb-5">
                           <h4 className="sub-titels-h1"> Related Tags </h4>
                           <ul className="crm-tagsd d-flex align-items-center flex-wrap m-0 p-0">
-                            {tags.map((page) => (
-                                <li key={page.id}>
-                                  <Link className="btn" href={page.link}> {page.title} </Link>
-                                </li>
-                             ))}
+                          {icon.tags?.split(",").map((tag, index) => {
+                            const trimmedTag = tag.trim();
+                            if (!trimmedTag) return null;
+
+                            return (
+                              <li key={index} className="me-2 mb-2 list-unstyled">
+                                <Link
+                                   href={`/icons/${encodeURIComponent(icon.icon_category)}?tag=${encodeURIComponent(trimmedTag)}`}
+                                  className="btn"
+                                >
+                                  {trimmedTag}
+                                </Link>
+                              </li>
+                            );
+                          })}
                           </ul>
                       </div>
 

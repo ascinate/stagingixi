@@ -8,18 +8,28 @@ import SidebarFilter from "@/app/components/SidebarFilter";
 
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 
 export default function CategorySearchPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const category = params.category;
 
-  const [icons, setIcons] = useState([]);
+  const typeValues = ['thin', 'solid', 'regular'];
+  const isType = typeValues.includes(category.toLowerCase());
+
   const [page, setPage] = useState(1);
+  const [icons, setIcons] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [filters, setFilters] = useState({ categories: [category], colors: [], types: [] });
   const [totalIcons, setTotalIcons] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [filters, setFilters] = useState({
+    categories: isType ? [] : [category],
+    colors: [],
+    types: isType ? [category] : [],
+    tag: searchParams.get('tag') || ''
+  });
 
   useEffect(() => {
     const fetchIcons = async () => {
@@ -29,9 +39,14 @@ export default function CategorySearchPage() {
         query.append("page", page);
         query.append("limit", 20);
 
-        if (filters.categories.length) filters.categories.forEach(c => query.append("categories[]", c));
-        if (filters.colors.length) filters.colors.forEach(c => query.append("colors[]", c));
-        if (filters.types.length) filters.types.forEach(t => query.append("types[]", t));
+        if (filters.categories.length)
+          filters.categories.forEach(c => query.append("categories[]", c));
+        if (filters.colors.length)
+          filters.colors.forEach(c => query.append("colors[]", c));
+        if (filters.types.length)
+          filters.types.forEach(t => query.append("types[]", t));
+        if (filters.tag)
+          query.append("tag", filters.tag);
 
         const finalURL = `https://iconsguru.ascinatetech.com/admin/api/icons?${query.toString()}`;
 
@@ -57,6 +72,9 @@ export default function CategorySearchPage() {
     fetchIcons();
   }, [page, filters]);
 
+
+  const iconname = filters.tag ? `${filters.tag}` : `${category}`;
+
   return (
     <>
       <Head>
@@ -73,17 +91,28 @@ export default function CategorySearchPage() {
         <div className="container">
           <div className="row">
             <div className="col-lg-3">
-            <SidebarFilter onFilterChange={(newFilters) => {
-            setFilters((prev) => ({
-              ...prev,
-              ...newFilters,
-              categories: newFilters.categories.length > 0 ? newFilters.categories : [category],
-            }));
-          }}  showCategoryFilter={true} />
+            <SidebarFilter
+              onFilterChange={(newFilters) => {
+                setFilters((prev) => ({
+                  ...prev,
+                  ...newFilters,
+                  categories: newFilters.categories?.length > 0
+                    ? newFilters.categories
+                    : isType ? [] : [category],
+                  types: newFilters.types?.length > 0
+                    ? newFilters.types
+                    : isType ? [category] : [],
+                  tag: newFilters.tag ?? prev.tag 
+                }));
+              }}
+              showCategoryFilter={true}
+            />
+
+
             </div>
             <div className="col-lg-9 ps-lg-4">
               <div className="main-divs g-col-6">
-                <h2 className="search-listings01">{category} icons</h2>
+                <h2 className="search-listings01">{iconname} icons</h2>
                 <p>
                   Showing <strong className="serch-data">{totalIcons}</strong> Icons
                 </p>
