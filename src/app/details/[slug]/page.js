@@ -196,7 +196,7 @@ const id = slug?.split('_').pop();
                                       <div className="comon-groups-div01 d-flex align-items-center justify-content-between">
                                            <h5 className="m-0"> Size : </h5>
                                            <div className="input-divs d-flex align-items-center">
-                                             {!showCustom && (
+                                            {!showCustom ? (
                                                 <select
                                                   id="size"
                                                   className="form-select"
@@ -204,6 +204,7 @@ const id = slug?.split('_').pop();
                                                   onChange={(e) => {
                                                     if (e.target.value === "custom") {
                                                       setShowCustom(true);
+                                                      setSize(""); // clear size on custom
                                                     } else {
                                                       setSize(Number(e.target.value));
                                                     }
@@ -224,16 +225,27 @@ const id = slug?.split('_').pop();
                                                   <option value="240">240px</option>
                                                   <option value="custom">Custom</option>
                                                 </select>
-                                              )}
-                                              {showCustom && (
-                                                <input
-                                                  type="number"
-                                                  className="form-control ms-2"
-                                                  placeholder="Enter custom size"
-                                                  value={size}
-                                                  onChange={(e) => setSize(Number(e.target.value))}
-                                                  style={{ width: "150px" }}
-                                                />
+                                              ) : (
+                                                <div className="d-flex align-items-center">
+                                                  <input
+                                                    type="number"
+                                                    className="form-control me-2"
+                                                    placeholder="Enter custom size"
+                                                    value={size}
+                                                    onChange={(e) => setSize(Number(e.target.value))}
+                                                    style={{ width: "150px" }}
+                                                  />
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      setShowCustom(false);
+                                                      setSize(""); // optional: reset to default
+                                                    }}
+                                                  >
+                                                    Back
+                                                  </button>
+                                                </div>
                                               )}
 
 
