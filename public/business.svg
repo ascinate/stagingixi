@@ -42,8 +42,8 @@
 <path d="M52.2672 121.838C52.2672 125.144 49.7734 127.767 46.7656 127.767C43.7578 127.767 41.264 125.144 41.264 121.838C41.264 118.531 43.7578 115.909 46.7656 115.909C49.7734 115.909 52.2672 118.531 52.2672 121.838Z" stroke="black" stroke-width="0.961508" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M119.195 140.313V125.464C119.195 124.655 119.851 124 120.659 124H142.446C143.255 124 143.91 124.655 143.91 125.464V140.313" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M111.547 149.892V163.139C111.547 163.948 112.202 164.603 113.011 164.603H148.921C149.729 164.603 150.384 163.948 150.384 163.139V149.892" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M116.842 140.376H145.087C148.067 140.376 150.484 142.792 150.484 145.773V149.992H111.445V145.773C111.445 142.792 113.861 140.376 116.842 140.376Z" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M121.547 153.322H141.555C143.885 153.322 145.774 155.211 145.774 157.541V159.407H117.328V157.541C117.328 155.211 119.217 153.322 121.547 153.322Z" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M111.445 145.773C111.445 142.792 113.861 140.376 116.842 140.376H145.087C148.067 140.376 150.484 142.792 150.484 145.773V149.992H111.445V145.773Z" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M117.328 157.541C117.328 155.211 119.217 153.322 121.547 153.322H141.555C143.885 153.322 145.774 155.211 145.774 157.541V159.407H117.328V157.541Z" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M125.668 129.296H139.202" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M126.256 136.357L136.848 136.357" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M123.904 132.827H140.381" stroke="black" stroke-width="0.975963" stroke-linecap="round" stroke-linejoin="round"/>
