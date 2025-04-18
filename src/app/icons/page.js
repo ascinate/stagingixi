@@ -11,15 +11,15 @@ export default function Icons() {
 
 
   const staticImages = [
-    '/interface.svg',
+    '/arrow.svg',
     '/design-th1.svg',
     '/device.svg',
     '/documents.svg',
-    '/food-th.svg',
+    '/Email.svg',
     '/business.svg',
     '/shopping1.svg',
     '/business.svg',
-    '/colori.svg',
+    '/Music.svg',
     '/design-th1.svg',
     '/food-th.svg',
     '/social.svg',
