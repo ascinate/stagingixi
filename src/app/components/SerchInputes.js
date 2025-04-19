@@ -37,7 +37,7 @@ function SerchInputes({ totalIcons }) {
 
      <>
          
-         <div className="search-sections-home col-lg-8 mx-auto d-flex justify-content-between align-items-center bg-white">
+         <div className="search-sections-home home-search08 position-relative col-lg-8 mx-auto d-flex justify-content-between align-items-center bg-white">
          <AutoComplete
         value={value}
         placeholder="Search icons..."

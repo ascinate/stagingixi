@@ -1191,6 +1191,10 @@ footer hr{
   height: 25px;
   transition: all 0.5s;
 }
+.home01-links:focus,
+.home01-links:active{
+  box-shadow: none !important;
+}
 .home01-links:hover svg{
   fill: var(--primaycolor) !important;
 }
@@ -1496,4 +1500,19 @@ footer hr{
   .right-details-lis01{
     width: 66%;
   }
+}
+
+/* search  */
+
+.p-autocomplete-panel {
+  /* min-width: 744px !important; */
+  min-width: 57% !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: auto;
+  width: 50%;
+}
+.p-autocomplete-items-wrapper{
+  top: 18px !important;
+  position: relative;
 }
