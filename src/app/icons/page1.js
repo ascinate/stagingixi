@@ -16,7 +16,6 @@ export default function Icons() {
     '/device.svg',
     '/documents.svg',
     '/email.svg',
-    '/emoji.svg',
     '/finance.svg',
     '/health.svg',
     '/home.svg',
