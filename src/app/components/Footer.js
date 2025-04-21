@@ -23,9 +23,9 @@ function Footer(){
         { id: 4, title: 'Doodle Family' , link: '/'  },
     ];
     const supports = [
-        { id: 1, title: 'Help & Support' , link: '/'  },
-        { id: 2, title: 'FAQ' , link: '/'  },
-        { id: 3, title: 'Privacy policy' , link: '/'  },
+        { id: 1, title: 'Help & Support' , link: '/help'  },
+        { id: 2, title: 'FAQ' , link: '/faq'  },
+        { id: 3, title: 'Privacy policy' , link: '/privacy'  },
     ];
     return(
         <>
