@@ -20,11 +20,11 @@ export default function WhyUsPage() {
         At IconsGuru, we believe in quality, creativity, and customer satisfaction. Whether you're a designer, developer, or business owner, our icon platform is built to support your vision.
       </p>
       <ul className="list-disc pl-6 space-y-2">
-        <li>🎨 Thousands of handcrafted icons</li>
-        <li>⚡ Fast and easy-to-use interface</li>
-        <li>🔍 Smart search with autocomplete</li>
-        <li>🎯 Customization and downloads in SVG, PNG, WebP</li>
-        <li>🤝 Dedicated support and continuous updates</li>
+        <li>Thousands of handcrafted icons</li>
+        <li>Fast and easy-to-use interface</li>
+        <li>Smart search with autocomplete</li>
+        <li>Customization and downloads in SVG, PNG, WebP</li>
+        <li>Dedicated support and continuous updates</li>
       </ul>
     </div>
     <Footer/>
