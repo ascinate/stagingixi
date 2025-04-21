@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Form from "next/form";
 
-export default function aboutus() {
+export default function pricing() {
 
 
   return (
@@ -23,7 +23,7 @@ export default function aboutus() {
                 <div className="container">
                     <div className="row align-items-center">
                       <div className="col-lg-6">
-                          <h2> About  us <br/>
+                          <h2> Help <br/>
                           Icons by Category </h2>
                           <p className="col-lg-8 mt-3"> The largest database of vector icons available for download
                           SVG, EPS, PSD and BASE 64 formats. </p>
