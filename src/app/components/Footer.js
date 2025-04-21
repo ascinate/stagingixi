@@ -5,9 +5,9 @@ import Image from "next/image";
 
 function Footer(){
     const mianmenu = [
-        { id: 1, title: 'About Us' , link: '/'  },
-        { id: 2, title: 'Blog' , link: '/'  },
-        { id: 3, title: 'Pricing' , link: '/'  },
+        { id: 1, title: 'About Us' , link: '/aboutus'  },
+        { id: 2, title: 'Blog' , link: '/blog'  },
+        { id: 3, title: 'Pricing' , link: '/pricing'  },
         
     ];
     const categorymenu = [
@@ -25,7 +25,7 @@ function Footer(){
     const supports = [
         { id: 1, title: 'Help & Support' , link: '/'  },
         { id: 2, title: 'FAQ' , link: '/'  },
-        { id: 3, title: 'Icon styles' , link: '/'  },
+        { id: 3, title: 'Privacy policy' , link: '/'  },
     ];
     return(
         <>
@@ -111,7 +111,7 @@ function Footer(){
                    <div className="col">
                       <ul className="d-flex align-items-center copy-text1 p-0 m-0 copt-lisk">
                         <li>
-                            <Link href='/'>Terms & conditions Privacy policy</Link>
+                            <Link href='/'>Terms & conditions</Link>
                         </li>
                       </ul>
                    </div>
