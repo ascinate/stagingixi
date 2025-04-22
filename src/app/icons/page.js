@@ -26,6 +26,7 @@ export default function Icons() {
     '/search.svg',
     '/signup.svg',
     '/social.svg',
+    '/sports.svg',
     '/users.svg',
     '/weather.svg', 
   ];
