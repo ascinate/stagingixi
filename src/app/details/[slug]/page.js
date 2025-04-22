@@ -172,12 +172,24 @@ const id = slug?.split('_').pop();
                    <div className="row">
                        <div className="col-lg-6 position-relative p-0">
                             <div className="blox-icons-div01">
-                                  <div
-                                    className="d-table mx-auto"
-                                    style={{ width: size, height: size }}
-                                    
-                                    dangerouslySetInnerHTML={{ __html: renderedSvg }}
-                                  />
+                              <div
+                                className="d-table mx-auto"
+                                style={{
+                                  width: size,
+                                  height: size,
+                                  overflow: "hidden",
+                                  maxWidth: "300px",
+                                  maxHeight: "300px",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    height: "100%",
+                                  }}
+                                  dangerouslySetInnerHTML={{ __html: renderedSvg }}
+                                />
+                              </div>
                                 {icon.icon_category !== "Emoji" && (
                                   <div className="icn-list05">
                                           <input
@@ -214,19 +226,14 @@ const id = slug?.split('_').pop();
                                                     }
                                                   }}
                                                 >
-                                                  <option value="">-- Select a Size --</option>
-                                                  <option value="12">12px</option>
-                                                  <option value="16">16px</option>
-                                                  <option value="18">18px</option>
+                                                  <option value="">-- Select a Size --</option>                                               
+                                                  <option value="16">16px</option>                  
                                                   <option value="24">24px</option>
-                                                  <option value="32">32px</option>
-                                                  <option value="36">36px</option>
-                                                  <option value="48">48px</option>
-                                                  <option value="64">64px</option>
-                                                  <option value="72">72px</option>
-                                                  <option value="96">96px</option>
-                                                  <option value="120">120px</option>
-                                                  <option value="240">240px</option>
+                                                  <option value="32">32px</option>                                                
+                                                  <option value="64">64px</option>       
+                                                  <option value="120">128px</option>
+                                                  <option value="240">256px</option>
+                                                  <option value="240">512px</option>
                                                   <option value="custom">Custom</option>
                                                 </select>
                                               ) : (

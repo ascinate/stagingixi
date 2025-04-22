@@ -170,6 +170,7 @@ export default function CategorySearchPage() {
                             </div>
                         )}
                       </div>
+                      
 
                       {/* Pagination */}
                       {totalPages > 1 && (
