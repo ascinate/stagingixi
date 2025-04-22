@@ -17,10 +17,10 @@ function Footer(){
         { id: 4, title: 'Thin' , link: '/'  },
     ];
     const topicons = [
-        { id: 1, title: 'Sports' , link: '/'  },
-        { id: 2, title: 'Family Icons' , link: '/'  },
-        { id: 3, title: 'Wired Family' , link: '/'  },
-        { id: 4, title: 'Doodle Family' , link: '/'  },
+        { id: 1, title: 'Sports' , link: '/icons/Sports'  },
+        { id: 2, title: 'Health' , link: '/icons/Health'  },
+        { id: 3, title: 'Music' , link: '/icons/Music'  },
+        { id: 4, title: 'Weather' , link: '/icons/Weather'  },
     ];
     const supports = [
         { id: 1, title: 'Help & Support' , link: '/help'  },
