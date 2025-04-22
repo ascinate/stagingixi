@@ -41,7 +41,7 @@ function Footer(){
                                         height={18} />
                             </Link>
 
-                            <p className="text-white ft-paras mt-4"> Join millions of designers, developers, and content creators using Iconguru — a comprehensive icon library and toolkit built for creativity and efficiency. .</p>
+                            <p className="text-white ft-paras mt-4"> Join millions of designers, developers, and content creators using Iconsguru — a comprehensive icon library and toolkit built for creativity and efficiency. .</p>
                             <ul className="solic-list d-flex align-items-center">
                                 <li>
                                     <Link href='https://www.instagram.com/iconguru_official/' className="ft-scol" target="_blank" role="noopener noreferrer">
