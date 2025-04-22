@@ -18,6 +18,7 @@ export default function Icons() {
     '/email.svg',
     '/emoji.svg',
     '/finance.svg',
+    '/food.svg',
     '/health.svg',
     '/home.svg',
     '/interface.svg',

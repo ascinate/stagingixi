@@ -18,6 +18,8 @@ const id = slug?.split('_').pop();
   const [relatedIcons, setRelatedIcons] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
+  const finalSize = Math.min(Number(size), 300); // ensure max 300
+
 
 
   const handleCopy = () => {
@@ -173,6 +175,7 @@ const id = slug?.split('_').pop();
                                   <div
                                     className="d-table mx-auto"
                                     style={{ width: size, height: size }}
+                                    
                                     dangerouslySetInnerHTML={{ __html: renderedSvg }}
                                   />
                                 {icon.icon_category !== "Emoji" && (
@@ -241,7 +244,7 @@ const id = slug?.split('_').pop();
                                                     className="btn btn-secondary"
                                                     onClick={() => {
                                                       setShowCustom(false);
-                                                      setSize(""); // optional: reset to default
+                                                      setSize("");
                                                     }}
                                                   >
                                                     Back
