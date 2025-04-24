@@ -1522,3 +1522,83 @@ footer hr{
   max-width: 100%;
   max-height: 100%;
 }
+
+.comon-content-div{
+  padding-top: 120px;
+}
+.forms-contacts .form-group{
+  margin-bottom: 15px;
+}
+.forms-contacts .form-group label{
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+.forms-contacts .form-group .form-control{
+  border-radius: 5px;
+  border: solid 3px #181818 !important;
+  height: 50px;
+}
+.forms-contacts .form-group textarea.form-control{
+  height: 140px;
+  resize: none;
+}
+.forms-contacts .css-13cymwt-control{
+  border: solid 3px #181818 !important;
+  height: 50px;
+}
+.forms-contacts .btn-send{
+  background: #181818;
+  width: 100%;
+  height: 55px;
+  border-radius: 5px;
+  color: #fff !important;
+}
+.comon-content-div p{
+  font-size: 18px;
+  color: var(--head-color);
+  font-weight: 500;
+}
+
+.comon-content-div .accordion-button{
+  border-bottom: solid 1px #E8E8E8;
+  background: #fff;
+  font-size: 18px;
+  color: var(--head-color);
+  font-weight: 500;
+  padding-left: 0;
+}
+.comon-content-div .accordion-button:focus{
+  box-shadow: none !important;
+  
+}
+.comon-content-div .accordion-item{
+  border: none !important;
+}
+.comon-content-div .accordion-item p{
+  font-size: 16px;
+  font-weight: 400;
+}
+.comon-content-div .accordion-body{
+  padding-left: 0;
+}
+.comon-content-div .accordion-button:not(.collapsed){
+  background: none !important;
+  color: #181818 !important;
+}
+
+.have-text{
+  font-size: 14px !important;
+  font-weight: 400;
+}
+.have-text a{
+  text-decoration: underline !important;
+  color: var(--head-color) !important;
+  font-size: 16px !important;
+}
+.comon-cont-head{
+  font-weight: 600;
+  color: var(--head-color);
+  font-size: 46px;
+}
