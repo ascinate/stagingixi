@@ -61,7 +61,13 @@ export default function RootLayout({ children }) {
         .p-autocomplete-item,
         .comon-cont-head,
         .comon-content-div h3,
-        .privacy-page h5{
+        .privacy-page h5,
+        .comon-heading-sub,
+        .text-caraole-divb h2
+        .btn,
+        .comon-list01 h3,
+        .contents-div h3,
+        .value-sections h3{
          font-family: ${inter.style.fontFamily};
         } 
         input{
