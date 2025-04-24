@@ -18,7 +18,12 @@ export default function pricing() {
   ]
   return (
     <>
-      
+      <Head>
+        <title>Icons Page - Help Support</title>
+        <meta name="description" content="IconsGuru provides a comprehensive library of free and premium icons that you can instantly download and customize to any size. Perfect for designers, developers, and creatives looking for high-quality, scalable icons to enhance their projects. Discover icons that fit your design needs seamlessly." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <NavicationHome/>
   
       <main className="mian-text01 comon-content-div w-100 float-left">
