@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function Footer(){
     const mianmenu = [
-        { id: 1, title: 'About Us' , link: '/aboutus'  },
+        { id: 1, title: 'Why us' , link: '/whyus'  },
         { id: 2, title: 'Blog' , link: '/blog'  },
         { id: 3, title: 'Pricing' , link: '/pricing'  },
         
