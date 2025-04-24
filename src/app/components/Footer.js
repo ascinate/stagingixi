@@ -111,7 +111,7 @@ function Footer(){
                    <div className="col">
                       <ul className="d-flex align-items-center copy-text1 p-0 m-0 copt-lisk">
                         <li>
-                            <Link href='/privacy'>Terms & conditions</Link>
+                            <Link href='/terms'>Terms & conditions</Link>
                         </li>
                       </ul>
                    </div>

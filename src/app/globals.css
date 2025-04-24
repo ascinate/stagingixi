@@ -1116,6 +1116,7 @@ footer hr{
 .search-sections-home .form-control input{
   border: none !important;
   width: 100%;
+  background: none !important;
 }
 .search-sections-home .form-control input:focus{
   border: none !important;
@@ -1684,4 +1685,22 @@ footer hr{
   color: var(--head-color);
   font-size: 21px;
   font-weight: 700;
+}
+
+/* canvas part csss */
+
+.canvas-main-part{
+  background: #F8F8F8;
+  padding: 0;
+  min-height: 100vh;
+}
+.filerts-divs{
+  min-height: 100vh;
+  position: fixed;
+  width: 350px;
+  top:0;
+  right: 0;
+}
+.filerts-divs{
+  background: #fff !important;
 }
