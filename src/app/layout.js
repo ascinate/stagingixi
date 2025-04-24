@@ -58,7 +58,9 @@ export default function RootLayout({ children }) {
          font-family: ${sorasans.style.fontFamily};
         }
         button,
-        .p-autocomplete-item{
+        .p-autocomplete-item,
+        .comon-cont-head,
+        .comon-content-div h3{
          font-family: ${inter.style.fontFamily};
         } 
         input{
