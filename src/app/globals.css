@@ -258,7 +258,7 @@ a {
   height: 74px;
   border: solid 1px #ebebeb;
   padding-top: 17px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 5%), 0 1px 2px rgb(0 0 0 / 16%);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%), 0 1px 2px rgb(0 0 0 / 5%);
   background: var(--background);
 }
 .hover-divs {
