@@ -30,7 +30,7 @@ export default function pricing() {
           <section className="min-tops01">
               <div className="container">
                   <h2 className="comon-cont-head"> Can we help you? </h2>
-                  <p className="col-lg-8 mt-3"> These terms of use govern the access, browsing and use of Blendicons by their users 
+                  <p className="col-lg-8 mt-3"> These terms of use govern the access, browsing and use of Iconsguru by their users 
                     the download and use of certain content owned by Icons Mind as well as the.  </p>
                   <div className="row row-cols-1 row-cols-lg-2 g-lg-5 gy-4 mt-0 mb-5 pb-5">
                      <div className="col">
