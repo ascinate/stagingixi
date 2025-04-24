@@ -7,25 +7,6 @@ import Head from "next/head";
 export default function PlansPage() {
   const [plans, setPlans] = useState([]);
 
-  useEffect(() => {
-    async function fetchPlans() {
-      try {
-        const response = await fetch("https://iconsguru.com/admin/api/subscriptions");
-        if (!response.ok) {
-          throw new Error("Failed to fetch plans");
-        }
-        const data = await response.json();
-        console.log("API Response:", data);
-
-        setPlans(Array.isArray(data.subscriptions) ? data.subscriptions : []);
-      } catch (error) {
-        console.error("Error fetching subscriptions:", error);
-      }
-    }
-
-    fetchPlans();
-  }, []);
-
   return (
     <>
       <Head>
