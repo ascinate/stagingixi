@@ -1619,3 +1619,7 @@ footer hr{
 .sapce-bm{
   padding-bottom: 80px;
 }
+
+.as-divbg .accordion-button{
+  font-weight: 600;
+}
