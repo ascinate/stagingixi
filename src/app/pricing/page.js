@@ -210,8 +210,7 @@ export default function PlansPage() {
                       </h2>
                       <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div className="accordion-body ps-0">
-                            <p> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-                               as opposed to using 'Content here, content here', making it look like readable English. </p>
+                        <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
                         </div>
                       </div>
                     </div>
@@ -223,8 +222,7 @@ export default function PlansPage() {
                       </h2>
                       <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                         <div className="accordion-body ps-0">
-                        <p> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-                        as opposed to using 'Content here, content here', making it look like readable English. </p>
+                        <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
                         </div>
                       </div>
                     </div>
@@ -236,8 +234,7 @@ export default function PlansPage() {
                       </h2>
                       <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                         <div className="accordion-body ps-0">
-                        <p> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-                        as opposed to using 'Content here, content here', making it look like readable English. </p>
+                         <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
                         </div>
                       </div>
                     </div>
