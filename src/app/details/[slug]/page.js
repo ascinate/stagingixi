@@ -243,7 +243,10 @@ const id = slug?.split('_').pop();
                                                     className="form-control me-2"
                                                     placeholder="Enter custom size"
                                                     value={size}
-                                                    onChange={(e) => setSize(Number(e.target.value))}
+                                                    onChange={(e) => {
+                                                      const value = e.target.value;
+                                                      setSize(value === '' ? '' : Number(value));
+                                                    }}                                                                                                       
                                                     style={{ width: "150px" }}
                                                   />
                                                   <button
