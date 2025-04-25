@@ -12,7 +12,9 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
 }
-
+img{
+  vertical-align: inherit !important;
+}
 body {
   color: var(--foreground);
   background: var(--background);
@@ -256,7 +258,7 @@ a {
   height: 74px;
   border: solid 1px #ebebeb;
   padding-top: 17px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 5%), 0 1px 2px rgb(0 0 0 / 16%);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%), 0 1px 2px rgb(0 0 0 / 5%);
   background: var(--background);
 }
 .hover-divs {
@@ -1114,6 +1116,7 @@ footer hr{
 .search-sections-home .form-control input{
   border: none !important;
   width: 100%;
+  background: none !important;
 }
 .search-sections-home .form-control input:focus{
   border: none !important;
@@ -1521,4 +1524,183 @@ footer hr{
   height: 100% !important;
   max-width: 100%;
   max-height: 100%;
+}
+
+.comon-content-div{
+  padding-top: 120px;
+}
+.forms-contacts .form-group{
+  margin-bottom: 15px;
+}
+.forms-contacts .form-group label{
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+.forms-contacts .form-group .form-control{
+  border-radius: 5px;
+  border: solid 3px #181818 !important;
+  height: 50px;
+}
+.forms-contacts .form-group textarea.form-control{
+  height: 140px;
+  resize: none;
+}
+.forms-contacts .css-13cymwt-control{
+  border: solid 3px #181818 !important;
+  height: 50px;
+}
+.forms-contacts .btn-send{
+  background: #181818;
+  width: 100%;
+  height: 55px;
+  border-radius: 5px;
+  color: #fff !important;
+}
+.comon-content-div p{
+  font-size: 18px;
+  color: var(--head-color);
+  font-weight: 500;
+}
+
+.comon-content-div .accordion-button{
+  border-bottom: solid 1px #E8E8E8;
+  background: #fff;
+  font-size: 18px;
+  color: var(--head-color);
+  font-weight: 500;
+  padding-left: 0;
+}
+.comon-content-div .accordion-button:focus{
+  box-shadow: none !important;
+  
+}
+.comon-content-div .accordion-item{
+  border: none !important;
+}
+.comon-content-div .accordion-item p{
+  font-size: 16px;
+  font-weight: 400;
+}
+.comon-content-div .accordion-body{
+  padding-left: 0;
+}
+.comon-content-div .accordion-button:not(.collapsed){
+  background: none !important;
+  color: #181818 !important;
+}
+
+.have-text{
+  font-size: 14px !important;
+  font-weight: 400;
+}
+.have-text a{
+  text-decoration: underline !important;
+  color: var(--head-color) !important;
+  font-size: 16px !important;
+}
+.comon-cont-head{
+  font-weight: 600;
+  color: var(--head-color);
+  font-size: 46px;
+}
+.privacy-page{
+  padding-top: 120px;
+  padding-bottom: 70px;
+}
+.privacy-page h5{
+  font-weight: 600;
+  color: var(--head-color);
+}
+
+.privacy-page p{
+  font-weight: 400;
+  color: var(--head-color);
+  font-size: 16px;
+}
+.sapce-bm{
+  padding-bottom: 80px;
+}
+
+.as-divbg .accordion-button{
+  font-weight: 600;
+}
+
+.text-caraole-divb h2{
+  font-weight: 700;
+  color: var(--head-color);
+  font-size: 46px;
+
+}
+.text-caraole-divb p{
+  font-size: 18px;
+  color: #181818;
+}
+
+.text-caraole-divb p{
+  font-size: 18px;
+  color: #181818;
+}
+.tops-sections01{
+  padding-top: 50px;
+}
+.next-why{
+  padding:80px 0;
+}
+.comon-list01 h3{
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--head-color);
+  display: flex;
+  align-items: start;
+}
+.comon-list01 h3 span{
+  margin-right:10px;
+  color: var(--primaycolor);
+  font-size: 30px;
+  font-weight: 700;
+}
+.darsk-sections{
+  background: var(--head-color);
+  padding: 60px 0;
+}
+.btn-st-bn{
+  background: #fff !important;
+  color: var(--head-color) !important;
+  padding: 10px 31px !important;
+}
+.contents-div h3,
+.value-sections h3{
+  font-weight: 700;
+  font-size: 46px;
+}
+.value-sections{
+  padding: 60px 0;
+}
+.value-sections h3{
+  color: var(--head-color);
+}
+.comon-crads h4{
+  color: var(--head-color);
+  font-size: 21px;
+  font-weight: 700;
+}
+
+/* canvas part csss */
+
+.canvas-main-part{
+  background: #F8F8F8;
+  padding: 0;
+  min-height: 100vh;
+}
+.filerts-divs{
+  min-height: 100vh;
+  position: fixed;
+  width: 350px;
+  top:0;
+  right: 0;
+}
+.filerts-divs{
+  background: #fff !important;
 }
