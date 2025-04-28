@@ -30,7 +30,7 @@ export default function pricing() {
                 <li> <strong>	Personal Information: </strong> If you sign up for updates or purchase premium icons, we may ask for your name,
                    email address, billing information, and other relevant details.</li>
                 <li> <strong>	Non-Personal Information: </strong> We automatically collect data such as your IP address, browser type, device information, and the pages you 
-                visit (including popular searches like “SVG icons down” and “free icon” categories). </li>
+                visit (including popular searches like 'SVG icons down' and 'free icon' categories). </li>
               </ul>
               <h5> 2. How We Use Your Information </h5>
               <p> We use your information to: </p>
