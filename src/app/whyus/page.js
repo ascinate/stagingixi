@@ -29,10 +29,10 @@ export default function whyus() {
                           <h2 className="tect-list"> Crafting Exceptional Visuals <span className="d-block"> for Every Creative Vision </span> </h2>
                           <p className="col-12 mt-4"> At IconsGuru, we believe great design starts with the right tools — and nothing brings a 
                             project to life faster than the perfect icon. 
-                            That's why we've dedicated ourselves to building
+                            That&quot;s why we&quot;ve dedicated ourselves to building
                              one of the most versatile and high-quality icon libraries available today. </p>
                           <p className="col-12 mt-3"> We offer a premium selection of beautifully crafted SVG icons, designed to meet the needs of designers, 
-                            developers, and brands aiming for excellence. Whether you're working on a website, app, presentation,
+                            developers, and brands aiming for excellence. Whether you&quot;re working on a website, app, presentation,
                              or any creative project,
                              our design resources are tailored to make your work stand out effortlessly.</p>
                       </div>
@@ -109,7 +109,7 @@ export default function whyus() {
                                 <div className="comon-list01">
                                    <h3> <span className="d-block"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="rgba(31,177,65,1)"><path d="M4.7134 7.12811L4.46682 7.69379C4.28637 8.10792 3.71357 8.10792 3.53312 7.69379L3.28656 7.12811C2.84706 6.11947 2.05545 5.31641 1.06767 4.87708L0.308047 4.53922C-0.102682 4.35653 -0.102682 3.75881 0.308047 3.57612L1.0252 3.25714C2.03838 2.80651 2.84417 1.97373 3.27612 0.930828L3.52932 0.319534C3.70578 -0.106511 4.29417 -0.106511 4.47063 0.319534L4.72382 0.930828C5.15577 1.97373 5.96158 2.80651 6.9748 3.25714L7.69188 3.57612C8.10271 3.75881 8.10271 4.35653 7.69188 4.53922L6.93228 4.87708C5.94451 5.31641 5.15288 6.11947 4.7134 7.12811ZM18.2278 2.3713L13.2886 6.21289C9.34224 5.23923 5.55843 7.54646 4.5 11.4966C4.39826 11.8763 4.36647 12.262 4.33317 12.666C4.21829 14.0599 4.08554 15.6707 1 17.9966C3.5 19.4966 8 20.9984 11.5016 20.9984C14.8142 20.9984 17.8463 18.7896 18.7444 15.4377C19.0836 14.1719 19.0778 12.895 18.7847 11.7067L22.6253 6.76879C22.9349 6.3707 22.8997 5.80435 22.543 5.44774L19.5488 2.45355C19.1922 2.09694 18.6259 2.06168 18.2278 2.3713ZM16.8952 8.2852C16.8319 8.21952 16.7673 8.15494 16.7015 8.09149L15.5769 6.96685L18.7589 4.49198L20.5046 6.23774L18.0297 9.41972L16.8952 8.2852Z"></path></svg>
                                    </span> Dedicated to Creators </h3>
-                                   <p className="mt-3"> Whether you're a solo designer, a startup founder, or a large agency, IconsGuru equips you with tools that 
+                                   <p className="mt-3"> Whether you&quot;re a solo designer, a startup founder, or a large agency, IconsGuru equips you with tools that 
                                     empower your creativity and accelerate your projects. </p>
                                 </div>
                               </div>
@@ -133,9 +133,9 @@ export default function whyus() {
                    <div className="col">
                       <div className="contents-div">
                           <h3 className="text-white"> The IconsGuru Promise </h3>
-                          <p className="text-white mt-3"> We're not just an <strong> icon library </strong> — we're your partner in creative success. Every pixel we craft, every collection we release,
+                          <p className="text-white mt-3"> We&quot;re not just an <strong> icon library </strong> — we&quot;re your partner in creative success. Every pixel we craft, every collection we release,
                              is aimed at helping you achieve stunning results faster and easier. </p>
-                          <p className="text-white mt-3"> When you choose <strong> IconsGuru,</strong> you're choosing a brand trusted by thousands of creatives 
+                          <p className="text-white mt-3"> When you choose <strong> IconsGuru,</strong> you&quot;re choosing a brand trusted by thousands of creatives 
                             who demand only the best from their <strong> premium icons </strong> and <strong>design resources.</strong> </p>
                           <Link href="/icons" className="btn btn-st-bn mt-3"> Start now </Link>
                       </div>

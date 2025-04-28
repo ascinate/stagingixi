@@ -30,7 +30,7 @@ export default function pricing() {
                 <li> <strong>	Personal Information: </strong> If you sign up for updates or purchase premium icons, we may ask for your name,
                    email address, billing information, and other relevant details.</li>
                 <li> <strong>	Non-Personal Information: </strong> We automatically collect data such as your IP address, browser type, device information, and the pages you 
-                visit (including popular searches like 'SVG icons down' and 'free icon' categories). </li>
+                visit (including popular searches like &quot;SVG icons down&quot; and &quot;free icon&quot; categories). </li>
               </ul>
               <h5> 2. How We Use Your Information </h5>
               <p> We use your information to: </p>
@@ -75,7 +75,7 @@ export default function pricing() {
              <h5 className="mt-5"> Data Security </h5>
              
              <p> We implement strict security measures to protect your information from unauthorized access, alteration,
-               disclosure, or destruction. Whether you're browsing free icons or
+               disclosure, or destruction. Whether you&quot;re browsing free icons or
                purchasing premium icon bundles, we ensure that your data is securely handled.</p>
 
              <h5 className="mt-5"> Your Choices and Rights </h5>
@@ -92,7 +92,7 @@ export default function pricing() {
              <p> Our website may include links to third-party sites, especially resources for additional SVG icons or graphic design tools. We are not 
               responsible for the privacy practices of these external sites. </p>
 
-             <h5 className="mt-5"> 8. Children's Privacy </h5>
+             <h5 className="mt-5"> 8. Children&quot;s Privacy </h5>
              <p> <strong> IconsGuru.com  </strong> does not knowingly collect personal information from individuals under the age of 13. If we learn that
                we have collected information from a child, we will promptly delete it.</p>
 
