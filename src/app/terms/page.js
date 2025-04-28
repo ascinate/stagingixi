@@ -22,7 +22,7 @@ export default function pricing() {
       <main className="mian-text01 privacy-page w-100 float-left">
       <div className="container">
              <h2 className="comon-cont-head"> Privacy policy </h2>
-             <p className="mt-3"> These Terms & Conditions ("Terms") govern your access to and use of IconsGuru.com ("Website"), including all services and resources related to 
+             <p className="mt-3"> These Terms & Conditions (&quot;Terms&quot;) govern your access to and use of IconsGuru.com (&quot;Website&quot;), including all services and resources related to 
               our premium icons, SVG icons download, icon library, and free icons. </p>
              <p className="mt-2"> By accessing or using IconsGuru, you agree to these Terms.
                If you do not agree, you may not use the Website. </p>
@@ -57,7 +57,7 @@ export default function pricing() {
              <p> Pricing details are clearly listed, and payments are processed securely. All sales are final unless otherwise stated. IconsGuru reserves the right
                to update pricing, subscriptions, and offerings at any time. </p>
              <h5 className="mt-5"> 5. Disclaimer </h5>
-             <p> IconsGuru provides the icon library "as-is" and "as-available." We do not guarantee that the SVG icons
+             <p> IconsGuru provides the icon library &quot;as-is&quot; and &quot;as-available.&quot; We do not guarantee that the SVG icons
                download or any other service will be uninterrupted, error-free, or secure. </p>
              <p> We are not responsible for any damages resulting from the use or inability to use our icons, 
               whether free or premium. </p>
