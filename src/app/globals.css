@@ -1649,7 +1649,7 @@ footer hr{
   padding:80px 0;
 }
 .comon-list01 h3{
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 600;
   color: var(--head-color);
   display: flex;
@@ -1703,4 +1703,7 @@ footer hr{
 }
 .filerts-divs{
   background: #fff !important;
+}
+.tect-list{
+  font-size: 41px !important;
 }

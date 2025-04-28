@@ -20,33 +20,62 @@ export default function pricing() {
       </Head>
       <NavicationHome/>
       <main className="mian-text01 privacy-page w-100 float-left">
-         <div className="container">
+      <div className="container">
              <h2 className="comon-cont-head"> Privacy policy </h2>
-             <p className="mt-3"> These terms of use govern the access, browsing and use of Icons Mind by their users the download and use of certain content owned by Icons Mind as well as the services rendered through the website.Iconsguru Icons can modify the Terms of Use any time 
-              and thus we recommended that the Terms are reviewed on a regular basis by the user. </p>
-             <p className="mt-2"> Likewise, in respect of collection and processing personal data, the Privacy Policy will apply. </p>
-             <h5 className="mt-5"> PURPOSE OF WEBSITE </h5>
-             <p className="mt-3 mb-2"> Through the website, you, the user, can search visual content 
-              in any format, as well as specific information related to such content.</p>
-             <p> The services may search and locate, as a result of the search performed by the user, third party content offered for free over the internet. However, the service ma provide, in result of that search, content owned by Icons Mind along with third party Content not offered free of charge. Both the Icons Mind 
-              content and sponsored content are differentiated and identified on search results.</p>
-             <h5 className="mt-5"> AUTHORIZED USE OF THE WEBSITE </h5>
-             <p> If the user acts on behalf of any business, they will have to declare that they are authorized to bind
-               such business and that business will be bound to the Terms of Use.</p>
-             <p> 
-             The User is responsible of ensuring prior to using the services that the features of the services meet the needs and that have all requirements, equipment and software necessary for this purpose.
-             When providing the Services, Iconsguru Icons can publish advertising either related or not to the searched content.</p>
-             <h5 className="mt-5"> REGISTRATION </h5>
-             <p> In order to use Iconsguru Icons services, users must register by creating a username and password and activating an account.
-             The User is responsible for all operations carried out through the Userâ€™s account through any device. Iconsguru Icons may and will suspend the account of the User if it considers that the User has breached these Terms.</p>
-             <h5 className="mt-5"> GENERAL AND CONTACT INFORMATION </h5>
-             <p> The use of the Icons Mind website and their services shall be governed by XX Law.
-
-            If any provision in the Terms of Use is declared to invalid or unenforceable, it shall be deemed that it had not been included. The remaining provisions in these Terms shall not be affected in anyway.
-
-            For any inquiries, you can contact Iconsguru Icons here:www.Iconsguruicons.com/contact
-
-            Your Consent By using our site, you consent to our privacy policy.</p>
+             <p className="mt-3"> These Terms & Conditions ("Terms") govern your access to and use of IconsGuru.com ("Website"), including all services and resources related to 
+              our premium icons, SVG icons download, icon library, and free icons. </p>
+             <p className="mt-2"> By accessing or using IconsGuru, you agree to these Terms.
+               If you do not agree, you may not use the Website. </p>
+             <h5 className="mt-5"> 1. Use of Our Services </h5>
+             <p className="mt-3 mb-2"> IconsGuru offers users access to a curated icon library featuring a wide range of free icons
+               and premium icons available for SVG icons download and other formats. </p>
+             <p> You are granted a limited, non-exclusive, non-transferable license to use the icons for personal 
+              and commercial purposes, subject to compliance with these Terms. </p>
+             <h5 className="mt-5"> Prohibited Uses: </h5>
+             <ul className="mt-3">
+               <li>
+                 Reselling or redistributing icons without modification or as part of a competing service.
+               </li>
+               <li>
+                Using icons in a manner that violates applicable laws or regulations.
+               </li>
+               <li>
+                Misrepresenting ownership of the icons from IconsGuru.
+               </li>
+             </ul>
+             <h5 className="mt-5"> 2. Intellectual Property Rights </h5>
+             <p> All icons, graphics, branding materials, and website content remain the property of IconsGuru or its licensors. The icons available through our icon
+               library, whether free icons or premium icons, are protected by copyright laws. </p>
+             <p>  You may use the icons as permitted, but you may not claim ownership, 
+             sublicense, or exploit the icons beyond the scope outlined in these Terms.</p>
+             <h5 className="mt-5"> 3. Account Registration </h5>
+             <p> Some features, such as access to premium icons or bulk SVG icons download, may require you to create an account. 
+              You agree to provide accurate information and keep your login credentials secure. </p>
+             <p> IconsGuru is not liable for any unauthorized access or activities conducted through your account. </p>
+             <h5 className="mt-5"> 4. Pricing and Payments </h5>
+             <p> IconsGuru offers a selection of free icons and paid access to premium icons. </p>
+             <p> Pricing details are clearly listed, and payments are processed securely. All sales are final unless otherwise stated. IconsGuru reserves the right
+               to update pricing, subscriptions, and offerings at any time. </p>
+             <h5 className="mt-5"> 5. Disclaimer </h5>
+             <p> IconsGuru provides the icon library "as-is" and "as-available." We do not guarantee that the SVG icons
+               download or any other service will be uninterrupted, error-free, or secure. </p>
+             <p> We are not responsible for any damages resulting from the use or inability to use our icons, 
+              whether free or premium. </p>
+             <h5 className="mt-5"> Third-Party Links </h5>
+             <p> The Website may contain links to third-party websites. IconsGuru is not responsible
+               for the content, terms, or privacy practices of external sites. </p>
+             <p> Accessing third-party websites is at your own risk. </p>
+             <h5 className="mt-5"> 7. Changes to Terms </h5>
+             <p> IconsGuru may update these Terms from time to time. Changes are effective when posted. Your continued use of
+               the Website after changes are made constitutes acceptance of the updated Terms. </p>
+             <p> We recommend you review these Terms periodically. </p>
+             <h5 className="mt-5"> 8. Termination </h5>
+             <p> We may suspend or terminate your access to IconsGuru at any time for violations of these Terms or misuse of our icon library, 
+              including free icon downloads and premium icons usage. </p>
+             <h5 className="mt-5"> 9. Contact Us </h5>
+             <p> For questions about these Terms, your account, or licensing options for our SVG icons download,
+               free icons, or premium icons, please contact: </p>
+             <p> IconsGuru Team  <Link href="mailto:support@iconsguru.com"> Email:support@iconsguru.com </Link> </p>
          </div>
 
       </main>
