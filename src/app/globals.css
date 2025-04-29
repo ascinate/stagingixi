@@ -1707,3 +1707,7 @@ footer hr{
 .tect-list{
   font-size: 41px !important;
 }
+.blox-icons-div01 svg filter{
+  width: inherit !important;
+  height: inherit !important;
+}
