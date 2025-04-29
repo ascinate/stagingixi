@@ -6,7 +6,7 @@ import Image from "next/image";
 function Footer(){
     const mianmenu = [
         { id: 1, title: 'Why us' , link: '/whyus'  },
-        { id: 2, title: 'Blog' , link: '/blog'  },
+        { id: 2, title: 'Blog' , link: 'https://ascinate.in/demo/iconsguru/'  },
         { id: 3, title: 'Pricing' , link: '/pricing'  },
         
     ];
