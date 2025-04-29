@@ -26,6 +26,7 @@ export default function Icons() {
     '/login.svg',
     '/Music.svg',
     '/office.svg',
+    '/realestate.svg',
     '/search.svg',
     '/shopping.svg',
     '/signup.svg',
@@ -33,7 +34,8 @@ export default function Icons() {
     '/sports.svg',
     '/birthday_stickers.svg',
     '/users.svg',
-    '/weather.svg', 
+    '/weather.svg',
+     
   ];
 
   const [icontypes, setCategoryTypes] = useState([]);
