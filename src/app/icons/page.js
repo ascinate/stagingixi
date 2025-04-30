@@ -20,6 +20,8 @@ export default function Icons() {
     '/emoji.svg',
     '/finance.svg',
     '/food.svg',
+    '/furniture.svg',
+    '/gaming.svg',
     '/health.svg',
     '/home.svg',
     '/interface.svg',
