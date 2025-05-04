@@ -13,6 +13,7 @@ export default function Icons() {
   const staticImages = [
     '/Animals.svg',
     '/arrow.svg',
+    '/bar.svg',
     '/business.svg',
     '/device.svg',
     '/documents.svg',
@@ -22,6 +23,7 @@ export default function Icons() {
     '/food.svg',
     '/furniture.svg',
     '/gaming.svg',
+    '/gardening.svg',
     '/health.svg',
     '/home.svg',
     '/interface.svg',
@@ -32,6 +34,7 @@ export default function Icons() {
     '/search.svg',
     '/shopping.svg',
     '/signup.svg',
+    '/smoking.svg',
     '/social.svg',
     '/sports.svg',
     '/birthday_stickers.svg',
