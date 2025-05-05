@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
+import { ChromePicker } from 'react-color';
 
 export default function IconDetailPage() {
 
@@ -19,8 +20,7 @@ const id = slug?.split('_').pop();
   const [showToast, setShowToast] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
   const finalSize = Math.min(Number(size), 300); // ensure max 300
-
-
+  
 
   const handleCopy = () => {
     navigator.clipboard.writeText(renderedSvg);
@@ -96,6 +96,22 @@ const id = slug?.split('_').pop();
     return svg;
   };
 
+  const isLightColor = (hex) => {
+    if (!hex) return false;
+    const cleanedHex = hex.replace("#", "");
+  
+    const r = parseInt(cleanedHex.substring(0, 2), 16);
+    const g = parseInt(cleanedHex.substring(2, 4), 16);
+    const b = parseInt(cleanedHex.substring(4, 6), 16);
+  
+    // Calculate luminance
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+  
+    // If luminance is greater than 200, consider it light
+    return luminance > 200;
+  };
+  
+
   const svgToCanvasDownload = (type = "png") => {
     const finalSvg = applyColorAndSize(icon.icon_svg);
     const blob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
@@ -170,8 +186,8 @@ const id = slug?.split('_').pop();
                </aside>
                <div className="top-sections01 mt-4  details-coderyt">
                    <div className="row">
-                       <div className="col-lg-6 position-relative p-0">
-                            <div className="blox-icons-div01">
+                       <div className="col-lg-6 col-xl-7 position-relative p-0">
+                            <div className="blox-icons-div01" style={{ backgroundColor: isLightColor(color) ? "#000000" : "transparent",}}>
                               <div
                                 className="d-table mx-auto"
                                 style={{
@@ -180,6 +196,7 @@ const id = slug?.split('_').pop();
                                   overflow: "hidden",
                                   maxWidth: "300px",
                                   maxHeight: "300px",
+        
                                 }}
                               >
                                 <div
@@ -190,23 +207,25 @@ const id = slug?.split('_').pop();
                                   dangerouslySetInnerHTML={{ __html: renderedSvg }}
                                 />
                               </div>
-                                {icon.icon_category !== "Emoji" && (
-                                  <div className="icn-list05">
+                                {icon.icon_category !== "Emoji" && icon.icon_category !== "Stickers" && (
+                                  <label htmlFor="colos" className="icn-list05">
                                           <input
                                             type="color"
+                                            id="colos"
                                             value={color || "#000000"}
                                             onChange={(e) => setColor(e.target.value)}
                                             className="form-control form-control-color"
                                           />
                                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill={color}><path d="M4.7134 7.12811L4.46682 7.69379C4.28637 8.10792 3.71357 8.10792 3.53312 7.69379L3.28656 7.12811C2.84706 6.11947 2.05545 5.31641 1.06767 4.87708L0.308047 4.53922C-0.102682 4.35653 -0.102682 3.75881 0.308047 3.57612L1.0252 3.25714C2.03838 2.80651 2.84417 1.97373 3.27612 0.930828L3.52932 0.319534C3.70578 -0.106511 4.29417 -0.106511 4.47063 0.319534L4.72382 0.930828C5.15577 1.97373 5.96158 2.80651 6.9748 3.25714L7.69188 3.57612C8.10271 3.75881 8.10271 4.35653 7.69188 4.53922L6.93228 4.87708C5.94451 5.31641 5.15288 6.11947 4.7134 7.12811ZM15.3144 9.53285L15.4565 9.67491C16.7513 11.018 17.3306 12.9868 16.8126 14.9201C16.1644 17.3393 13.9702 18.9984 11.5016 18.9984C9.46572 18.9984 6.78847 18.3726 4.5286 17.4841C5.73449 16.0696 6.17423 14.675 6.3285 12.805C6.36574 12.3536 6.38901 12.1741 6.43185 12.0142C7.22541 9.05261 10.0168 7.40515 12.9235 8.18399C13.8549 8.43357 14.6661 8.90783 15.3144 9.53285ZM18.2278 2.3713L13.2886 6.21289C9.34224 5.23923 5.55843 7.54646 4.5 11.4966C4.39826 11.8763 4.36647 12.262 4.33317 12.666C4.21829 14.0599 4.08554 15.6707 1 17.9966C3.5 19.4966 8 20.9984 11.5016 20.9984C14.8142 20.9984 17.8463 18.7896 18.7444 15.4377C19.0836 14.1719 19.0778 12.895 18.7847 11.7067L22.6253 6.76879C22.9349 6.3707 22.8997 5.80435 22.543 5.44774L19.5488 2.45355C19.1922 2.09694 18.6259 2.06168 18.2278 2.3713ZM16.8952 8.2852C16.8319 8.21952 16.7673 8.15494 16.7015 8.09149L15.5769 6.96685L18.7589 4.49198L20.5046 6.23774L18.0297 9.41972L16.8952 8.2852Z"></path></svg>
-                                 </div>
+                                          <span style={{ color: color }}> Edit Icons </span>   
+                                 </label>
                                 )}
 
                                  
 
                             </div>
                        </div>
-                       <div className="col-lg-6 d-grid justify-content-end">
+                       <div className="col-lg-6 col-xl-5 buttons-group01 d-grid justify-content-end">
                               <div className="right-details-lis01">
                                   <div className="groups-list-btn">
                                       <div className="comon-groups-div01 d-flex align-items-center justify-content-between">

@@ -16,7 +16,9 @@
     "next": "15.2.1",
     "primereact": "^10.9.4",
     "react": "^19.0.0",
+    "react-color": "^2.19.3",
     "react-dom": "^19.0.0",
+    "react-draggable": "^4.4.6",
     "react-select": "^5.10.1",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1"

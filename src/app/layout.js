@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
       <body>
       <style>{`
         html {
-          font-family: ${sorasans.style.fontFamily};
+          font-family: ${inter.style.fontFamily};
         }
         .banner-parts01 h2, .form-select{
          font-family: ${sorasans.style.fontFamily};
@@ -67,7 +67,9 @@ export default function RootLayout({ children }) {
         .btn,
         .comon-list01 h3,
         .contents-div h3,
-        .value-sections h3{
+        .value-sections h3,
+        .comon-groups-div01 h5,
+        body{
          font-family: ${inter.style.fontFamily};
         } 
         input{

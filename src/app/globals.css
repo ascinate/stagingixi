@@ -937,6 +937,7 @@ footer hr{
   color: var(--head-color);
   display: inline-block;
   width: 159px;
+  
 }
 .input-divs{
   width: 90%;
@@ -956,9 +957,10 @@ footer hr{
 .blox-icons-div01{
   position: relative;
   z-index: 2;
-  min-height: 378px;
+  min-height: 448px;
   display: grid;
   align-content: center;
+  border: solid 2px #f5f5f5;
 }
 .btn-copy01{
   background: var(--head-color) !important;
@@ -969,6 +971,7 @@ footer hr{
   margin-right: 0;
   border: 2px solid #f3f3f3 !important;
   width: 89px;
+  border-radius: 10px !important;
 }
 .style-list{
   font-size: 17px;
@@ -987,17 +990,24 @@ footer hr{
 .icn-list05{
   position: absolute;
   top:20px;
-  width: 50px;
+  width: 130px;
   height: 50px;
   right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 2px #e7e7e782;
+  padding-left: 15px !important;  
+  cursor: pointer;
 }
 .icn-list05 .form-control{
   padding: 0;
   border-radius: 50px;
   overflow: hidden;
-  width: 25px;
-  height: 25px;
+  width: 130px;
+  height: 100%;
   display: inline-block;
+  position: absolute;
 }
 .icn-list05 .form-control:focus{
   box-shadow: none !important;
@@ -1425,12 +1435,15 @@ footer hr{
   width: 25px;
   height: 25px;
   position: absolute;
-  left: 0;
+  left: 10px;
   right: 0;
   pointer-events: none;
 }
+.icn-list05 span{
+  padding-left: 8px;
+}
 .right-details-lis01{
-  width: 80%;
+  width: 90%;
   margin-left: auto;
 }
 .input-divs .form-select{
@@ -1447,6 +1460,11 @@ footer hr{
   overflow: hidden;
   font-size: 15px;
   overflow-y: auto;
+}
+.codet.bg-light01{
+  background: #f9f9f9;
+  height: 100px;
+  overflow: hidden;
 }
 .btn-shares{
   background: var(--primaycolor) !important;
@@ -1711,3 +1729,23 @@ footer hr{
   width: inherit !important;
   height: inherit !important;
 }
+@media(min-width:1266px){
+  .right-details-lis01{
+    width: 90%;
+  }
+  .buttons-group01 .btn-shares,
+  .buttons-group01 .btn-copsy{
+    width: 40%;
+  }
+}
+.buttons-group01 .btn-shares,
+.buttons-group01 .btn-copsy{
+  width:46%;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.buttons-group01 .btn-shares:focus,
+.buttons-group01 .btn-copsy:focus{
+  width: 40%;
+}
+
