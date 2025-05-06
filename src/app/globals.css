@@ -771,7 +771,7 @@ tbody, td, tfoot, th, thead, tr{
 
 footer{
   background: var(--tabs-active-color);
-  padding: 60px 0 0;
+  padding: 85px 0 0;
 }
 .solic-list{
   list-style: none;
@@ -799,7 +799,7 @@ footer{
   font-size: 14px;
   color: var(--background) !important;
   transition: all 0.5s;
-  font-weight: 300 !important;
+  font-weight: 200 !important;
   text-decoration: none;
   padding-bottom: 13px;
   display: inline-block;
@@ -1759,5 +1759,43 @@ footer hr{
 .buttons-group01 .btn-copsy{
   width: 46%;
 }
+.drop-divu{
+  min-width: 13rem !important;
+}
 
+
+.facebook-btn{
+  background: #1877f2 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+.facebook-btn svg{
+  margin-right: 5px;
+}
+.facebook-btn:focus{
+  box-shadow: none !important;
+}
+
+
+.twitter-btn{
+  background: #000 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+.twitter-btn svg{
+  margin-right: 5px;
+}
+.twitter-btn:focus{
+  box-shadow: none !important;
+}
 

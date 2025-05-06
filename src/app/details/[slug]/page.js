@@ -309,9 +309,20 @@ const id = slug?.split('_').pop();
                                           <div className="dropdown">
                                             <button type="button" className="btn w-100 btn-shares" data-bs-toggle="dropdown"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(255,255,255,1)"><path d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z"></path></svg> Share </button>
                                             
-                                              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                  <li><button className="dropdown-item" onClick={shareOnFacebook}>Facebook</button></li>
-                                                  <li><button className="dropdown-item" onClick={shareOnX}>X (Twitter)</button></li>                                              
+                                              <ul className="dropdown-menu px-3 drop-divu py-3" aria-labelledby="dropdownMenuButton1">
+                                                  <li><button className="dropdown-item facebook-btn text-center" onClick={shareOnFacebook}> 
+                                                      <span> <svg width="16" height="16" viewBox="0 0 73 136" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                                                          <path d="M23.0805 24.5077V51.1005H0V74.6825H23.0805V135.896H48.168V74.6825H72.252V51.1005H48.168V33.5391C47.3652 23.9055 53.1855 22.1661 56.196 22.5006H72.252V1.33165C30.6067 -5.19014 23.5822 13.8038 23.0805 24.5077Z" fill="#ffffff"/>
+                                                      </svg>
+
+                                                     </span> Facebook</button></li>
+                                                  <li className="mt-2"><button className="dropdown-item twitter-btn text-center" onClick={shareOnX}>
+                                                    <span>
+                                                      <svg width="16" height="16" viewBox="0 0 138 140" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M73.1883 54.4075L120.569 0.661621L125.874 5.33818L78.493 59.084L73.1883 54.4075ZM0.339844 135.036L54.7929 72.8041L60.115 77.4609L5.66193 139.693L0.339844 135.036Z" fill="#ffffff"/>
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.25391 2.29272H43.7544L137.728 138.779H94.4822L1.25391 2.29272ZM14.6485 9.36455L98.2158 131.707H124.273L40.0375 9.36455H14.6485Z" fill="#ffffff"/>
+                                                      </svg>
+                                                    </span> (Twitter)</button></li>                                              
                                                 </ul>
                                           </div>
                                          
