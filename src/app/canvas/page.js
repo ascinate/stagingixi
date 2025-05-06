@@ -1,11 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import NavicationHome from "../components/NavicationHome";
-import Footer from "../components/Footer";
+import { useState, useRef } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import Form from "next/form";
 
 export default function canvas() {
   const [inputValue, setInputValue] = useState('');
@@ -56,8 +51,6 @@ export default function canvas() {
       }
     };
 
-    const [imagesSrc, setImagesSrc] = useState(null);
-
 
     const [imageeSrc, setImageeSrc] = useState(null);
 
@@ -74,6 +67,31 @@ export default function canvas() {
       }
       
     };
+
+    const [position, setPosition] = useState({ x: 100, y: 100 });
+    const dragging = useRef(false);
+    const offset = useRef({ x: 0, y: 0 });
+  
+    const handleMouseDown = (e) => {
+      dragging.current = true;
+      offset.current = {
+        x: e.clientX - position.x,
+        y: e.clientY - position.y,
+      };
+    };
+  
+    const handleMouseMove = (e) => {
+      if (!dragging.current) return;
+      setPosition({
+        x: e.clientX - offset.current.x,
+        y: e.clientY - offset.current.y,
+      });
+    };
+  
+    const handleMouseUp = () => {
+      dragging.current = false;
+    };
+  
 
   return (
     <>
@@ -116,7 +134,26 @@ export default function canvas() {
                   </div>
 
                   
-  <div>I can now be moved around!</div>
+                  <div
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden' }}
+    >
+      <img
+        src="/your-image.jpg"
+        onMouseDown={handleMouseDown}
+        alt="Draggable"
+        style={{
+          position: 'absolute',
+          left: position.x,
+          top: position.y,
+          width: 150,
+          height: 'auto',
+          cursor: 'move',
+          userSelect: 'none',
+        }}
+      />
+    </div>
 
                 
             </div>
