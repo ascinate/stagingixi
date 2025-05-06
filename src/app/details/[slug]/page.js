@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
-import { ChromePicker } from 'react-color';
 
 export default function IconDetailPage() {
 
