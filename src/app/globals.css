@@ -1748,4 +1748,8 @@ footer hr{
 .buttons-group01 .btn-copsy:focus{
   width: 40%;
 }
+.buttons-group01 .btn-shares:focus,
+.buttons-group01 .btn-copsy:focus{
+  width: 35%;
+}
 
