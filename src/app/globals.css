@@ -978,7 +978,7 @@ footer hr{
 .crm-btn01{
   margin-right: 0;
   border: 2px solid #f3f3f3 !important;
-  width: 89px;
+  width: 31%;
   border-radius: 10px !important;
 }
 .style-list{
@@ -1799,3 +1799,40 @@ footer hr{
   box-shadow: none !important;
 }
 
+.svg-bn{
+  background: #000 !important;
+  color: #fff !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  height: 46px;
+  border: solid 2px #000 !important;
+}
+.svg-bn svg{
+  margin-right: 4px;
+  position: relative;
+  top:-2px;
+}
+.svg-bn:focus{
+  border-radius: 10px !important;
+}
+
+
+
+.png-bn{
+  background: #feb602 !important;
+  color: #000 !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  height: 46px;
+  border: solid 2px #feb602 !important;
+}
+.png-bn svg{
+  margin-right: 4px;
+  position: relative;
+  top:-2px;
+}
+.png-bn:focus{
+  border-radius: 10px !important;
+}
