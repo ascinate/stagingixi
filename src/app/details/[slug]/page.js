@@ -1,11 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
-
 export default function IconDetailPage() {
 
 
@@ -18,7 +16,6 @@ const id = slug?.split('_').pop();
   const [relatedIcons, setRelatedIcons] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
-  const finalSize = Math.min(Number(size), 300); // ensure max 300
   
 
   const handleCopy = () => {

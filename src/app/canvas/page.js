@@ -34,8 +34,6 @@ export default function canvas() {
       setTextAlign(e.target.value);
     };
 
-    const [textShadow, setTextShadow] = useState('');
-
     const [imageSrc, setImageSrc] = useState(null);
 
     const handleImageChange = (e) => {
@@ -109,7 +107,7 @@ export default function canvas() {
                     You typed: <h1 style={{
                     fontStyle: fontStyle === 'bold' ? 'normal' : fontStyle,
                     fontWeight: fontStyle === 'bold' ? 'bold' : 'normal', fontSize: `${fontSize}px`, color: textColor , textAlign , 
-                    textShadow: textShadow
+                    
                   }} > {inputValue} </h1> 
               </div>
               
@@ -235,13 +233,7 @@ export default function canvas() {
 
                                     <p> Size </p>
 
-                                    <input 
-                                        type="text" 
-                                        value={textShadow}
-                                        onChange={(e) => setTextShadow(e.target.value)} 
-                                        placeholder="e.g. 2px 2px 4px #000000"
-                                        style={{ width: '300px', marginLeft: '10px' }}
-                                      />
+                                    
                                 
                             </div>
                         </div>
