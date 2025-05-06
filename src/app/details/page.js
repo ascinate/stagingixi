@@ -3,7 +3,7 @@ import Head from "next/head";
 import NavicationHome from "../components/NavicationHome";
 import { useEffect, useState } from "react";
 import SidebarFilter from "../components/SidebarFilter";
-import Footer from "../components/Footer";
+import FooterDetails from "../components/FooterDetails";
 import Link from "next/link";
 import Image from "next/image";
 import { Suspense } from 'react';
@@ -26,6 +26,7 @@ export default function Page() {
         
         <Searchlisting />
       </Suspense>
+    <FooterDetails/>
     </>
   );
 }
