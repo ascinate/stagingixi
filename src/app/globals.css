@@ -1836,3 +1836,7 @@ footer hr{
 .png-bn:focus{
   border-radius: 10px !important;
 }
+
+.comon-groups-div01 .form-select:focus{
+  border: solid 2px var(--primaycolor);
+}
