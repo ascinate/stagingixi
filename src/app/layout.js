@@ -24,7 +24,7 @@ const playfa = Playfair({
 
 const inter = Inter({
   variable: "--font-inter-sans",
-  weight: ['800'],
+  weight: ['800', '300'],
   subsets: ['latin'],
 });
 
