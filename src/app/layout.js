@@ -57,6 +57,10 @@ export default function RootLayout({ children }) {
         .banner-parts01 h2, .form-select{
          font-family: ${sorasans.style.fontFamily};
         }
+         p{
+          font-family: ${inter.style.fontFamily};
+          font-weight: 300;
+         }
         button,
         .p-autocomplete-item,
         .comon-cont-head,
