@@ -31,7 +31,12 @@ const id = slug?.split('_').pop();
     window.open(url, '_blank');
   };
 
-
+  const shareOnPinterest = () => {
+    const mediaUrl = "https://iconsguru.ascinatetech.com/admin/storage/temp_icons/d0503d20-1e50-4445-9f72-3452124b82a1.png";
+    const description = `Check out this icon from IconsGuru!`;
+    const url = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(iconUrl)}&media=${encodeURIComponent(mediaUrl)}&description=${encodeURIComponent(description)}`;
+    window.open(url, '_blank');
+  };
   
 
   
@@ -69,43 +74,8 @@ const id = slug?.split('_').pop();
     fetchIcon();
   }, [id]);
 
-  const uploadSvgToPinterest = async (svgCode) => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const blob = new Blob([svgCode], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const img = new Image();
-  
-    img.onload = async () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-  
-      canvas.toBlob(async (pngBlob) => {
-        const formData = new FormData();
-        formData.append("image", pngBlob, "icon.png");
-  
-        const res = await fetch("https://iconsguru.ascinatetech.com/admin/api/upload-temp-image", {
-          method: "POST",
-          body: formData,
-        });
-  
-        const data = await res.json();
-        if (!data.url) return alert("Upload failed");
-  
-        const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+this+icon&media=${encodeURIComponent(data.url)}&url=${encodeURIComponent(window.location.href)}`;
-        window.open(pinterestUrl, "_blank");
-      }, "image/png");
-  
-      URL.revokeObjectURL(url);
-    };
-  
-    img.src = url;
-  };
-  
-
-
-
+ 
+ 
   useEffect(() => {
     const fetchRelatedIcons = async () => {
       try {
@@ -376,7 +346,7 @@ const id = slug?.split('_').pop();
                                                     </span> (Twitter)</button></li>     
 
                                                     <li className="mt-2">
-                                                    <button className="dropdown-item pinterest-btn text-center" onClick={() => uploadSvgToPinterest(icon.icon_svg)}>
+                                                    <button className="dropdown-item pinterest-btn text-center" onClick={shareOnPinterest}>
                                                       <span>
                                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
                                                           <path d="M12.04 2C6.46 2 2 6.15 2 11.58C2 15.07 3.94 17.84 6.87 18.75C7.1 18.81 7.21 18.68 7.21 18.56C7.21 18.45 7.2 18.11 7.2 17.76C5.1 18.22 4.59 16.94 4.59 16.94C4.37 16.36 4 16.12 4 16.12C3.45 15.71 4.04 15.71 4.04 15.71C4.65 15.76 4.97 16.34 4.97 16.34C5.5 17.29 6.43 17.02 6.81 16.84C6.87 16.42 7.03 16.14 7.2 15.96C5.38 15.75 3.46 15.08 3.46 11.77C3.46 10.84 3.8 10.08 4.35 9.5C4.26 9.29 3.96 8.4 4.44 7.15C4.44 7.15 5.14 6.91 7.2 8.28C7.87 8.11 8.59 8.02 9.31 8.02C10.03 8.02 10.75 8.11 11.42 8.28C13.47 6.91 14.17 7.15 14.17 7.15C14.65 8.4 14.35 9.29 14.26 9.5C14.8 10.08 15.14 10.84 15.14 11.77C15.14 15.08 13.22 15.75 11.4 15.96C11.65 16.2 11.86 16.65 11.86 17.33C11.86 18.3 11.84 18.98 11.84 19.21C11.84 19.33 11.95 19.47 12.18 19.41C15.17 18.51 17.14 15.64 17.14 11.58C17.14 6.15 12.68 2 12.04 2Z"/>
