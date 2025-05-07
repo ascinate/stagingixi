@@ -59,7 +59,7 @@ export default function RootLayout({ children }) {
         }
          p{
           font-family: ${inter.style.fontFamily};
-          font-weight: 300;
+          font-weight: 300 !important;
          }
         button,
         .p-autocomplete-item,
