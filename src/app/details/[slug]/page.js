@@ -29,11 +29,21 @@ const id = slug?.split('_').pop();
     window.open(url, '_blank');
   };
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     navigator.clipboard.writeText(renderedSvg);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000); // hide after 2 sec
+  
+    try {
+      await fetch(`https://iconsguru.ascinatetech.com/admin/api/icon-download/${icon.Id}`, {
+        method: 'POST',
+      });
+    } catch (err) {
+      console.error("Download count error:", err);
+    }
   };
+  
+
 
 
 
@@ -78,6 +88,7 @@ const id = slug?.split('_').pop();
       fetchRelatedIcons();
     }
   }, [id]);
+
   
 
   const applyColorAndSize = (svgRaw) => {
