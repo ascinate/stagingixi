@@ -288,59 +288,58 @@ const id = slug?.split('_').pop();
                                   <div className="groups-list-btn">
                                       <div className="comon-groups-div01 align-items-center justify-content-between">
                                            <h5 className="m-0 w-100"> Pick Your Dimensions: </h5>
-                                           <div className="input-divs w-100 mt-3 d-flex align-items-center">
+                                           <div className="w-100 mt-3">
                                             {!showCustom ? (
-                                                <select
-                                                  id="size"
-                                                  className="form-select"
-                                                  value={size}
-                                                  onChange={(e) => {
-                                                    if (e.target.value === "custom") {
-                                                      setShowCustom(true);
-                                                      setSize(""); // clear size on custom
-                                                    } else {
-                                                      setSize(Number(e.target.value));
-                                                    }
+                                              <div className="d-flex flex-wrap gap-2">
+                                                {[16, 24, 32, 64, 128, 256, 512].map((val) => (
+                                                  <button
+                                                    key={val}
+                                                    type="button"
+                                                    className={`btn btn-outline-primary px-3 py-2 ${size === val ? 'active' : ''}`}
+                                                    onClick={() => setSize(val)}
+                                                  >
+                                                    {val}px
+                                                  </button>
+                                                ))}
+                                                <button
+                                                  type="button"
+                                                  className="btn btn-outline-secondary px-3 py-2"
+                                                  onClick={() => {
+                                                    setShowCustom(true);
+                                                    setSize("");
                                                   }}
                                                 >
-                                                  <option value="">-- Select a Size --</option>                                               
-                                                  <option value="16">16px</option>                  
-                                                  <option value="24">24px</option>
-                                                  <option value="32">32px</option>                                                
-                                                  <option value="64">64px</option>       
-                                                  <option value="120">128px</option>
-                                                  <option value="240">256px</option>
-                                                  <option value="240">512px</option>
-                                                  <option value="custom">Custom</option>
-                                                </select>
-                                              ) : (
-                                                <div className="d-flex align-items-center">
-                                                  <input
-                                                    type="number"
-                                                    className="form-control me-2"
-                                                    placeholder="Enter custom size"
-                                                    value={size}
-                                                    onChange={(e) => {
-                                                      const value = e.target.value;
-                                                      setSize(value === '' ? '' : Number(value));
-                                                    }}                                                                                                       
-                                                    style={{ width: "150px" }}
-                                                  />
-                                                  <button
-                                                    type="button"
-                                                    className="btn btn-secondary"
-                                                    onClick={() => {
-                                                      setShowCustom(false);
-                                                      setSize("");
-                                                    }}
-                                                  >
-                                                    Back
-                                                  </button>
-                                                </div>
-                                              )}
+                                                  Custom
+                                                </button>
+                                              </div>
+                                            ) : (
+                                              <div className="d-flex align-items-center gap-2">
+                                                <input
+                                                  type="number"
+                                                  className="form-control shadow-sm"
+                                                  placeholder="Enter custom size"
+                                                  value={size}
+                                                  onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    setSize(value === '' ? '' : Number(value));
+                                                  }}
+                                                  style={{ maxWidth: "160px" }}
+                                                />
+                                                <button
+                                                  type="button"
+                                                  className="btn btn-outline-danger"
+                                                  onClick={() => {
+                                                    setShowCustom(false);
+                                                    setSize("");
+                                                  }}
+                                                >
+                                                  Back
+                                                </button>
+                                              </div>
+                                            )}
+                                          </div>
 
 
-                                           </div>
                                       </div>
                                       <div className="comon-groups-div01 mb-3 align-items-center justify-content-between">
                                            <h5 className="m-0 w-100"> Download This File As.. </h5>
