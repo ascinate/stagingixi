@@ -1840,3 +1840,21 @@ footer hr{
 .comon-groups-div01 .form-select:focus{
   border: solid 2px var(--primaycolor);
 }
+
+
+.pinterest-btn{
+  background: #cb2027 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+.pinterest-btn svg{
+  margin-right: 5px;
+}
+.pinterest-btn:focus{
+  box-shadow: none !important;
+}
