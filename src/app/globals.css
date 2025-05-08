@@ -1858,3 +1858,6 @@ footer hr{
 .pinterest-btn:focus{
   box-shadow: none !important;
 }
+.icon-cate{
+  background: url(/banner-img.jpg) no-repeat;
+}
