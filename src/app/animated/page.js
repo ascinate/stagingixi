@@ -40,15 +40,23 @@ export default function InterfaceIconsPage() {
       <NavicationHome />
 
       <main className="pricing-pages-part float-start w-100">
-
-        
         <section className="float-start w-100 pt-0">
           <div className="container">
             <div className="comon-cate-list trending-icons d-inline-block w-100">
                <h2 className="text-left comon-head cmg-heading m-0">Animated Icons</h2>
-              
+
               {loading ? (
-                <div className="text-center my-5">Loading...</div>
+                  <div className="d-block w-100">
+                      <div className="loading-animations">
+                          <Image
+                            loading="lazy"
+                            src="/ser-loader.svg"
+                            alt="iconsguru"
+                            width={859}
+                            height={364}
+                          />
+                      </div>
+                  </div>
               ) : (
                 <>
                   <div className="new-icons-bm mt-4">

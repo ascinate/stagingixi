@@ -7,6 +7,7 @@ function NavicationHome(){
     const mianmenu = [
         { id: 1, title: 'Icons' , link: '/icons'  },
         { id: 2, title: 'Interface Icons' , link: '/interface'  },
+        { id: 3, title: 'Animated Icons' , link: '/animated'  },
       ];
  return(
      <>
