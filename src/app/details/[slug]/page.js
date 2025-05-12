@@ -71,47 +71,59 @@ const id = slug?.split('_').pop();
   }, [id]);
 
   const shareToPinterest = async () => {
-    let svgString = icon.icon_svg; // Raw SVG from DB
+    let rawSvg = icon.icon_svg;
 
-    // Parse SVG and fix missing attributes
     const parser = new DOMParser();
-    const doc = parser.parseFromString(svgString, 'image/svg+xml');
-    const svgEl = doc.querySelector('svg');
-
+    const doc = parser.parseFromString(rawSvg, 'image/svg+xml');
+    const svg = doc.querySelector('svg');
     const fallbackSize = 512;
 
-    // Add missing width, height, or viewBox
-    if (!svgEl.getAttribute('width')) svgEl.setAttribute('width', fallbackSize);
-    if (!svgEl.getAttribute('height')) svgEl.setAttribute('height', fallbackSize);
-    if (!svgEl.getAttribute('viewBox')) {
-      svgEl.setAttribute('viewBox', `0 0 ${fallbackSize} ${fallbackSize}`);
+    if (!svg) {
+      console.error('Invalid SVG markup.');
+      return;
     }
 
-    // Convert back to string
-    const updatedSvgString = new XMLSerializer().serializeToString(svgEl);
+    // Remove problematic tags
+    ['script', 'foreignObject', 'style'].forEach(tag => {
+      const nodes = svg.querySelectorAll(tag);
+      nodes.forEach(n => n.remove());
+    });
 
-    // Create Blob and Image
-    const svgBlob = new Blob([updatedSvgString], { type: 'image/svg+xml;charset=utf-8' });
+    // Fix dimensions and viewBox
+    let width = parseInt(svg.getAttribute('width')) || fallbackSize;
+    let height = parseInt(svg.getAttribute('height')) || fallbackSize;
+    let viewBox = svg.getAttribute('viewBox');
+
+    if (!viewBox) {
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    }
+
+    if (!svg.getAttribute('width')) svg.setAttribute('width', width);
+    if (!svg.getAttribute('height')) svg.setAttribute('height', height);
+
+    // Serialize back
+    const serializer = new XMLSerializer();
+    const cleanedSvg = serializer.serializeToString(svg);
+
+    // Convert to blob and render
+    const svgBlob = new Blob([cleanedSvg], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
 
     const img = new Image();
     img.onload = async () => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width || fallbackSize;
+        canvas.height = img.height || fallbackSize;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
 
-      const width = img.width || fallbackSize;
-      const height = img.height || fallbackSize;
+        URL.revokeObjectURL(url);
 
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-      URL.revokeObjectURL(url);
+        canvas.toBlob(async (blob) => {
+          const formData = new FormData();
+          formData.append('image', blob, 'shared-image.png');
 
-      canvas.toBlob(async (blob) => {
-        const formData = new FormData();
-        formData.append('image', blob, 'shared-image.png');
-
-        try {
           const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
             method: 'POST',
             body: formData,
@@ -122,14 +134,14 @@ const id = slug?.split('_').pop();
 
           const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+out+this+icon&media=${encodeURIComponent(imageUrl)}&url=${window.location.href}`;
           window.open(pinterestUrl, '_blank');
-        } catch (err) {
-          console.error("Upload failed:", err);
-        }
-      }, 'image/png');
+        }, 'image/png');
+      } catch (err) {
+        console.error('Canvas draw/upload failed:', err);
+      }
     };
 
     img.onerror = () => {
-      console.error('Image failed to load. Possibly malformed SVG.');
+      console.error('Broken SVG - could not load into image tag.', cleanedSvg);
     };
 
     img.src = url;
