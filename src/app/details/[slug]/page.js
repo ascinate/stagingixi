@@ -93,7 +93,7 @@ const id = slug?.split('_').pop();
         formData.append('image', blob, 'shared-image.png');
   
         try {
-          const res = await fetch('https://iconsguru.ascinatetech.com/admin/api/upload-temp-image', {
+          const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
             method: 'POST',
             body: formData,
           });
