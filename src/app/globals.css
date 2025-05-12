@@ -1196,9 +1196,13 @@ footer hr{
   left: 20px;
 }
 .sub-banners{
-  background: #f3f3f3;
+  background: #f3f3f3 url(/cates-ban.svg) no-repeat;
   border-radius: 7px;
   margin-top: -30px;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 260px;
 }
 
 .sub-banners h2{
