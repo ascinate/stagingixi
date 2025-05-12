@@ -70,60 +70,77 @@ const id = slug?.split('_').pop();
     fetchIcon();
   }, [id]);
 
-  const shareToPinterest = async () => {
-    let rawSvg = icon.icon_svg;
+const shareToPinterest = async () => {
+  let rawSvg = icon.icon_svg; // SVG code from DB
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(rawSvg, 'image/svg+xml');
-    const svg = doc.querySelector('svg');
-    const fallbackSize = 512;
+  // Parse the SVG string
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(rawSvg, 'image/svg+xml');
+  const svg = doc.querySelector('svg');
 
-    if (!svg) {
-      console.error('Invalid SVG markup.');
-      return;
-    }
+  const fallbackSize = 512;
 
-    // Remove problematic tags
-    ['script', 'foreignObject', 'style'].forEach(tag => {
-      const nodes = svg.querySelectorAll(tag);
-      nodes.forEach(n => n.remove());
-    });
+  if (!svg) {
+    console.error('Invalid SVG markup. SVG element is missing.');
+    return;
+  }
 
-    // Fix dimensions and viewBox
-    let width = parseInt(svg.getAttribute('width')) || fallbackSize;
-    let height = parseInt(svg.getAttribute('height')) || fallbackSize;
-    let viewBox = svg.getAttribute('viewBox');
+  // Debug: Log the SVG as is
+  console.log('Original SVG:', rawSvg);
 
-    if (!viewBox) {
-      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    }
+  // Remove problematic tags (script, foreignObject, style)
+  ['script', 'foreignObject', 'style'].forEach(tag => {
+    const nodes = svg.querySelectorAll(tag);
+    nodes.forEach(n => n.remove());
+  });
 
-    if (!svg.getAttribute('width')) svg.setAttribute('width', width);
-    if (!svg.getAttribute('height')) svg.setAttribute('height', height);
+  // Fix width, height, and viewBox
+  let width = parseInt(svg.getAttribute('width')) || fallbackSize;
+  let height = parseInt(svg.getAttribute('height')) || fallbackSize;
+  let viewBox = svg.getAttribute('viewBox');
 
-    // Serialize back
-    const serializer = new XMLSerializer();
-    const cleanedSvg = serializer.serializeToString(svg);
+  // Log viewBox or set it if missing
+  console.log('ViewBox:', viewBox);
 
-    // Convert to blob and render
-    const svgBlob = new Blob([cleanedSvg], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
+  if (!viewBox) {
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  }
 
-    const img = new Image();
-    img.onload = async () => {
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width || fallbackSize;
-        canvas.height = img.height || fallbackSize;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
+  if (!svg.getAttribute('width')) svg.setAttribute('width', width);
+  if (!svg.getAttribute('height')) svg.setAttribute('height', height);
 
-        URL.revokeObjectURL(url);
+  // Serialize back the SVG after modification
+  const serializer = new XMLSerializer();
+  const cleanedSvg = serializer.serializeToString(svg);
 
-        canvas.toBlob(async (blob) => {
-          const formData = new FormData();
-          formData.append('image', blob, 'shared-image.png');
+  // Log the cleaned SVG for debugging
+  console.log('Cleaned SVG:', cleanedSvg);
 
+  // Convert to a blob and create an image from it
+  const svgBlob = new Blob([cleanedSvg], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+
+  const img = new Image();
+
+  img.onload = async () => {
+    console.log('Image loaded successfully.');
+
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width || fallbackSize;
+      canvas.height = img.height || fallbackSize;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      URL.revokeObjectURL(url);
+
+      // Convert canvas to PNG and upload
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append('image', blob, 'shared-image.png');
+
+        try {
           const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
             method: 'POST',
             body: formData,
@@ -132,20 +149,25 @@ const id = slug?.split('_').pop();
           const data = await res.json();
           const imageUrl = data.url;
 
+          // Share to Pinterest
           const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+out+this+icon&media=${encodeURIComponent(imageUrl)}&url=${window.location.href}`;
           window.open(pinterestUrl, '_blank');
-        }, 'image/png');
-      } catch (err) {
-        console.error('Canvas draw/upload failed:', err);
-      }
-    };
-
-    img.onerror = () => {
-      console.error('Broken SVG - could not load into image tag.', cleanedSvg);
-    };
-
-    img.src = url;
+        } catch (err) {
+          console.error('Upload failed:', err);
+        }
+      }, 'image/png');
+    } catch (err) {
+      console.error('Canvas drawing/upload failed:', err);
+    }
   };
+
+  img.onerror = (err) => {
+    console.error('Error loading image from SVG:', err);
+    console.log('SVG that failed to load:', cleanedSvg);
+  };
+
+  img.src = url;
+};
 
  
   useEffect(() => {
