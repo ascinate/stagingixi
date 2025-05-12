@@ -70,72 +70,47 @@ const id = slug?.split('_').pop();
     fetchIcon();
   }, [id]);
 
-const shareToPinterest = async () => {
-  const svgString = icon.icon_svg; // SVG code from DB
-
-  // Parse SVG to get dimensions or fallback
-  const parser = new DOMParser();
-  const svgDoc = parser.parseFromString(svgString, 'image/svg+xml');
-  const svgEl = svgDoc.querySelector('svg');
-
-  let width = parseInt(svgEl.getAttribute('width')) || 512;
-  let height = parseInt(svgEl.getAttribute('height')) || 512;
-
-  // Handle viewBox if width/height missing
-  if ((!width || !height) && svgEl.hasAttribute('viewBox')) {
-    const viewBox = svgEl.getAttribute('viewBox').split(' ');
-    width = parseInt(viewBox[2]) || 512;
-    height = parseInt(viewBox[3]) || 512;
-  }
-
-  // Create canvas
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-
-  const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-  const url = URL.createObjectURL(svgBlob);
-
-  const img = new Image();
-  img.crossOrigin = 'anonymous'; // Required for Pinterest & canvas CORS
-  img.onload = async () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, width, height);
-    URL.revokeObjectURL(url);
-
-    canvas.toBlob(async (blob) => {
-      if (!blob) return console.error("Canvas toBlob failed");
-
-      const formData = new FormData();
-      formData.append('image', blob, 'shared-image.png');
-
-      try {
-        const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const data = await res.json();
-        const imageUrl = data.url;
-
-        // Share to Pinterest
-        const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+out+this+icon&media=${encodeURIComponent(imageUrl)}&url=${window.location.href}`;
-        window.open(pinterestUrl, '_blank');
-      } catch (err) {
-        console.error("Upload failed:", err);
-      }
-    }, 'image/png');
+  const shareToPinterest = async () => {
+    const svgString = icon.icon_svg; // SVG code from DB
+  
+    // Create Canvas and Image
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+  
+    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+  
+    const img = new Image();
+    img.onload = async () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+  
+      // Convert to PNG Data URL
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append('image', blob, 'shared-image.png');
+  
+        try {
+          const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
+            method: 'POST',
+            body: formData,
+          });
+  
+          const data = await res.json();
+          const imageUrl = data.url;
+          
+          // Share to Pinterest
+          const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+out+this+icon&media=${encodeURIComponent(imageUrl)}&url=${window.location.href}`;
+          window.open(pinterestUrl, '_blank');
+        } catch (err) {
+          console.error("Upload failed:", err);
+        }
+      }, 'image/png');
+    };
+    img.src = url;
   };
-
-  img.onerror = () => {
-    console.error("Failed to load SVG as image");
-    URL.revokeObjectURL(url);
-  };
-
-  img.src = url;
-};
-
  
   useEffect(() => {
     const fetchRelatedIcons = async () => {
