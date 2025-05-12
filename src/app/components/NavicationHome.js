@@ -17,8 +17,8 @@ function NavicationHome(){
                 <Link className="navbar-brand" href='/'>
                    <Image loading="lazy" src="/icons_guru_logo.svg"
                         alt="iconsguru"
-                        width={114}
-                        height={18} />
+                        width={214}
+                        height={64} />
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                    <span className="navbar-toggler-icon"></span>
