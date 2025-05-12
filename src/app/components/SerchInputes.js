@@ -14,7 +14,7 @@ function SerchInputes({ totalIcons }) {
 
     if (query.length > 1) {
       try {
-        const res = await fetch(`https://iconsguru.ascinatetech.com/admin/api/icons/search?query=${encodeURIComponent(query)}`);
+        const res = await fetch(`https://iconsguru.ascinatetech.com/api/icons/search?query=${encodeURIComponent(query)}`);
         const data = await res.json();
         const names = data.data.map(icon => icon.icon_name);
         setItems(names);

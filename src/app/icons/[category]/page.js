@@ -49,7 +49,7 @@ export default function CategorySearchPage() {
         if (filters.tag)
           query.append("tag", filters.tag);
 
-        const finalURL = `https://iconsguru.ascinatetech.com/admin/api/icons?${query.toString()}`;
+        const finalURL = `https://iconsguru.ascinatetech.com/api/icons?${query.toString()}`;
 
         const response = await fetch(finalURL);
         const data = await response.json();

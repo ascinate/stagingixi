@@ -12,7 +12,7 @@ import Head from "next/head";
 
 async function getTotalIcons() {
   try {
-    const res = await fetch("http://iconsguru.ascinatetech.com/admin/api/icons/total-count", {
+    const res = await fetch("http://iconsguru.ascinatetech.com/api/icons/total-count", {
       next: { revalidate: 60 },
     });
     const data = await res.json();

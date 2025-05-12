@@ -33,7 +33,7 @@ export default function CategorySearchPage() {
         if (filters.colors.length) filters.colors.forEach(c => query.append("colors[]", c));
         if (filters.types.length) filters.types.forEach(t => query.append("types[]", t));
 
-        const finalURL = `https://iconsguru.ascinatetech.com/admin/api/icons?${query.toString()}`;
+        const finalURL = `https://iconsguru.ascinatetech.com/api/icons?${query.toString()}`;
 
         const response = await fetch(finalURL);
         const data = await response.json();

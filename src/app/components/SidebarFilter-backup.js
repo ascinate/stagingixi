@@ -22,7 +22,7 @@ export default function SidebarFilter({ onFilterChange }) {
   })
 
   useEffect(() => {
-    axios.get('https://iconsguru.com/admin/api/sidebar-filters')
+    axios.get('https://iconsguru.com/api/sidebar-filters')
       .then(res => {
         const data = res.data
         setFilters({

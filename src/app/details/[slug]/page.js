@@ -43,7 +43,7 @@ const id = slug?.split('_').pop();
     setTimeout(() => setShowToast(false), 2000); // hide after 2 sec
   
     try {
-      await fetch(`https://iconsguru.ascinatetech.com/admin/api/icon-download/${icon.Id}`, {
+      await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: 'POST',
       });
     } catch (err) {
@@ -59,7 +59,7 @@ const id = slug?.split('_').pop();
 
     const fetchIcon = async () => {
       try {
-        const res = await fetch(`https://iconsguru.ascinatetech.com/admin/api/icon/${id}`);
+        const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon/${id}`);
         const data = await res.json();
         setIcon(data.icons);
       } catch (err) {
@@ -93,7 +93,7 @@ const id = slug?.split('_').pop();
         formData.append('image', blob, 'shared-image.png');
   
         try {
-          const res = await fetch('https://iconsguru.ascinatetech.com/admin/api/upload-temp-image', {
+          const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
             method: 'POST',
             body: formData,
           });
@@ -115,7 +115,7 @@ const id = slug?.split('_').pop();
   useEffect(() => {
     const fetchRelatedIcons = async () => {
       try {
-        const res = await fetch(`https://iconsguru.ascinatetech.com/admin/api/related-icons/${id}`);
+        const res = await fetch(`https://iconsguru.ascinatetech.com/api/related-icons/${id}`);
         const data = await res.json();
         console.log("Related fetch icon:", data)
         setRelatedIcons(data.icons || []);
@@ -193,7 +193,7 @@ const id = slug?.split('_').pop();
   
       // ✅ Call the download count API
       try {
-        await fetch(`https://iconsguru.ascinatetech.com/admin/api/icon-download/${icon.Id}`, {
+        await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
           method: 'POST',
         });
       } catch (err) {
@@ -207,7 +207,7 @@ const id = slug?.split('_').pop();
 
   const handleDownloadSVG = async () => {
     try {
-      await fetch(`https://iconsguru.ascinatetech.com/admin/api/icon-download/${icon.Id}`, {
+      await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: 'POST',
       });
   

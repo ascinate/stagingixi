@@ -37,7 +37,7 @@ const searchKeyword = searchParams.get("search");
   
         if (searchKeyword) query.append("search", searchKeyword);
   
-        const finalURL = `https://iconsguru.ascinatetech.com/admin/api/icons?${query.toString()}`;
+        const finalURL = `https://iconsguru.ascinatetech.com/api/icons?${query.toString()}`;
          
         const response = await fetch(finalURL);
         const data = await response.json();

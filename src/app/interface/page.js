@@ -14,7 +14,7 @@ export default function InterfaceIconsPage() {
   useEffect(() => {
     const fetchInterfaceIcons = async () => {
       try {
-        const res = await fetch("https://iconsguru.ascinatetech.com/admin/api/icons/interface");
+        const res = await fetch("https://iconsguru.ascinatetech.com/api/icons/interface");
         const json = await res.json();
         if (json.status && Array.isArray(json.data)) {
           setIcons(json.data);

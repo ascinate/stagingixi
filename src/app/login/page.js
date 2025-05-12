@@ -29,7 +29,7 @@ function Login(){
         setMessage("Logging in...");
     
         try {
-          const response = await fetch("https://iconsguru.ascinatetech.com/admin/api/login", {
+          const response = await fetch("https://iconsguru.ascinatetech.com/api/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

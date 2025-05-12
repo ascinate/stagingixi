@@ -50,7 +50,7 @@ export default function Icons() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("https://iconsguru.ascinatetech.com/admin/api/icon-categories-count");
+        const res = await fetch("https://iconsguru.ascinatetech.com/api/icon-categories-count");
         const json = await res.json();
         if (json.status && Array.isArray(json.data)) {
           const updatedData = json.data.map((item, index) => ({
