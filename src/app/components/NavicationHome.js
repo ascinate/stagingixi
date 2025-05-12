@@ -15,7 +15,7 @@ function NavicationHome(){
        <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container">
                 <Link className="navbar-brand" href='/'>
-                   <Image loading="lazy" src="/icons_guru_logo.webp"
+                   <Image loading="lazy" src="/icons_guru_logo.svg"
                         alt="iconsguru"
                         width={114}
                         height={18} />
