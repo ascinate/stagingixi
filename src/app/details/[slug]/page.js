@@ -21,16 +21,6 @@ const id = slug?.split('_').pop();
 
   const iconUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  const shareOnFacebook = () => {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(iconUrl)}`;
-    window.open(url, '_blank');
-  };
-
-  const shareOnX = () => {
-    const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(iconUrl)}`;
-    window.open(url, '_blank');
-  };
-
 
   
   
@@ -70,48 +60,55 @@ const id = slug?.split('_').pop();
     fetchIcon();
   }, [id]);
 
-  const shareToPinterest = async () => {
-    const svgString = icon.icon_svg; // SVG code from DB
-  
-    // Create Canvas and Image
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-  
-    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-  
-    const img = new Image();
-    img.onload = async () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      URL.revokeObjectURL(url);
-  
-      // Convert to PNG Data URL
-      canvas.toBlob(async (blob) => {
-        const formData = new FormData();
-        formData.append('image', blob, 'shared-image.png');
-  
-        try {
-          const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
-            method: 'POST',
-            body: formData,
-          });
-  
-          const data = await res.json();
-          const imageUrl = data.url;
-  
-          // Share to Pinterest
-          const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+out+this+icon&media=${encodeURIComponent(imageUrl)}&url=${window.location.href}`;
-          window.open(pinterestUrl, '_blank');
-        } catch (err) {
-          console.error("Upload failed:", err);
-        }
-      }, 'image/png');
-    };
-    img.src = url;
+const shareIconImage = async () => {
+  const svgString = icon.icon_svg; // SVG from DB
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+
+  const img = new Image();
+  img.onload = async () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob(async (blob) => {
+      const formData = new FormData();
+      formData.append('image', blob, 'shared-image.png');
+
+      try {
+        const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await res.json();
+        const imageUrl = data.url;
+
+        // Pinterest
+        const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+out+this+icon&media=${encodeURIComponent(imageUrl)}&url=${window.location.href}`;
+        window.open(pinterestUrl, '_blank');
+
+        // Facebook
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageUrl)}`;
+        window.open(facebookUrl, '_blank');
+
+        // Twitter (X)
+        const xUrl = `https://twitter.com/intent/tweet?text=Check+out+this+icon&url=${encodeURIComponent(imageUrl)}`;
+        window.open(xUrl, '_blank');
+
+      } catch (err) {
+        console.error("Upload failed:", err);
+      }
+    }, 'image/png');
   };
- 
+  img.src = url;
+};
+
 
  
   useEffect(() => {
@@ -368,13 +365,13 @@ const id = slug?.split('_').pop();
                                             <button type="button" className="btn w-100 btn-shares" data-bs-toggle="dropdown"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(255,255,255,1)"><path d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z"></path></svg> Share </button>
                                             
                                               <ul className="dropdown-menu px-3 drop-divu py-3" aria-labelledby="dropdownMenuButton1">
-                                                  <li><button className="dropdown-item facebook-btn text-center" onClick={shareOnFacebook}> 
+                                                  <li><button className="dropdown-item facebook-btn text-center" onClick={shareIconImage}> 
                                                       <span> <svg width="16" height="16" viewBox="0 0 73 136" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
                                                           <path d="M23.0805 24.5077V51.1005H0V74.6825H23.0805V135.896H48.168V74.6825H72.252V51.1005H48.168V33.5391C47.3652 23.9055 53.1855 22.1661 56.196 22.5006H72.252V1.33165C30.6067 -5.19014 23.5822 13.8038 23.0805 24.5077Z" fill="#ffffff"/>
                                                       </svg>
 
                                                      </span> Facebook</button></li>
-                                                  <li className="mt-2"><button className="dropdown-item twitter-btn text-center" onClick={shareOnX}>
+                                                  <li className="mt-2"><button className="dropdown-item twitter-btn text-center" onClick={shareIconImage}>
                                                     <span>
                                                       <svg width="16" height="16" viewBox="0 0 138 140" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M73.1883 54.4075L120.569 0.661621L125.874 5.33818L78.493 59.084L73.1883 54.4075ZM0.339844 135.036L54.7929 72.8041L60.115 77.4609L5.66193 139.693L0.339844 135.036Z" fill="#ffffff"/>
@@ -383,7 +380,7 @@ const id = slug?.split('_').pop();
                                                     </span> (Twitter)</button></li>     
 
                                                     <li className="mt-2">
-                                                    <button className="dropdown-item pinterest-btn text-center" onClick={shareToPinterest}>
+                                                    <button className="dropdown-item pinterest-btn text-center" onClick={shareIconImage}>
                                                       <span>
                                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
                                                           <path d="M12.04 2C6.46 2 2 6.15 2 11.58C2 15.07 3.94 17.84 6.87 18.75C7.1 18.81 7.21 18.68 7.21 18.56C7.21 18.45 7.2 18.11 7.2 17.76C5.1 18.22 4.59 16.94 4.59 16.94C4.37 16.36 4 16.12 4 16.12C3.45 15.71 4.04 15.71 4.04 15.71C4.65 15.76 4.97 16.34 4.97 16.34C5.5 17.29 6.43 17.02 6.81 16.84C6.87 16.42 7.03 16.14 7.2 15.96C5.38 15.75 3.46 15.08 3.46 11.77C3.46 10.84 3.8 10.08 4.35 9.5C4.26 9.29 3.96 8.4 4.44 7.15C4.44 7.15 5.14 6.91 7.2 8.28C7.87 8.11 8.59 8.02 9.31 8.02C10.03 8.02 10.75 8.11 11.42 8.28C13.47 6.91 14.17 7.15 14.17 7.15C14.65 8.4 14.35 9.29 14.26 9.5C14.8 10.08 15.14 10.84 15.14 11.77C15.14 15.08 13.22 15.75 11.4 15.96C11.65 16.2 11.86 16.65 11.86 17.33C11.86 18.3 11.84 18.98 11.84 19.21C11.84 19.33 11.95 19.47 12.18 19.41C15.17 18.51 17.14 15.64 17.14 11.58C17.14 6.15 12.68 2 12.04 2Z"/>
