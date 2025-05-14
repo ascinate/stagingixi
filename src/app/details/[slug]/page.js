@@ -111,28 +111,17 @@ const id = slug?.split('_').pop();
       console.error("Facebook share failed:", err);
     }
   };
- const shareToX = async () => {
-  try {
-    const imageUrl = await uploadIconAsImage();
-
-    // Optional: Display image on the page
-    const previewImg = document.getElementById('x-share-preview');
-    if (previewImg) {
-      previewImg.src = imageUrl;
-      previewImg.style.display = 'block';
-    }
-
-    // Use current page URL for Twitter (not image URL)
+  const shareToX = async () => {
+    try{
     const tweetText = 'Check out this icon';
-    const tweetUrl = window.location.href;
-
+    const tweetUrl = window.location.href; // This should be the icon's detail page
     const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(tweetUrl)}`;
     window.open(xUrl, '_blank');
-  } catch (err) {
-    console.error("X share failed:", err);
-  }
-};
-
+    } catch (err) {
+      console.error("X share failed:",);
+    }
+    
+  };
 
 
 
@@ -417,8 +406,6 @@ const id = slug?.split('_').pop();
                                                   </li>                                         
                                                 </ul>
                                           </div>
-                                          <img id="x-share-preview" alt="Preview for Twitter Share" style="max-width: 300px; display: none;" />
-
                                          
                                          <button
                                             onClick={handleCopy}
