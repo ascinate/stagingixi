@@ -120,7 +120,7 @@ const id = slug?.split('_').pop();
   const shareToX = async () => {
     try {
       const imageUrl = await uploadIconAsImage();
-      const xUrl = `https://twitter.com/intent/tweet?text=Check+out+this+icon&url=${encodeURIComponent(imageUrl)}`;
+      const xUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(imageUrl)}`;
       window.open(xUrl, '_blank');
     } catch (err) {
       console.error("X share failed:", err);
