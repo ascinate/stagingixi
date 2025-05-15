@@ -114,7 +114,7 @@ const id = slug?.split('_').pop();
   const shareToX = async () => {
     try{
     const tweetText = 'Check out this icon';
-    const tweetUrl = window.location.href; // This should be the icon's detail page
+    const tweetUrl = window.location.href;
     const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(tweetUrl)}`;
     window.open(xUrl, '_blank');
     } catch (err) {

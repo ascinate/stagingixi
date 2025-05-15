@@ -230,7 +230,7 @@ a {
   opacity: 0;
   transform: translate(0);
   transition: all 0.5s;
-  height: 74px;
+  height: 112px;
   border-radius: 3px;
 }
 .svg-item:hover::before{
@@ -246,8 +246,8 @@ a {
 
 }
 .icons-list span svg{
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
 }
 .btn-load-more{
   text-decoration: underline !important;
@@ -255,9 +255,9 @@ a {
 }
 .svg-item{
   display: inline-block;
-  height: 74px;
+  height: 112px;
   border: solid 1px #ebebeb;
-  padding-top: 17px;
+  padding-top: 0;
   box-shadow: 0 1px 3px rgb(0 0 0 / 4%), 0 1px 2px rgb(0 0 0 / 5%);
   background: var(--background);
 }
@@ -1249,7 +1249,7 @@ footer hr{
   text-transform: capitalize;
 }
 .svg-item .icons-list{
-  height: 74px;
+  height: auto;
   margin-bottom: 5px;
   display: inline-block;
   left: 0;
@@ -1257,6 +1257,9 @@ footer hr{
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
+  display: grid;
+  align-items: center;
+  margin-top: -8px;
 }
 .relatesd svg {
   width: 40px;
@@ -1495,7 +1498,7 @@ footer hr{
 
 .new-icons-bm{
   display: grid;
-  grid-template-columns: 74px 74px 74px 74px 74px 74px 74px 74px ;
+  grid-template-columns: 112px 112px 112px 112px 112px 112px;
   gap: 24px;
   justify-content: space-between;
 }
