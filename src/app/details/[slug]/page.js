@@ -236,6 +236,28 @@ const id = slug?.split('_').pop();
       console.error("Download tracking failed", error);
     }
   };
+
+  const handleDownloadGIF = async () => {
+    const gifUrl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
+
+    try {
+      const response = await fetch(gifUrl);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.gif`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to download GIF:", error);
+    }
+  };
+
+
   
   
 
@@ -373,6 +395,17 @@ const id = slug?.split('_').pop();
                                                <button type="button" onClick={() => svgToCanvasDownload("webp")} className="btn png-bn btn-comons01 crm-btn01">
                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
                                                 WEBP </button>
+                                                <button
+                                                  type="button"
+                                                  onClick={handleDownloadGIF}
+                                                  className="btn png-bn btn-comons01 crm-btn01"
+                                                >
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black">
+                                                    <path d="M3 3H21V21H3V3ZM5 5V19H19V5H5ZM8 7H10V17H8V7ZM14 7H16V17H14V7Z" />
+                                                  </svg>
+                                                  GIF
+                                                </button>
+
                                            </div>
                                       </div>
 
