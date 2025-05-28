@@ -272,15 +272,20 @@ const id = slug?.split('_').pop();
         
                                 }}
                               >
-                                <div
-                                  style={{
-                                    width: "100%",
-                                    height: "100%",
-                                  }}
-                                  dangerouslySetInnerHTML={{ __html: renderedSvg }}
-                                />
+                                  {icon.type === "Animated" ? (
+                                  <img
+                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                                    alt={icon.icon_name}
+                                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                                  />
+                                ) : (
+                                  <div
+                                    style={{ width: "100%", height: "100%" }}
+                                    dangerouslySetInnerHTML={{ __html: renderedSvg }}
+                                  />
+                                )}
                               </div>
-                                {icon.icon_category !== "Emoji" && icon.icon_category !== "Stickers" && (
+                                {icon.icon_category !== "Emoji" && icon.icon_category !== "Stickers" && icon.type !== "Animated" &&(
                                   <label htmlFor="colos" className="icn-list05">
                                           <input
                                             type="color"
@@ -447,10 +452,20 @@ const id = slug?.split('_').pop();
                           {relatedIcons.map((icon) => (
                             <article key={icon.Id} className="col">
                               <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0 position-relative">
-                                <div
+                                  {icon.type === "Animated" ? (
+                                  <img
+                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                                    alt={icon.icon_name}
+                                    width={60}
+                                    height={60}
+                                  />
+                                ) : (
+                                  <div
                                   className="svg-img d-grid"
                                   dangerouslySetInnerHTML={{ __html: icon.icon_svg }}
                                 />
+                                )}
+                                
                               </Link>
                             </article>
                           ))}

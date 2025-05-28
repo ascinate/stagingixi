@@ -64,7 +64,16 @@ export default function InterfaceIconsPage() {
                       
                         <article className="svg-item col position-relative" key={icon.Id}>
                           <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0">
-                            <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
+                            {icon.type === "Animated" ? (
+                                  <img
+                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                                    alt={icon.icon_name}
+                                    width={60}
+                                    height={60}
+                                  />
+                                ) : (
+                                <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
+                                )}
                           </Link>
                         </article>
                       

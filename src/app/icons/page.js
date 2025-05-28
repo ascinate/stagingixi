@@ -25,6 +25,7 @@ export default function Icons() {
     '/furniture.svg',
     '/gaming.svg',
     '/gardening.svg',
+    '/halloween.svg',
     '/health.svg',
     '/home.svg',
     '/interface.svg',

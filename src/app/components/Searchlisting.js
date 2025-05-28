@@ -41,7 +41,6 @@ const searchKeyword = searchParams.get("search");
          
         const response = await fetch(finalURL);
         const data = await response.json();
-  
         if (data?.icons?.data && Array.isArray(data.icons.data)) {
           setIcons(data.icons.data);
           setTotalPages(data.icons.last_page || 1);
@@ -103,7 +102,16 @@ const searchKeyword = searchParams.get("search");
                           icons.map((icon) => (
                             <article key={icon.Id} className="svg-item  position-relative">
                               <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0">
+                               {icon.type === "Animated" ? (
+                                  <img
+                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                                    alt={icon.icon_name}
+                                    width={60}
+                                    height={60}
+                                  />
+                                ) : (
                                 <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
+                                )}
                               </Link>
                               
                             </article>
