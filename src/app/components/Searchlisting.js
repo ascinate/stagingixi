@@ -106,8 +106,7 @@ const searchKeyword = searchParams.get("search");
                                   <img
                                     src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
                                     alt={icon.icon_name}
-                                    width={60}
-                                    height={60}
+                                   style={{ height: "100%",width: "100%" }}
                                   />
                                 ) : (
                                 <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>

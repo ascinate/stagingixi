@@ -140,8 +140,7 @@ export default function CategorySearchPage() {
                                   <img
                                     src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
                                     alt={icon.icon_name}
-                                    width={60}
-                                    height={60}
+                                    style={{ width: "100%", height: "100%" }}
                                   />
                                 ) : (
                                 <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
