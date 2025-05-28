@@ -12,6 +12,7 @@ export default function Icons() {
 
   const staticImages = [
     '/Animals.svg',
+    '/animated.svg',
     '/arrow.svg',
     '/bar.svg',
     '/business.svg',
