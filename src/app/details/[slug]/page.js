@@ -237,15 +237,26 @@ const id = slug?.split('_').pop();
     }
   };
 
-  const handleDownloadGIF = () => {
+  const handleDownloadGIF = async () => {
     const gifUrl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
-    const link = document.createElement("a");
-    link.href = gifUrl;
-    link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.gif`;
-    
-    link.click();
-  
+
+    try {
+      const response = await fetch(gifUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.gif`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("GIF download failed:", error);
+    }
   };
+
 
   if (!icon) return null;
 
