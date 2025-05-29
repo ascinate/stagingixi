@@ -55,43 +55,50 @@ const id = slug?.split('_').pop();
   }, [id]);
 
   const uploadIconAsImage = async () => {
+    if(icon.type === "Animated"){
+      const gifurl= `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
+      return gifurl;
+    }
+   else{
     const svgString = icon.icon_svg;
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
-    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
 
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = async () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-        URL.revokeObjectURL(url);
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = async () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
 
-        canvas.toBlob(async (blob) => {
-          const formData = new FormData();
-          formData.append('image', blob, 'shared-image.png');
+          canvas.toBlob(async (blob) => {
+            const formData = new FormData();
+            formData.append('image', blob, 'shared-image.png');
 
-          try {
-            const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
-              method: 'POST',
-              body: formData,
-            });
+            try {
+              const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
+                method: 'POST',
+                body: formData,
+              });
 
-            const data = await res.json();
-            resolve(data.url);
-          } catch (err) {
-            reject(err);
-          }
-        }, 'image/png');
-      };
+              const data = await res.json();
+              resolve(data.url);
+            } catch (err) {
+              reject(err);
+            }
+          }, 'image/png');
+        };
 
-      img.onerror = reject;
-      img.src = url;
-    });
+        img.onerror = reject;
+        img.src = url;
+      });
+     }
+   
   };
   const shareToPinterest = async () => {
     try {
@@ -383,7 +390,9 @@ const id = slug?.split('_').pop();
                                       <div className="comon-groups-div01 mb-3 align-items-center justify-content-between">
                                            <h5 className="m-0 w-100"> Download This File As.. </h5>
                                            <div className="input-divs mt-3 w-100 d-flex justify-content-between align-items-center">
-                                               <button type="button" onClick={handleDownloadSVG} className="btn svg-bn btn-comons01 crm-btn01">
+                                           {icon.type!== "Animated" && (
+                                              <>
+                                                <button type="button" onClick={handleDownloadSVG} className="btn svg-bn btn-comons01 crm-btn01">
                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(255,255,255,1)"><path d="M2.80577 5.20006L7.00505 7.99958L11.1913 2.13881C11.5123 1.6894 12.1369 1.58531 12.5863 1.90631C12.6761 1.97045 12.7546 2.04901 12.8188 2.13881L17.0051 7.99958L21.2043 5.20006C21.6639 4.89371 22.2847 5.01788 22.5911 5.47741C22.7228 5.67503 22.7799 5.91308 22.7522 6.14895L21.109 20.1164C21.0497 20.62 20.6229 20.9996 20.1158 20.9996H3.8943C3.38722 20.9996 2.9604 20.62 2.90115 20.1164L1.25792 6.14895C1.19339 5.60045 1.58573 5.10349 2.13423 5.03896C2.37011 5.01121 2.60816 5.06832 2.80577 5.20006ZM12.0051 14.9996C13.1096 14.9996 14.0051 14.1042 14.0051 12.9996C14.0051 11.895 13.1096 10.9996 12.0051 10.9996C10.9005 10.9996 10.0051 11.895 10.0051 12.9996C10.0051 14.1042 10.9005 14.9996 12.0051 14.9996Z"></path></svg>
                                                 SVG </button>
                                                <button type="button" onClick={() => svgToCanvasDownload("png")} className="btn png-bn btn-comons01 crm-btn01">
@@ -392,6 +401,9 @@ const id = slug?.split('_').pop();
                                                <button type="button" onClick={() => svgToCanvasDownload("webp")} className="btn png-bn btn-comons01 crm-btn01">
                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
                                                 WEBP </button>
+                                            </>
+                                           )}
+                                           
 
                                                 {icon.type === "Animated" && (
                                                 <button
@@ -409,10 +421,12 @@ const id = slug?.split('_').pop();
                                                
                                            </div>
                                       </div>
-
+                                      {icon.type!=="Animated"&&(
                                       <code className="mt-2 codet p-2 bg-light01 d-inline-block w-100 rounded" style={{ fontSize: '0.75rem', wordBreak: 'break-word' }}>
-                                          {renderedSvg}
+                                        {renderedSvg}
                                       </code>
+                                      )}
+                                      
 
 
                                       <div className="comon-groups-div01 mt-4 d-flex align-items-center">
@@ -445,14 +459,16 @@ const id = slug?.split('_').pop();
                                                   </li>                                         
                                                 </ul>
                                           </div>
-                                         
-                                         <button
+                                         {icon.type !=="Animated" &&(
+                                          <button
                                             onClick={handleCopy}
                                             className="btn btn-copsy ms-3"
                                             title="Copy SVG Code"
                                           >
                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(255,255,255,1)"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM6.9998 11V13H12.9998V11H6.9998ZM6.9998 15V17H12.9998V15H6.9998Z"></path></svg> Copy Code
                                           </button>
+                                         )}
+                                      
                                       </div>
 
                                       <h5 className="list-texr style-list mt-4 d-flex flex-column position-relative">
