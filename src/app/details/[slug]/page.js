@@ -112,7 +112,8 @@ const id = slug?.split('_').pop();
   const shareToFacebook = async () => {
     try {
       const imageUrl = await uploadIconAsImage();
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageUrl)}`;
+      const fbUrl = window.location.href;
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageUrl)}&url=${encodeURIComponent(fbUrl)}`;
       window.open(facebookUrl, '_blank');
     } catch (err) {
       console.error("Facebook share failed:", err);
