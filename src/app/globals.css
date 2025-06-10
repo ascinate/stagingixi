@@ -1920,4 +1920,15 @@ footer hr{
     grid-template-columns: 82px 82px 82px 82px 82px 82px 82px 82px 82px 82px;
     grid-gap: 22px;
 }
+
+.tabsd_divs .new-icons-bm .btn img{
+    object-fit: contain;
+    width: 75% !important;
+    height: 75% !important;
+    position: relative;
+    z-index: 1;
+    margin: auto;
+    text-align: center;
+}
+ 
  
