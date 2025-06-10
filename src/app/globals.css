@@ -1916,7 +1916,7 @@ footer hr{
 .svg-item:before {
     z-index: -1;
 }
-.new-icons-bm{
+.comon-cate-list .new-icons-bm{
     grid-template-columns: 82px 82px 82px 82px 82px 82px 82px 82px 82px 82px;
     grid-gap: 22px;
 }
