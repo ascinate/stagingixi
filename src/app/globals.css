@@ -1897,9 +1897,11 @@ footer hr{
     overflow: hidden;
     height: inherit;
 }
-.svg-item .icons-list{
-        display: inline-block;
-            min-height: inherit;
+.svg-item .icons-list {
+    /* display: inline-block; */
+    min-height: inherit;
+    height: 75px;
+    margin-top: -0;
 }
 .btn img {
     object-fit: contain;
@@ -1914,3 +1916,4 @@ footer hr{
 .svg-item:before {
     z-index: -1;
 }
+
