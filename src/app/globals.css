@@ -253,14 +253,7 @@ a {
   text-decoration: underline !important;
   font-size: 14px;
 }
-.svg-item{
-  display: inline-block;
-  height: 112px;
-  border: solid 1px #ebebeb;
-  padding-top: 0;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 4%), 0 1px 2px rgb(0 0 0 / 5%);
-  background: var(--background);
-}
+
 .hover-divs {
   position: absolute;
   right: 15px;
@@ -1890,4 +1883,13 @@ footer hr{
   .fe-list li{
     width: 100%;
   }
+}
+
+.svg-item{
+  display: inline-block;
+  height: 74px;
+  border: solid 1px #ebebeb;
+  padding-top: 0;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%), 0 1px 2px rgb(0 0 0 / 5%);
+  background: var(--background);
 }

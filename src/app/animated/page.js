@@ -68,7 +68,7 @@ export default function InterfaceIconsPage() {
                                   <img
                                     src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
                                     alt={icon.icon_name}
-                                    style={{ width: "100%", height: "100%" }}
+                                    style={{ width: "100%", height: "auto" }}
                                   />
                                 ) : (
                                 <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>

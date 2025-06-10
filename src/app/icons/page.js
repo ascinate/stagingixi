@@ -34,6 +34,7 @@ export default function Icons() {
     '/Music.svg',
     '/office.svg',
     '/payment.svg',
+    '/quotation.svg',
     '/realestate.svg',
     '/search.svg',
     '/shopping.svg',

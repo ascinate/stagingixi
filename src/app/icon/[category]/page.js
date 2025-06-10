@@ -5,21 +5,33 @@ import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import { useEffect, useState } from "react";
 import SidebarFilter from "@/app/components/SidebarFilter";
-
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams, useRouter, usePathname } from 'next/navigation'; // ✅ added
 
 export default function CategorySearchPage() {
   const params = useParams();
   const category = params.category;
 
+  const searchParams = useSearchParams(); // ✅ added
+  const router = useRouter(); // ✅ added
+  const pathname = usePathname(); // ✅ added
+
+  const currentPage = parseInt(searchParams.get('page') || '1', 10); // ✅ added
+  const [page, setPage] = useState(currentPage); // ✅ updated
+
   const [icons, setIcons] = useState([]);
-  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({ categories: [category], colors: [], types: [] });
   const [totalIcons, setTotalIcons] = useState(0);
+
+  // ✅ sync URL when page changes
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page);
+    router.push(`${pathname}?${params.toString()}`);
+  }, [page]);
 
   useEffect(() => {
     const fetchIcons = async () => {
@@ -72,13 +84,16 @@ export default function CategorySearchPage() {
         <div className="container">
           <div className="row">
             <div className="col-lg-3">
-            <SidebarFilter onFilterChange={(newFilters) => {
-            setFilters((prev) => ({
-              ...prev,
-              ...newFilters,
-              categories: newFilters.categories.length > 0 ? newFilters.categories : [category],
-            }));
-           }}   showCategoryFilter={true} />
+              <SidebarFilter
+                onFilterChange={(newFilters) => {
+                  setFilters((prev) => ({
+                    ...prev,
+                    ...newFilters,
+                    categories: newFilters.categories.length > 0 ? newFilters.categories : [category],
+                  }));
+                }}
+                showCategoryFilter={true}
+              />
             </div>
             <div className="col-lg-9 ps-lg-4">
               <div className="main-divs g-col-6">
@@ -88,104 +103,101 @@ export default function CategorySearchPage() {
                 </p>
 
                 <div className="tabsd_divs d-inline-block w-100 mt-2">
-                  
-                      <div className="new-icons-bm gy-2 g-lg-2 mt-0">
-                        {isLoading ? (
-                           <div className="loading-animations">
-                              <Image
-                                loading="lazy"
-                                src="/ser-loader.svg"
-                                alt="iconsguru"
-                                width={825}
-                                height={364}
+                  <div className="new-icons-bm gy-2 g-lg-2 mt-0">
+                    {isLoading ? (
+                      <div className="loading-animations">
+                        <Image
+                          loading="lazy"
+                          src="/ser-loader.svg"
+                          alt="iconsguru"
+                          width={825}
+                          height={364}
+                        />
+                      </div>
+                    ) : Array.isArray(icons) && icons.length > 0 ? (
+                      icons.map((icon) => (
+                        <article key={icon.Id} className="svg-item position-relative">
+                          <Link
+                            href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}?page=${page}`} // ✅ added page param
+                            className="btn icons-list p-0"
+                          >
+                            {icon.type === 'Animated' ? (
+                              <img
+                                src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                                alt={icon.icon_name}
+                                style={{ width: "100%", height: "auto" }}
                               />
-                         </div>
-                        ) : Array.isArray(icons) && icons.length > 0 ? (
-                          icons.map((icon) => (
-                            <article key={icon.Id} className="svg-item position-relative">
-                              <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0">
-                              {icon.type==='Animated' ? (
-                                <img
-                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
-                                    alt={icon.icon_name}
-                                   style={{ width: "100%", height: "100%" }}
-                                  />
-                              ) : (
-                                 <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
-                              )  
-                              }
-                               
-                              </Link>
-                              <div className="hover-divs">
-                                <button type="button" className="btn btn-adds">
-                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(67,67,67,1)">
-                                    <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
-                                  </svg>
-                                </button>
-                                <button type="button" className="btn btn-downloads">
-                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)">
-                                    <path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"></path>
-                                  </svg>
-                                </button>
-                              </div>
-                            </article>
-                          ))
-                        ) : (
-                          <div className="col no-found-div w-100">
-                                <div className="not-imgs text-center">
-                                    <figure className="m-0">
-                                          <Image
-                                            loading="lazy"
-                                            src="/nofound.png"
-                                            alt="iconsguru"
-                                            width={249}
-                                            height={219}
-                                          />
-                                    </figure>
-                                    <h2> No results found </h2>
-                                    <p> Try updating your search terms or filters </p>
-                                </div>
-                            </div>
-                        )}
-                      </div>
-
-                      {/* Pagination */}
-                      {totalPages > 1 && (
-                      <div className="d-flex align-items-center justify-content-center my-5 gap-2 flex-wrap">
-                        <button
-                          className="btn btn-pre"
-                          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                          disabled={page === 1}
-                        >
-                          ← Previous
-                        </button>
-
-                        {[...Array(totalPages)].map((_, index) => {
-                          const pageNum = index + 1;
-                          return (
-                            <button
-                              key={pageNum}
-                              onClick={() => setPage(pageNum)}
-                              className={`btn btn-sm ${page === pageNum ? "btn-primary" : "btn-outline-secondary"}`}
-                            >
-                              {pageNum}
+                            ) : (
+                              <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
+                            )}
+                          </Link>
+                          <div className="hover-divs">
+                            <button type="button" className="btn btn-adds">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(67,67,67,1)">
+                                <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+                              </svg>
                             </button>
-                          );
-                        })}
-
-                        <button
-                          className="btn btn-next"
-                          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-                          disabled={page === totalPages}
-                        >
-                          Next →
-                        </button>
+                            <button type="button" className="btn btn-downloads">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)">
+                                <path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"></path>
+                              </svg>
+                            </button>
+                          </div>
+                        </article>
+                      ))
+                    ) : (
+                      <div className="col no-found-div w-100">
+                        <div className="not-imgs text-center">
+                          <figure className="m-0">
+                            <Image
+                              loading="lazy"
+                              src="/nofound.png"
+                              alt="iconsguru"
+                              width={249}
+                              height={219}
+                            />
+                          </figure>
+                          <h2> No results found </h2>
+                          <p> Try updating your search terms or filters </p>
+                        </div>
                       </div>
-                       )}
-                    
-                 
-                </div>
+                    )}
+                  </div>
 
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="d-flex align-items-center justify-content-center my-5 gap-2 flex-wrap">
+                      <button
+                        className="btn btn-pre"
+                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={page === 1}
+                      >
+                        ← Previous
+                      </button>
+
+                      {[...Array(totalPages)].map((_, index) => {
+                        const pageNum = index + 1;
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => setPage(pageNum)}
+                            className={`btn btn-sm ${page === pageNum ? "btn-primary" : "btn-outline-secondary"}`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+
+                      <button
+                        className="btn btn-next"
+                        onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={page === totalPages}
+                      >
+                        Next →
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
