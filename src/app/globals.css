@@ -33,6 +33,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+li{
+  list-style-type: none;
+}
 
 .sub_header{ padding-bottom: 14px;}
 .why-menu{ position: relative;}
