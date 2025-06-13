@@ -1,8 +1,7 @@
-import { Sora, Play, Playfair, Inter } from "next/font/google";
+import { Sora, Play, Playfair, Inter, Plus_Jakarta_Sans   } from "next/font/google";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ImportBsJS from "../app/components/ImportBsJS";
-
 
 const sorasans = Sora({
   variable: "--font-sora-sans",
@@ -27,6 +26,14 @@ const inter = Inter({
   weight: ['800', '300'],
   subsets: ['latin'],
 });
+
+const plus = Plus_Jakarta_Sans({
+  variable: "--font-plus-sans",
+  weight: ['800', '300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+});
+
+
 
 
 
@@ -58,8 +65,7 @@ export default function RootLayout({ children }) {
          font-family: ${sorasans.style.fontFamily};
         }
          p{
-          font-family: ${inter.style.fontFamily};
-          font-weight: 300 !important;
+          font-weight: 300;
          }
         button,
         .p-autocomplete-item,
@@ -74,7 +80,7 @@ export default function RootLayout({ children }) {
         .value-sections h3,
         .comon-groups-div01 h5,
         body{
-         font-family: ${inter.style.fontFamily};
+         font-family: ${plus.style.fontFamily};
         } 
         input{
          font-family: ${sorasans.style.fontFamily};

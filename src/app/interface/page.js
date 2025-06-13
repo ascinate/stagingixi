@@ -32,7 +32,7 @@ export default function InterfaceIconsPage() {
   return (
     <>
       <Head>
-        <title>Interface Icons</title>
+        <title>Interface Icons - Interface</title>
         <meta name="description" content="Free Interface icons from IconsGuru" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
@@ -44,15 +44,9 @@ export default function InterfaceIconsPage() {
                       <div className="col-lg-6">
                           <h2> Browse High-Quality <br/>
                           Icons by Category </h2>
-                          <p className="col-lg-8 mt-3"> The largest database of vector icons available for download
+                          <p className="col-lg-8 mt-3"> The largest database of vector icons available for download
                           SVG, EPS, PSD and BASE 64 formats. </p>
                       </div>
-                      {/* <div className="col-lg-6">
-                          <Image loading="lazy" src="/category-banner.svg"
-                                alt="iconsguru"
-                                width={511}
-                                height={299} />
-                      </div> */}
                     </div>
                 </div>
       </section>
@@ -60,11 +54,6 @@ export default function InterfaceIconsPage() {
       <main className="pricing-pages-part float-start w-100">
         <section className="float-start w-100 pt-0">
           <div className="container">
-            
-
-
-
- 
 
             <div className="comon-cate-list trending-icons d-inline-block w-100">
               <h2 className="text-left comon-head cmg-heading m-0">Interface Icons</h2>
@@ -106,8 +95,6 @@ export default function InterfaceIconsPage() {
                       Show More
                     </Link>
                   </div>
-
-                 
                 </>
               )}
 
@@ -117,7 +104,7 @@ export default function InterfaceIconsPage() {
                               <div className="col">
                                   <div className="ab-left">
                                     <h2 className="comon-head"> Edit never <span className="d-lg-block"> beed to easy </span> </h2>
-                                    <p className="col-lg-8 mt-3"> We’ve developed from scratch our tools to browse, customize and quickly use our assets.
+                                    <p className="col-lg-8 mt-3"> We&#39;ve developed from scratch our tools to browse, customize and quickly use our assets.
                                        Drop our icons and illustration right into your workflow.   </p>
                                      <Link href='' className="btn btn-explore mt-2">Explore now</Link>
                                   </div>
