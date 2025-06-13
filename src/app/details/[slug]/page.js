@@ -5,28 +5,103 @@ import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+
+//slick
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+
 export default function IconDetailPage() {
 
 
   const params = useParams();
-const slug = params?.slug;
-const id = slug?.split('_').pop();
+  const slug = params?.slug;
+  const id = slug?.split('_').pop();
   const [icon, setIcon] = useState(null);
   const [color, setColor] = useState(null); // null to preserve original
   const [size, setSize] = useState(200);
   const [relatedIcons, setRelatedIcons] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
- 
 
 
-  
+
+
+
+
+
+
+  var settings = {
+    dots: true,
+    infinite: true,
+    margin: 20,
+    autoplay: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    autoplaySpeed: 2000,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          infinite: true,
+          dots: true,
+          margin: 20,
+        }
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 668,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      }
+    ]
+  };
+
+
 
   const handleCopy = async () => {
     navigator.clipboard.writeText(renderedSvg);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000); // hide after 2 sec
-  
+
     try {
       await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: 'POST',
@@ -35,7 +110,7 @@ const id = slug?.split('_').pop();
       console.error("Download count error:", err);
     }
   };
-  
+
 
 
 
@@ -56,12 +131,12 @@ const id = slug?.split('_').pop();
   }, [id]);
 
   const uploadIconAsImage = async () => {
-    if(icon.type === "Animated"){
-      const gifurl= `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
+    if (icon.type === "Animated") {
+      const gifurl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
       return gifurl;
     }
-   else{
-    const svgString = icon.icon_svg;
+    else {
+      const svgString = icon.icon_svg;
 
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -98,8 +173,8 @@ const id = slug?.split('_').pop();
         img.onerror = reject;
         img.src = url;
       });
-     }
-   
+    }
+
   };
   const shareToPinterest = async () => {
     try {
@@ -120,21 +195,21 @@ const id = slug?.split('_').pop();
     }
   };
   const shareToX = async () => {
-    try{
-    const tweetText = 'Check out this icon';
-    const tweetUrl = window.location.href;
-    const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(tweetUrl)}`;
-    window.open(xUrl, '_blank');
+    try {
+      const tweetText = 'Check out this icon';
+      const tweetUrl = window.location.href;
+      const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(tweetUrl)}`;
+      window.open(xUrl, '_blank');
     } catch (err) {
       console.error("X share failed:",);
     }
-    
+
   };
 
 
 
 
- 
+
   useEffect(() => {
     const fetchRelatedIcons = async () => {
       try {
@@ -146,13 +221,13 @@ const id = slug?.split('_').pop();
         console.error("Related fetch error:", err);
       }
     };
-  
+
     if (id) {
       fetchRelatedIcons();
     }
   }, [id]);
 
-  
+
 
   const applyColorAndSize = (svgRaw) => {
     let svg = svgRaw;
@@ -180,24 +255,24 @@ const id = slug?.split('_').pop();
   const isLightColor = (hex) => {
     if (!hex) return false;
     const cleanedHex = hex.replace("#", "");
-  
+
     const r = parseInt(cleanedHex.substring(0, 2), 16);
     const g = parseInt(cleanedHex.substring(2, 4), 16);
     const b = parseInt(cleanedHex.substring(4, 6), 16);
-  
+
     // Calculate luminance
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
-  
+
     // If luminance is greater than 200, consider it light
     return luminance > 200;
   };
-  
+
 
   const svgToCanvasDownload = (type = "png") => {
     const finalSvg = applyColorAndSize(icon.icon_svg);
     const blob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-  
+
     const img = new Image();
     img.onload = async () => {
       const canvas = document.createElement("canvas");
@@ -206,14 +281,14 @@ const id = slug?.split('_').pop();
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, size, size);
       ctx.drawImage(img, 0, 0, size, size);
-  
+
       const link = document.createElement("a");
       link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
       link.href = canvas.toDataURL(`image/${type}`);
       link.click();
-  
+
       URL.revokeObjectURL(url);
-  
+
       // ✅ Call the download count API
       try {
         await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
@@ -223,17 +298,17 @@ const id = slug?.split('_').pop();
         console.error("Download count error:", err);
       }
     };
-  
+
     img.src = url;
   };
-  
+
 
   const handleDownloadSVG = async () => {
     try {
       await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: 'POST',
       });
-  
+
       const svg = applyColorAndSize(icon.icon_svg);
       const blob = new Blob([svg], { type: "image/svg+xml" });
       const link = document.createElement("a");
@@ -270,385 +345,677 @@ const id = slug?.split('_').pop();
 
   const renderedSvg = applyColorAndSize(icon.icon_svg);
 
+
+
+
+
+
   return (
     <>
-       <NavicationHome/>
-        <main className="details-body-parts lisu-lisn-div01 float-start w-100">
-            <div className="container">
-              <aside className="bercrums">
-                    <nav aria-label="breadcrumb">
-                      <ol className="breadcrumb">
-                        <li className="breadcrumb-item"><Link href="/">Home</Link></li>
-                        <li className="breadcrumb-item active" aria-current="page">{icon.icon_name}</li>
-                      </ol>
-                    </nav>
-                    
-               </aside>
-               <div className="top-sections01 mt-2 cmr-details01  details-coderyt">
-                   <div className="row">
-                       <div className="col-lg-6 col-xl-7 position-relative p-0">
-                            <div className="blox-icons-div01" style={{ backgroundColor: isLightColor(color) ? "#000000" : "#eaf3fa",}}>
-                              <div
-                                className="d-table mx-auto"
-                                style={{
-                                  width: size,
-                                  height: size,
-                                  overflow: "hidden",
-                                  maxWidth: "300px",
-                                  maxHeight: "300px",
-        
-                                }}
-                              >
-                                  {icon.type === "Animated" ? (
-                                  <img
-                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
-                                    alt={icon.icon_name}
-                                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                                  />
-                                ) : (
-                                  <div
-                                    style={{ width: "100%", height: "100%" }}
-                                    dangerouslySetInnerHTML={{ __html: renderedSvg }}
-                                  />
-                                )}
-                              </div>
-                               
-                               <button type="button" className="btn bg-white btn-zoom">
-                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path></svg>
-                               </button>
+      <NavicationHome />
+      <main className="details-body-parts lisu-lisn-div01 float-start w-100">
+        <div className="container">
+          <aside className="bercrums">
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item"><Link href="/">Home</Link></li>
+                <li className="breadcrumb-item active" aria-current="page">{icon.icon_name}</li>
+              </ol>
+            </nav>
 
-                                 
+          </aside>
+          <div className="top-sections01 mt-2 cmr-details01  details-coderyt">
+            <div className="row">
+              <div className="col-lg-6 col-xl-7 position-relative p-0">
+                <div className="blox-icons-div01" style={{ backgroundColor: isLightColor(color) ? "#000000" : "#eaf3fa", }}>
+                  <div
+                    className="d-table mx-auto"
+                    style={{
+                      width: size,
+                      height: size,
+                      overflow: "hidden",
+                      maxWidth: "300px",
+                      maxHeight: "300px",
 
-                            </div>
+                    }}
+                  >
+                    {icon.type === "Animated" ? (
+                      <img
+                        src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                        alt={icon.icon_name}
+                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                      />
+                    ) : (
+                      <div
+                        style={{ width: "100%", height: "100%" }}
+                        dangerouslySetInnerHTML={{ __html: renderedSvg }}
+                      />
+                    )}
+                  </div>
 
-                            <div className="varitions-div d-block w-100 mt-4">
-                                <h5> Variations </h5>
-
-                            </div>
-                            
-
-                       </div>
-                       <div className="col-lg-6 col-xl-5 buttons-group01 d-grid justify-content-end">
-                              <div className="right-details-lis01">
-                                  <div className="groups-list-btn">
-                                      <h2 className="icon-headings">{icon.icon_name}</h2>
-                                      <div className="d-flex align-items-center user-icons-list08">
-                                          <span className="user-nams01">
-                                              <Image src="/user01.svg" width={64} height={64} alt="names"/>
-                                          </span>
-                                          <h6 className="m-0"> <small> Author </small> IconsGuru </h6>
-                                      </div>
-
-                                      <div className="list-on0-div w-100">
-                                          <ul className="crm-tagsd d-flex align-items-center flex-wrap m-0 p-0">
-                                            {icon.tags?.split(",").map((tag, index) => {
-                                              const trimmedTag = tag.trim();
-                                              if (!trimmedTag) return null;
-
-                                              return (
-                                                <li key={index} className="me-2 mb-3 list-unstyled">
-                                                  <Link
-                                                    href={`/icons/${encodeURIComponent(icon.icon_category)}?tag=${encodeURIComponent(trimmedTag)}`}
-                                                    className="btn"
-                                                  >
-                                                    {trimmedTag}
-                                                  </Link>
-                                                </li>
-                                              );
-                                            })}
-                                          </ul>
-                                      </div>
-
-                                      <h5 className="list-texr style-list mt-3 mb-2 d-flex flex-column position-relative">
-                                        <span><strong>Style :</strong> {icon.type}</span>
-                                      </h5>
-                                      <p className="mt-2 lice-text"> License: Free for personal use </p>
-
-                                      <div className="customize-sctions01 pt-2 d-block w-100">
-                                           <h5> Customization </h5>
-
-                                          <div className="comon-groups-div01 w-100 mt-3">
-                                          
-                                              <div className="form-group">
-                                                 <label className="form-label d-block"> Size </label>
-
-                                                  <div className="input-divs d-flex align-items-center w-100">
-                                                    {!showCustom ? (
-                                                        <select
-                                                          id="size"
-                                                          className="form-select"
-                                                          value={size}
-                                                          onChange={(e) => {
-                                                            if (e.target.value === "custom") {
-                                                              setShowCustom(true);
-                                                              setSize(""); // clear size on custom
-                                                            } else {
-                                                              setSize(Number(e.target.value));
-                                                            }
-                                                          }}
-                                                        >
-                                                          <option value="">-- Select a Size --</option>                                               
-                                                          <option value="16">16px</option>                  
-                                                          <option value="24">24px</option>
-                                                          <option value="32">32px</option>                                                
-                                                          <option value="64">64px</option>       
-                                                          <option value="120">128px</option>
-                                                          <option value="240">256px</option>
-                                                          <option value="240">512px</option>
-                                                          <option value="custom">Custom</option>
-                                                        </select>
-                                                      ) : (
-                                                        <div className="d-flex align-items-center">
-                                                          <input
-                                                            type="number"
-                                                            className="form-control me-2"
-                                                            placeholder="Enter custom size"
-                                                            value={size}
-                                                            onChange={(e) => {
-                                                              const value = e.target.value;
-                                                              setSize(value === '' ? '' : Number(value));
-                                                            }}                                                                                                       
-                                                            style={{ width: "150px" }}
-                                                          />
-                                                          <button
-                                                            type="button"
-                                                            className="btn btn-secondary"
-                                                            onClick={() => {
-                                                              setShowCustom(false);
-                                                              setSize("");
-                                                            }}
-                                                          >
-                                                            Back
-                                                          </button>
-                                                        </div>
-                                                      )}
-                                                  </div>
-
-                                              </div>
-                                              <div className="form-group mt-3">
-                                                  <label className="form-label d-block"> Color </label>
-                                                  <div className="bodret-details012 w-100">
-                                                      {icon.icon_category !== "Emoji" && icon.icon_category !== "Stickers" && icon.type !== "Animated" &&(
-
-                                                          <input
-                                                            type="color"
-                                                            id="colos"
-                                                            value={color || "#000000"}
-                                                            onChange={(e) => setColor(e.target.value)}
-                                                            className="form-control form-control-color"
-                                                          />   
-                                                      )}
-                                                  </div>
-                                              </div>
-                                              
-                                          </div>
-
-                                      </div>
-
-                                      
-                                      <div className="comon-groups-div01 mb-0 align-items-center justify-content-between">
-                                           
-                                           <div className="input-divs mt-3 w-100 d-flex justify-content-between align-items-center">
+                  <button type="button" className="btn bg-white btn-zoom">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path></svg>
+                  </button>
 
 
-                                            <div className="dropdown col-9">
-                                              <button className="btn w-100 btn-download015 dropdown-toggle" data-bs-auto-close="outside" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <span>
-                                                      <svg width="200" height="200" viewBox="0 0 86 89" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                       <path d="M0 57.0703C0 55.4135 1.34315 54.0703 3 54.0703C4.65685 54.0703 6 55.4135 6 57.0703V68.8174L6.00586 69.3584C6.06209 72.0964 6.51343 75.3116 7.98828 77.8584C9.41808 80.3273 11.9642 82.464 17.1387 82.6162H66.46C68.6851 82.6162 71.9392 81.9588 74.5586 79.9697C77.0318 78.0916 79.2451 74.8051 79.2451 68.8242V57.0703C79.2451 55.4135 80.5883 54.0703 82.2451 54.0703C83.9018 54.0705 85.2451 55.4136 85.2451 57.0703V68.8242C85.2451 76.5454 82.2588 81.6557 78.1865 84.748C74.2604 87.7293 69.6215 88.6162 66.46 88.6162H17.0645L17.0244 88.6152C9.78825 88.4199 5.30007 85.1894 2.7959 80.8652C0.430791 76.7811 0.00769019 72.0299 0 68.832V57.0703Z" fill="#ffffff"/>
-                                                       <path d="M38.6111 3C38.6111 1.34315 39.9542 0 41.6111 0C43.2679 0.000114414 44.6111 1.34322 44.6111 3V54.5283L60.3113 38.8281C61.4828 37.6566 63.3829 37.6567 64.5545 38.8281C65.726 39.9997 65.726 41.8997 64.5545 43.0713L41.6111 66.0146L18.6677 43.0713C17.4962 41.8997 17.4962 39.9997 18.6677 38.8281C19.8392 37.657 21.7384 37.657 22.9099 38.8281L38.6111 54.5293V3Z" fill="#ffffff"/>
-                                                      </svg>
-                                                    </span>
-                                                    Download
-                                              </button>
-                                              <ul className="dropdown-menu w-100">
-                                                  {icon.type!== "Animated" && (
-                                                    <>
-                                                    <li className="dropdown-item">
-                                                      <button type="button" onClick={handleDownloadSVG} className="btn w-100 svg-bn btn-comons01 crm-btn01">
-                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(255,255,255,1)"><path d="M2.80577 5.20006L7.00505 7.99958L11.1913 2.13881C11.5123 1.6894 12.1369 1.58531 12.5863 1.90631C12.6761 1.97045 12.7546 2.04901 12.8188 2.13881L17.0051 7.99958L21.2043 5.20006C21.6639 4.89371 22.2847 5.01788 22.5911 5.47741C22.7228 5.67503 22.7799 5.91308 22.7522 6.14895L21.109 20.1164C21.0497 20.62 20.6229 20.9996 20.1158 20.9996H3.8943C3.38722 20.9996 2.9604 20.62 2.90115 20.1164L1.25792 6.14895C1.19339 5.60045 1.58573 5.10349 2.13423 5.03896C2.37011 5.01121 2.60816 5.06832 2.80577 5.20006ZM12.0051 14.9996C13.1096 14.9996 14.0051 14.1042 14.0051 12.9996C14.0051 11.895 13.1096 10.9996 12.0051 10.9996C10.9005 10.9996 10.0051 11.895 10.0051 12.9996C10.0051 14.1042 10.9005 14.9996 12.0051 14.9996Z"></path></svg>
-                                                      SVG </button>
-                                                    </li>
-                                                    <li className="dropdown-item">
-                                                       <button type="button" onClick={() => svgToCanvasDownload("png")} className="btn w-100 png-bn btn-comons01 crm-btn01">
-                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
-                                                      PNG </button>
-                                                    </li>
-                                                    <li className="dropdown-item">
-                                                       <button type="button" onClick={() => svgToCanvasDownload("webp")} className="btn w-100 png-bn btn-comons01 crm-btn01">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
-                                                      WEBP </button>
-                                                    </li>
-                                                  </>
-                                                )}
-                                           
-                                                <li>
-                                                  {icon.type === "Animated" && (
-                                                  <button
-                                                    type="button"
-                                                    onClick={handleDownloadGIF}
-                                                    className="btn png-bn btn-comons01 crm-btn01"
-                                                  >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black">
-                                                      <path d="M3 3H21V21H3V3ZM5 5V19H19V5H5ZM8 7H10V17H8V7ZM14 7H16V17H14V7Z" />
-                                                    </svg>
-                                                    GIF
-                                                  </button>
 
-                                                  )}
-                                                </li>
-                                              </ul>
-                                            </div>
-                                            <div className="col-3 d-grid justify-content-end">
-                                                <div className="dropdown">
-                                                   <button type="button" className="btn btn-shares" data-bs-toggle="dropdown"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill=""><path d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z"></path></svg> 
-                                                   </button>
-                                            
-                                              <ul className="dropdown-menu px-3 drop-divu py-3" aria-labelledby="dropdownMenuButton1">
-                                                  <li><button className="dropdown-item facebook-btn text-center" onClick={shareToFacebook}> 
-                                                      <span> <svg width="16" height="16" viewBox="0 0 73 136" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-                                                          <path d="M23.0805 24.5077V51.1005H0V74.6825H23.0805V135.896H48.168V74.6825H72.252V51.1005H48.168V33.5391C47.3652 23.9055 53.1855 22.1661 56.196 22.5006H72.252V1.33165C30.6067 -5.19014 23.5822 13.8038 23.0805 24.5077Z" fill="#ffffff"/>
-                                                      </svg>
+                </div>
 
-                                                     </span> Facebook</button></li>
-                                                  <li className="mt-2"><button className="dropdown-item twitter-btn text-center" onClick={shareToX}>
-                                                    <span>
-                                                      <svg width="16" height="16" viewBox="0 0 138 140" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M73.1883 54.4075L120.569 0.661621L125.874 5.33818L78.493 59.084L73.1883 54.4075ZM0.339844 135.036L54.7929 72.8041L60.115 77.4609L5.66193 139.693L0.339844 135.036Z" fill="#ffffff"/>
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.25391 2.29272H43.7544L137.728 138.779H94.4822L1.25391 2.29272ZM14.6485 9.36455L98.2158 131.707H124.273L40.0375 9.36455H14.6485Z" fill="#ffffff"/>
-                                                      </svg>
-                                                    </span> (Twitter)</button></li>     
+                <div className="varitions-div d-block w-100 mt-4">
+                  <h5> Variations </h5>
 
-                                                    <li className="mt-2">
-                                                    <button className="dropdown-item pinterest-btn text-center" onClick={shareToPinterest}>
-                                                      <span>
-                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-                                                          <path d="M12.04 2C6.46 2 2 6.15 2 11.58C2 15.07 3.94 17.84 6.87 18.75C7.1 18.81 7.21 18.68 7.21 18.56C7.21 18.45 7.2 18.11 7.2 17.76C5.1 18.22 4.59 16.94 4.59 16.94C4.37 16.36 4 16.12 4 16.12C3.45 15.71 4.04 15.71 4.04 15.71C4.65 15.76 4.97 16.34 4.97 16.34C5.5 17.29 6.43 17.02 6.81 16.84C6.87 16.42 7.03 16.14 7.2 15.96C5.38 15.75 3.46 15.08 3.46 11.77C3.46 10.84 3.8 10.08 4.35 9.5C4.26 9.29 3.96 8.4 4.44 7.15C4.44 7.15 5.14 6.91 7.2 8.28C7.87 8.11 8.59 8.02 9.31 8.02C10.03 8.02 10.75 8.11 11.42 8.28C13.47 6.91 14.17 7.15 14.17 7.15C14.65 8.4 14.35 9.29 14.26 9.5C14.8 10.08 15.14 10.84 15.14 11.77C15.14 15.08 13.22 15.75 11.4 15.96C11.65 16.2 11.86 16.65 11.86 17.33C11.86 18.3 11.84 18.98 11.84 19.21C11.84 19.33 11.95 19.47 12.18 19.41C15.17 18.51 17.14 15.64 17.14 11.58C17.14 6.15 12.68 2 12.04 2Z"/>
-                                                        </svg>
-                                                      </span> Pinterest
-                                                    </button>
-                                                  </li>                                         
-                                                </ul>
-                                              </div>
-                                            </div>
-                                           
-                                               
-                                           </div>
-                                           
-                                           <hr/>
-                                           <div className="form-group">
-                                               <label className="form-label"> Attribuion  </label>
-                                           </div>
+                  <ul className="icon-variations">
+                    <li>
+                      <Slider {...settings} className="text-center">
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">
+                          <svg width="24" height="24" viewBox="0 0 128 153" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g filter="url(#filter0_i_1067_147)">
+                              <path d="M23.4141 34.4726C37.2823 32.1049 72.3248 28.79 101.549 34.4726C88.696 41.2375 55.0741 50.7083 23.4141 34.4726Z" fill="#D0BC85" />
+                              <path d="M8.19141 27.3693L29.5011 5.04492H64.0024C59.9937 9.45455 51.1152 16.4772 38.6338 21.4677C30.0522 24.8988 19.7675 27.3693 8.19141 27.3693Z" fill="#D73838" />
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0672 4.03027H66.2967L64.7536 5.72761C60.7371 10.1458 52.0678 17.017 39.9371 22.0333C40.1489 22.5137 40.4478 23.1604 40.813 23.9316C41.5789 25.549 42.6233 27.6868 43.733 29.924C45.9551 34.4039 48.4225 39.249 49.4267 41.09L47.645 42.0618C46.6196 40.182 44.1362 35.3042 41.9149 30.8258C40.8028 28.5839 39.7523 26.4337 38.9788 24.8001C38.5951 23.99 38.2764 23.3002 38.0514 22.7869C29.563 26.062 19.4851 28.3842 8.19176 28.3842H5.82031L29.0672 4.03027ZM39.6278 21.2785C39.6206 21.2547 39.623 21.2578 39.6284 21.2804C39.6282 21.2797 39.628 21.2791 39.6278 21.2785ZM29.9356 6.05976L10.5977 26.3186C21.0503 26.0049 30.3787 23.6757 38.2574 20.5255C49.0831 16.1971 57.1422 10.3309 61.5921 6.05976H29.9356Z" fill="black" />
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M88.8373 0.652344L117.182 13.2498L116.357 15.1044L89.9053 3.34794L72.8102 43.9981L70.9395 43.2113L88.8373 0.652344Z" fill="black" />
+                              <path d="M64.0001 152.182C8.79794 153.806 -0.943619 94.0035 1.08587 63.8994L64.0001 77.0911L126.916 63.8994C128.945 92.6505 119.202 150.559 64.0001 152.182Z" fill="#88A451" />
+                              <path d="M1.08984 62.8847L23.4142 33.457C55.8861 49.693 89.711 40.222 102.564 33.457L126.918 62.8847L62.9893 77.0911L1.08984 62.8847Z" fill="#F6EFD5" />
+                            </g>
+                            <defs>
+                              <filter id="filter0_i_1067_147" x="0.841797" y="0.652344" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dx="13.816" dy="1.97372" />
+                                <feGaussianBlur stdDeviation="3.94744" />
+                                <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                                <feBlend mode="normal" in2="shape" result="effect1_innerShadow_1067_147" />
+                              </filter>
+                            </defs>
+                          </svg>
+                        </article>
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">
+                          <svg width="24" height="24" viewBox="0 0 176 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M128.85 89.5592C135.407 54.8039 145.229 38.6732 149.32 34.9522C149.269 30.3595 148.845 20.9656 147.564 20.1322C146.282 19.2989 142.962 16.2276 141.462 14.7961C139.961 13.3646 144.479 6.98045 148.881 5.49034C153.351 3.97736 158.651 4.22771 160.575 8.53697C162.114 11.9844 158.138 17.892 158.138 17.892L161.98 29.5074C171.641 36.5201 174.941 47.6611 175.383 52.3551C174.54 68.3694 168.968 105.254 153.418 124.68C137.867 144.105 118.76 146.662 111.15 145.512C96.3076 152.634 91.5096 145.807 90.966 141.503C100.862 138.669 122.292 124.314 128.85 89.5592Z" fill="#FAD841" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M141.669 14.0281C141.678 14.2555 141.741 14.3713 141.807 14.4343C142.554 15.147 143.755 16.2688 144.928 17.3153C146.113 18.372 147.234 19.3209 147.837 19.713C148.141 19.9106 148.334 20.285 148.472 20.6387C148.62 21.0214 148.749 21.5052 148.862 22.0524C149.088 23.1496 149.265 24.5674 149.402 26.0875C149.676 29.1315 149.795 32.6421 149.821 34.9465L149.823 35.171L149.657 35.322C147.692 37.1094 144.248 41.9924 140.47 50.8146C136.7 59.6183 132.615 72.3041 129.342 89.6517C122.842 124.103 101.781 138.691 91.5283 141.857C91.8949 143.806 93.1688 146.151 95.8955 147.334C98.8275 148.605 103.574 148.593 110.934 145.062L111.073 144.995L111.225 145.018C118.666 146.142 137.593 143.648 153.028 124.367C160.736 114.738 165.995 100.744 169.431 87.116C172.86 73.5196 174.459 60.3467 174.882 52.3656C174.435 47.7455 171.173 36.7974 161.686 29.9119L161.556 29.8173L157.586 17.8161L157.723 17.6128C157.723 17.6128 157.723 17.6128 157.763 17.6396L157.723 17.6128L157.725 17.6099L157.733 17.5987L157.763 17.5517C157.791 17.5098 157.831 17.447 157.883 17.3653C157.985 17.202 158.131 16.9635 158.302 16.6661C158.643 16.0704 159.082 15.2432 159.473 14.3135C159.865 13.3814 160.201 12.3617 160.349 11.3785C160.498 10.3915 160.45 9.48273 160.119 8.74068C159.237 6.76439 157.587 5.70883 155.588 5.32105C153.573 4.93008 151.221 5.22623 149.042 5.96383C146.971 6.66476 144.816 8.54923 143.356 10.4678C142.63 11.4231 142.101 12.3541 141.843 13.1093C141.713 13.4878 141.661 13.7963 141.669 14.0281ZM142.56 9.86236C144.085 7.85848 146.39 5.8058 148.721 5.01662C151.012 4.24125 153.545 3.90609 155.779 4.33936C158.028 4.77583 159.99 6.00008 161.032 8.33303C161.47 9.3147 161.502 10.4372 161.338 11.5274C161.174 12.6215 160.805 13.7251 160.395 14.7009C159.984 15.679 159.525 16.5441 159.169 17.1638C158.991 17.4742 158.838 17.7241 158.729 17.8973C158.715 17.9205 158.701 17.9422 158.688 17.9626L162.404 29.198C172.115 36.3248 175.432 47.5404 175.881 52.3081L175.884 52.3446L175.882 52.3812C175.46 60.4182 173.852 73.6753 170.401 87.3605C166.953 101.035 161.651 115.196 153.809 124.992C138.244 144.435 119.106 147.147 111.229 146.029C103.822 149.555 98.7906 149.679 95.4975 148.251C92.1764 146.81 90.759 143.849 90.4705 141.565L90.4168 141.14L90.8289 141.022C100.536 138.243 121.835 124.043 128.359 89.4663C131.643 72.0587 135.748 59.3016 139.551 50.4209C143.249 41.7859 146.678 36.777 148.818 34.7371C148.788 32.4496 148.668 29.0914 148.406 26.1772C148.27 24.6706 148.098 23.2966 147.882 22.2545C147.775 21.7321 147.659 21.3094 147.54 21.0009C147.48 20.8469 147.423 20.7329 147.373 20.6535C147.325 20.5782 147.295 20.554 147.292 20.5514C147.292 20.5512 147.292 20.5514 147.292 20.5514C146.613 20.1101 145.434 19.1065 144.262 18.0614C143.079 17.006 141.87 15.8764 141.117 15.1577C140.808 14.8628 140.685 14.466 140.67 14.0645C140.655 13.6673 140.744 13.2305 140.896 12.7859C141.201 11.8949 141.795 10.8683 142.56 9.86236Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M145.519 116.731C145.769 116.848 145.878 117.145 145.762 117.395C141.126 127.379 130.819 132.543 126.237 133.888C125.972 133.966 125.694 133.814 125.616 133.549C125.539 133.284 125.69 133.006 125.955 132.929C130.388 131.627 140.386 126.597 144.855 116.974C144.971 116.724 145.268 116.615 145.519 116.731Z" fill="black" />
+                            <path d="M93.9916 80.5548C108.641 48.3631 122.024 35.0373 126.884 32.3984C127.928 27.9256 129.755 18.7014 128.709 17.5867C127.664 16.472 125.17 12.698 124.054 10.9503C122.939 9.20255 128.847 4.07859 133.478 3.68041C138.179 3.27612 143.267 4.78213 144.109 9.42566C144.782 13.1405 139.512 17.9305 139.512 17.9305L140.476 30.1268C148.188 39.2396 148.738 50.8459 148.049 55.51C143.415 70.8624 129.215 105.357 109.484 120.518C89.7524 135.678 70.5861 133.609 63.4694 130.679C47.3573 134.059 44.3245 126.285 44.8221 121.975C55.1078 121.582 79.3417 112.747 93.9916 80.5548Z" fill="#FAD841" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M124.439 10.2539C124.393 10.4767 124.428 10.6044 124.477 10.6812C125.032 11.5515 125.931 12.9271 126.821 14.2229C127.72 15.5314 128.583 16.7202 129.075 17.2446C129.323 17.509 129.422 17.9187 129.471 18.2949C129.524 18.702 129.534 19.2025 129.513 19.7609C129.471 20.8804 129.305 22.2995 129.076 23.8084C128.617 26.8301 127.896 30.268 127.372 32.5121L127.321 32.7308L127.124 32.8379C124.789 34.1055 120.281 38.0272 114.509 45.6951C108.75 53.3469 101.76 64.6939 94.4475 80.762C79.9256 112.672 55.9957 121.822 45.284 122.453C45.1756 124.434 45.8542 127.014 48.2205 128.813C50.765 130.747 55.3774 131.866 63.3675 130.19L63.5182 130.158L63.6605 130.217C70.6187 133.081 89.5953 135.169 109.18 120.121C118.96 112.607 127.402 100.268 133.987 87.8517C140.556 75.4639 145.248 63.0515 147.561 55.4009C148.227 50.8074 147.668 39.3974 140.095 30.4498L139.991 30.3268L138.995 17.7255L139.177 17.5606C139.177 17.5606 139.177 17.5606 139.209 17.5961L139.177 17.5606L139.179 17.5583L139.189 17.5491L139.23 17.5109C139.267 17.4767 139.321 17.4253 139.391 17.3582C139.529 17.224 139.728 17.0272 139.964 16.779C140.438 16.282 141.061 15.5831 141.662 14.7732C142.265 13.9613 142.835 13.0513 143.213 12.1317C143.592 11.2085 143.762 10.3145 143.617 9.51487C143.232 7.38527 141.881 5.96703 140.032 5.11417C138.168 4.25427 135.813 3.98152 133.521 4.17862C131.343 4.36592 128.801 5.6826 126.926 7.19815C125.993 7.95273 125.257 8.73089 124.827 9.40285C124.611 9.73962 124.486 10.0268 124.439 10.2539ZM126.298 6.42047C128.256 4.83757 130.983 3.39318 133.436 3.1823C135.845 2.97511 138.385 3.25322 140.451 4.20613C142.532 5.16609 144.146 6.82262 144.601 9.33654C144.793 10.3943 144.557 11.4922 144.138 12.5119C143.717 13.5352 143.096 14.5192 142.465 15.3691C141.833 16.2212 141.181 16.9519 140.688 17.4691C140.441 17.728 140.233 17.9344 140.086 18.0767C140.067 18.0957 140.048 18.1135 140.031 18.1302L140.963 29.9275C148.696 39.1629 149.244 50.8458 148.544 55.5831L148.539 55.6194L148.529 55.6545C146.203 63.3593 141.482 75.8515 134.87 88.3202C128.263 100.779 119.74 113.269 109.789 120.914C90.0401 136.088 70.8065 134.162 63.423 131.2C55.3898 132.859 50.4732 131.781 47.6154 129.609C44.7332 127.418 44.0622 124.205 44.3262 121.918L44.3754 121.492L44.8038 121.476C54.8933 121.09 78.9627 112.374 93.5373 80.3478C100.875 64.2241 107.901 52.8124 113.71 45.0937C119.359 37.5885 123.884 33.5411 126.448 32.0699C126.963 29.8409 127.648 26.5511 128.087 23.6582C128.314 22.1627 128.474 20.7871 128.514 19.7238C128.533 19.1908 128.522 18.7528 128.479 18.4247C128.458 18.2608 128.43 18.1366 128.4 18.0475C128.371 17.9629 128.348 17.9323 128.346 17.9291C128.346 17.9288 128.346 17.929 128.346 17.9291C127.792 17.3388 126.885 16.083 125.997 14.7889C125.099 13.4821 124.194 12.0968 123.634 11.2194C123.404 10.8593 123.379 10.4445 123.46 10.0511C123.541 9.6619 123.731 9.25888 123.985 8.86329C124.493 8.07052 125.315 7.21511 126.298 6.42047Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.708 110.916C103.923 111.089 103.958 111.404 103.785 111.619C96.9043 120.21 85.664 122.77 80.8935 122.984C80.6176 122.997 80.3839 122.783 80.3715 122.507C80.3591 122.232 80.5727 121.998 80.8485 121.985C85.4635 121.778 96.3725 119.275 103.005 110.994C103.178 110.778 103.492 110.744 103.708 110.916Z" fill="black" />
+                            <path d="M60.5977 63.6095C83.8395 36.9497 100.473 28.0062 105.885 26.8669C108.164 22.8793 112.552 14.5624 111.869 13.1952C111.185 11.8281 109.875 7.4987 109.305 5.50491C108.736 3.51113 115.862 0.290176 120.413 1.23252C125.035 2.18932 129.479 5.08701 128.958 9.77731C128.541 13.5295 122.122 16.6131 122.122 16.6131L119.559 28.5758C124.344 39.5132 121.553 50.7923 119.559 55.0647C110.729 68.4515 87.2597 97.4469 64.0178 106.333C40.776 115.22 23.0013 107.758 17.0192 102.916C0.61322 101.548 -0.0703621 93.2314 1.6386 89.2439C11.6075 91.8073 37.3558 90.2692 60.5977 63.6095Z" fill="#FAD841" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M109.872 4.94737C109.764 5.14775 109.761 5.2799 109.786 5.36755C110.069 6.36032 110.538 7.93563 111.02 9.43168C111.507 10.9425 111.994 12.3284 112.316 12.9716C112.478 13.2958 112.455 13.7166 112.395 14.0912C112.329 14.4966 112.195 14.9789 112.016 15.5081C111.656 16.569 111.091 17.8813 110.44 19.2617C109.136 22.026 107.463 25.1143 106.319 27.115L106.208 27.3099L105.988 27.3562C103.388 27.9034 97.9469 30.3726 90.2243 36.0704C82.5178 41.7563 72.5752 50.6312 60.9744 63.9381C37.9356 90.3649 12.3886 92.2913 1.94357 89.8338C1.27356 91.7005 1.18604 94.3675 2.93937 96.7674C4.82477 99.3481 8.9247 101.739 17.0606 102.417L17.214 102.43L17.3336 102.527C23.1824 107.261 40.7701 114.687 63.8391 105.866C75.3597 101.462 86.9771 92.0517 96.8365 82.0359C106.673 72.0432 114.718 61.4905 119.121 54.8202C121.073 50.6092 123.799 39.5153 119.101 28.7763L119.036 28.6286L121.685 16.2686L121.906 16.1625C121.906 16.1625 121.906 16.1625 121.927 16.2058L121.906 16.1625L121.909 16.161L121.921 16.1551L121.971 16.1302C122.016 16.1078 122.083 16.0741 122.168 16.0297C122.339 15.9407 122.586 15.8088 122.884 15.6386C123.48 15.2978 124.277 14.8062 125.084 14.202C125.894 13.5962 126.7 12.8872 127.325 12.114C127.953 11.3378 128.371 10.5297 128.461 9.72209C128.7 7.57103 127.811 5.82584 126.284 4.48004C124.743 3.12311 122.565 2.18858 120.312 1.72212C118.171 1.27886 115.359 1.81383 113.129 2.73013C112.019 3.18636 111.091 3.72178 110.487 4.24257C110.184 4.50359 109.982 4.74319 109.872 4.94737ZM112.749 1.80519C115.078 0.848156 118.104 0.243819 120.515 0.742894C122.883 1.23324 125.238 2.22596 126.945 3.72966C128.664 5.24447 129.737 7.29327 129.455 9.83252C129.336 10.901 128.796 11.8854 128.103 12.7428C127.407 13.6031 126.531 14.3684 125.683 15.0026C124.834 15.6383 124 16.1522 123.38 16.5068C123.069 16.6843 122.811 16.8226 122.629 16.917C122.605 16.9296 122.582 16.9414 122.561 16.9524L120.081 28.5238C124.851 39.5845 122.037 50.9366 120.012 55.2761L119.996 55.3094L119.976 55.34C115.545 62.0583 107.45 72.6795 97.5492 82.7374C87.6559 92.7876 75.9175 102.319 64.1962 106.8C40.9335 115.695 23.0533 108.351 16.825 103.401C8.65271 102.694 4.24943 100.256 2.1319 97.3573C-0.00368696 94.4341 0.271993 91.163 1.17886 89.0469L1.34774 88.6529L1.76296 88.7596C11.5417 91.2742 37.0982 89.8037 60.2206 63.2809C71.8616 49.928 81.8568 41.0013 89.6306 35.2657C97.1894 29.6887 102.682 27.1037 105.56 26.4271C106.691 24.4385 108.287 21.4816 109.536 18.8351C110.181 17.467 110.727 16.1945 111.069 15.1868C111.24 14.6817 111.355 14.2588 111.408 13.9321C111.434 13.7689 111.443 13.642 111.439 13.548C111.436 13.4587 111.423 13.4229 111.421 13.419C111.421 13.4187 111.421 13.419 111.421 13.419C111.059 12.695 110.55 11.2325 110.068 9.73841C109.582 8.22954 109.11 6.64327 108.824 5.64227C108.707 5.23147 108.801 4.82682 108.992 4.47312C109.18 4.12321 109.478 3.79143 109.834 3.48483C110.548 2.87039 111.58 2.28563 112.749 1.80519Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M61.2263 95.4808C61.3835 95.7079 61.3268 96.0193 61.0998 96.1765C52.0496 102.442 40.5468 101.681 35.914 100.523C35.6461 100.456 35.4832 100.184 35.5502 99.9166C35.6172 99.6487 35.8886 99.4858 36.1565 99.5528C40.6382 100.673 51.8075 101.393 60.5306 95.3543C60.7576 95.1971 61.0691 95.2538 61.2263 95.4808Z" fill="black" />
+                          </svg>
+                        </article>
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">
+                          <svg width="24" height="24" viewBox="0 0 128 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60.7103 64.3723C12.3118 60.4214 0.411552 19.7545 0 0C12.3466 41.4844 45.2771 52.0258 60.7103 52.0258C97.75 56.4705 120.192 19.6484 127.806 0.511225C124.925 23.5581 109.109 68.3232 60.7103 64.3723Z" fill="#B9EF6C" />
+                            <path d="M127.998 0.170166H0.210938C8.6066 41.1607 44.8643 52.2315 61.9437 52.643C101.947 53.6308 122.648 18.0727 127.998 0.170166Z" fill="#EA5279" />
+                            <path d="M44.1973 12.9038C44.1973 14.4814 42.9184 15.7602 41.3408 15.7602C39.7632 15.7602 38.4844 14.4814 38.4844 12.9038C38.4844 11.3262 39.7632 10.0474 41.3408 10.0474C42.9184 10.0474 44.1973 11.3262 44.1973 12.9038Z" fill="black" />
+                            <path d="M50.7285 22.6975C50.7285 24.2751 49.4496 25.5539 47.8721 25.5539C46.2945 25.5539 45.0156 24.2751 45.0156 22.6975C45.0156 21.1199 46.2945 19.8411 47.8721 19.8411C49.4496 19.8411 50.7285 21.1199 50.7285 22.6975Z" fill="black" />
+                            <path d="M55.6269 32.491C55.6269 34.0685 54.3481 35.3474 52.7705 35.3474C51.1929 35.3474 49.9141 34.0685 49.9141 32.491C49.9141 30.9134 51.1929 29.6345 52.7705 29.6345C54.3481 29.6345 55.6269 30.9134 55.6269 32.491Z" fill="black" />
+                            <path d="M76.0254 12.9038C76.0254 14.4814 74.7465 15.7602 73.1689 15.7602C71.5914 15.7602 70.3125 14.4814 70.3125 12.9038C70.3125 11.3262 71.5914 10.0474 73.1689 10.0474C74.7465 10.0474 76.0254 11.3262 76.0254 12.9038Z" fill="black" />
+                            <path d="M82.5605 22.6975C82.5605 24.2751 81.2817 25.5539 79.7041 25.5539C78.1265 25.5539 76.8477 24.2751 76.8477 22.6975C76.8477 21.1199 78.1265 19.8411 79.7041 19.8411C81.2817 19.8411 82.5605 21.1199 82.5605 22.6975Z" fill="black" />
+                            <path d="M54.8105 12.9038C54.8105 14.4814 53.5317 15.7602 51.9541 15.7602C50.3765 15.7602 49.0977 14.4814 49.0977 12.9038C49.0977 11.3262 50.3765 10.0474 51.9541 10.0474C53.5317 10.0474 54.8105 11.3262 54.8105 12.9038Z" fill="black" />
+                            <path d="M61.3379 22.6975C61.3379 24.2751 60.059 25.5539 58.4814 25.5539C56.9039 25.5539 55.625 24.2751 55.625 22.6975C55.625 21.1199 56.9039 19.8411 58.4814 19.8411C60.059 19.8411 61.3379 21.1199 61.3379 22.6975Z" fill="black" />
+                            <path d="M66.2324 32.491C66.2324 34.0685 64.9535 35.3474 63.376 35.3474C61.7984 35.3474 60.5195 34.0685 60.5195 32.491C60.5195 30.9134 61.7984 29.6345 63.376 29.6345C64.9535 29.6345 66.2324 30.9134 66.2324 32.491Z" fill="black" />
+                            <path d="M86.6387 12.9038C86.6387 14.4814 85.3598 15.7602 83.7822 15.7602C82.2047 15.7602 80.9258 14.4814 80.9258 12.9038C80.9258 11.3262 82.2047 10.0474 83.7822 10.0474C85.3598 10.0474 86.6387 11.3262 86.6387 12.9038Z" fill="black" />
+                            <path d="M64.5996 12.9038C64.5996 14.4814 63.3207 15.7602 61.7432 15.7602C60.1656 15.7602 58.8867 14.4814 58.8867 12.9038C58.8867 11.3262 60.1656 10.0474 61.7432 10.0474C63.3207 10.0474 64.5996 11.3262 64.5996 12.9038Z" fill="black" />
+                            <path d="M71.1348 22.6975C71.1348 24.2751 69.8559 25.5539 68.2783 25.5539C66.7007 25.5539 65.4219 24.2751 65.4219 22.6975C65.4219 21.1199 66.7007 19.8411 68.2783 19.8411C69.8559 19.8411 71.1348 21.1199 71.1348 22.6975Z" fill="black" />
+                            <path d="M76.0254 32.491C76.0254 34.0685 74.7465 35.3474 73.1689 35.3474C71.5914 35.3474 70.3125 34.0685 70.3125 32.491C70.3125 30.9134 71.5914 29.6345 73.1689 29.6345C74.7465 29.6345 76.0254 30.9134 76.0254 32.491Z" fill="black" />
+                          </svg>
+                        </article>
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">
+                          <svg width="24" height="24" viewBox="0 0 130 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.9074 102.488C-26.1581 43.7316 36.9634 5.45121 68.7154 1C66.3396 13.1666 69.4228 36.0755 100.762 30.378C98.9829 36.0162 99.1634 47.8267 114.119 49.9633C112.93 56.195 114.291 68.3023 129.25 66.8779C129.25 88.9559 110.555 109.61 100.762 115.841C59.3108 140.768 25.4011 119.343 13.9074 102.488Z" fill="#E29854" />
+                            <path d="M69.206 1.0957C68.0311 7.11276 68.223 15.7276 72.5107 22.1094C76.7574 28.4299 85.1314 32.7112 100.673 29.8857L101.488 29.7373L101.239 30.5283C100.374 33.2695 99.9926 37.5026 101.624 41.2861C103.238 45.0288 106.86 48.4215 114.19 49.4688L114.709 49.542L114.61 50.0566C114.028 53.1066 114.082 57.558 116.063 61.0449C117.048 62.7774 118.509 64.2747 120.619 65.2588C122.733 66.2448 125.529 66.7296 129.202 66.3799L129.75 66.3281V66.8779C129.75 78.0531 125.021 88.8333 119.092 97.582C113.163 106.33 105.995 113.104 101.03 116.263L101.02 116.27C59.9437 140.97 26.1726 120.456 14.0547 103.57L13.4941 102.77C3.4276 88.007 -0.183719 74.4885 0.604473 62.4355C1.39254 50.3855 6.57484 39.8545 13.998 31.0566C28.8276 13.4811 52.6624 2.74564 68.6455 0.504883L69.3408 0.407227L69.206 1.0957ZM68.0976 1.5957C52.3371 4.0134 29.2031 14.5865 14.7617 31.7021C7.44389 40.3752 2.37364 50.7095 1.60252 62.501C0.831603 74.2898 4.35406 87.5906 14.3203 102.206L14.8701 102.991C26.7513 119.546 59.9672 139.783 100.494 115.419L100.953 115.121C105.763 111.928 112.581 105.408 118.265 97.0215C124.033 88.5098 128.592 78.1317 128.742 67.4209C125.2 67.6861 122.394 67.1903 120.196 66.165C117.881 65.085 116.271 63.4341 115.194 61.5391C113.164 57.9668 113.031 53.5403 113.54 50.3789C106.247 49.2055 102.437 45.6955 100.706 41.6816C99.1033 37.9646 99.3175 33.8919 100.064 31.0068C84.7592 33.5954 76.1407 29.3051 71.6806 22.667C67.3516 16.2238 67.0418 7.70897 68.0976 1.5957Z" fill="black" />
+                            <path d="M47.3509 33.9389C47.3509 36.8889 44.9594 39.2803 42.0094 39.2803C39.0594 39.2803 36.668 36.8889 36.668 33.9389C36.668 30.9889 39.0594 28.5974 42.0094 28.5974C44.9594 28.5974 47.3509 30.9889 47.3509 33.9389Z" fill="black" />
+                            <path d="M46.3506 33.9392C46.3506 31.5416 44.4073 29.5976 42.0098 29.5974C39.612 29.5974 37.668 31.5415 37.668 33.9392C37.6682 36.3368 39.6122 38.28 42.0098 38.28V39.28L41.7344 39.2732C39.0032 39.1347 36.8132 36.9448 36.6748 34.2136L36.668 33.9392C36.668 30.9892 39.0598 28.5974 42.0098 28.5974L42.2842 28.6042C45.1065 28.7473 47.3506 31.0814 47.3506 33.9392L47.3438 34.2136C47.2007 37.0358 44.8675 39.2798 42.0098 39.28V38.28C44.4072 38.2798 46.3504 36.3367 46.3506 33.9392Z" fill="black" />
+                            <path d="M75.8352 48.1828C75.8352 51.1328 73.4438 53.5242 70.4938 53.5242C67.5438 53.5242 65.1523 51.1328 65.1523 48.1828C65.1523 45.2328 67.5438 42.8413 70.4938 42.8413C73.4438 42.8413 75.8352 45.2328 75.8352 48.1828Z" fill="black" />
+                            <path d="M74.835 48.1831C74.835 45.7855 72.8917 43.8415 70.4941 43.8413C68.0964 43.8413 66.1523 45.7854 66.1523 48.1831C66.1525 50.5807 68.0965 52.5239 70.4941 52.5239V53.5239L70.2188 53.5171C67.4876 53.3786 65.2976 51.1887 65.1592 48.4575L65.1523 48.1831C65.1523 45.2331 67.5441 42.8413 70.4941 42.8413L70.7686 42.8481C73.5909 42.9911 75.835 45.3253 75.835 48.1831L75.8281 48.4575C75.6851 51.2797 73.3518 53.5237 70.4941 53.5239V52.5239C72.8916 52.5237 74.8348 50.5805 74.835 48.1831Z" fill="black" />
+                            <path d="M102.542 92.695C102.542 95.645 100.151 98.0364 97.2008 98.0364C94.2508 98.0364 91.8594 95.645 91.8594 92.695C91.8594 89.745 94.2508 87.3535 97.2008 87.3535C100.151 87.3535 102.542 89.745 102.542 92.695Z" fill="black" />
+                            <path d="M101.542 92.6953C101.542 90.2977 99.5987 88.3537 97.2012 88.3535C94.8035 88.3535 92.8594 90.2976 92.8594 92.6953C92.8596 95.0929 94.8036 97.0361 97.2012 97.0361V98.0361L96.9258 98.0293C94.1946 97.8908 92.0046 95.7009 91.8662 92.9697L91.8594 92.6953C91.8594 89.7453 94.2512 87.3535 97.2012 87.3535L97.4756 87.3604C100.298 87.5034 102.542 89.8375 102.542 92.6953L102.535 92.9697C102.392 95.7919 100.059 98.036 97.2012 98.0361V97.0361C99.5986 97.0359 101.542 95.0928 101.542 92.6953Z" fill="black" />
+                            <path d="M82.9563 80.2316C82.9563 83.1816 80.5649 85.573 77.6149 85.573C74.6649 85.573 72.2734 83.1816 72.2734 80.2316C72.2734 77.2816 74.6649 74.8901 77.6149 74.8901C80.5649 74.8901 82.9563 77.2816 82.9563 80.2316Z" fill="black" />
+                            <path d="M81.9561 80.2319C81.9561 77.8343 80.0128 75.8903 77.6152 75.8901C75.2175 75.8901 73.2734 77.8342 73.2734 80.2319C73.2736 82.6295 75.2176 84.5728 77.6152 84.5728V85.5728L77.3398 85.5659C74.6087 85.4274 72.4187 83.2376 72.2803 80.5063L72.2734 80.2319C72.2734 77.2819 74.6652 74.8901 77.6152 74.8901L77.8896 74.897C80.712 75.04 82.9561 77.3741 82.9561 80.2319L82.9492 80.5063C82.8062 83.3285 80.4729 85.5726 77.6152 85.5728V84.5728C80.0127 84.5726 81.9559 82.6294 81.9561 80.2319Z" fill="black" />
+                            <path d="M59.8118 71.3292C59.8118 74.2792 57.4204 76.6707 54.4704 76.6707C51.5204 76.6707 49.1289 74.2792 49.1289 71.3292C49.1289 68.3792 51.5204 65.9878 54.4704 65.9878C57.4204 65.9878 59.8118 68.3792 59.8118 71.3292Z" fill="black" />
+                            <path d="M58.8115 71.3296C58.8115 68.932 56.8683 66.988 54.4707 66.9878C52.073 66.9878 50.1289 68.9319 50.1289 71.3296C50.1291 73.7271 52.0731 75.6704 54.4707 75.6704V76.6704L54.1953 76.6636C51.4641 76.525 49.2741 74.3352 49.1357 71.604L49.1289 71.3296C49.1289 68.3796 51.5207 65.9878 54.4707 65.9878L54.7451 65.9946C57.5674 66.1376 59.8115 68.4717 59.8115 71.3296L59.8047 71.604C59.6617 74.4262 57.3284 76.6702 54.4707 76.6704V75.6704C56.8681 75.6702 58.8113 73.727 58.8115 71.3296Z" fill="black" />
+                            <path d="M31.3235 57.0851C31.3235 60.0351 28.9321 62.4266 25.9821 62.4266C23.0321 62.4266 20.6406 60.0351 20.6406 57.0851C20.6406 54.1351 23.0321 51.7437 25.9821 51.7437C28.9321 51.7437 31.3235 54.1351 31.3235 57.0851Z" fill="black" />
+                            <path d="M30.3232 57.0854C30.3232 54.6878 28.38 52.7438 25.9824 52.7437C23.5847 52.7437 21.6406 54.6877 21.6406 57.0854C21.6408 59.483 23.5848 61.4263 25.9824 61.4263V62.4263L25.707 62.4194C22.9759 62.2809 20.7858 60.0911 20.6475 57.3599L20.6406 57.0854C20.6406 54.1354 23.0324 51.7437 25.9824 51.7437L26.2568 51.7505C29.0792 51.8935 31.3232 54.2276 31.3232 57.0854L31.3164 57.3599C31.1734 60.1821 28.8401 62.4261 25.9824 62.4263V61.4263C28.3799 61.4261 30.3231 59.4829 30.3232 57.0854Z" fill="black" />
+                            <path d="M40.2259 89.1339C40.2259 92.0839 37.8344 94.4754 34.8844 94.4754C31.9344 94.4754 29.543 92.0839 29.543 89.1339C29.543 86.1839 31.9344 83.7925 34.8844 83.7925C37.8344 83.7925 40.2259 86.1839 40.2259 89.1339Z" fill="black" />
+                            <path d="M39.2256 89.1343C39.2256 86.7367 37.2823 84.7927 34.8848 84.7925C32.487 84.7925 30.543 86.7366 30.543 89.1343C30.5432 91.5318 32.4872 93.4751 34.8848 93.4751V94.4751L34.6094 94.4683C31.8782 94.3297 29.6882 92.1399 29.5498 89.4087L29.543 89.1343C29.543 86.1843 31.9348 83.7925 34.8848 83.7925L35.1592 83.7993C37.9815 83.9423 40.2256 86.2764 40.2256 89.1343L40.2188 89.4087C40.0757 92.2309 37.7425 94.4749 34.8848 94.4751V93.4751C37.2822 93.4749 39.2254 91.5317 39.2256 89.1343Z" fill="black" />
+                            <path d="M68.7142 105.158C68.7142 108.108 66.3227 110.5 63.3727 110.5C60.4227 110.5 58.0312 108.108 58.0312 105.158C58.0312 102.208 60.4227 99.8167 63.3727 99.8167C66.3227 99.8167 68.7142 102.208 68.7142 105.158Z" fill="black" />
+                            <path d="M67.7139 105.158C67.7139 102.761 65.7706 100.817 63.373 100.817C60.9753 100.817 59.0312 102.761 59.0312 105.158C59.0314 107.556 60.9754 109.499 63.373 109.499V110.499L63.0977 110.492C60.3665 110.354 58.1765 108.164 58.0381 105.433L58.0312 105.158C58.0312 102.208 60.423 99.8167 63.373 99.8167L63.6475 99.8235C66.4698 99.9665 68.7139 102.301 68.7139 105.158L68.707 105.433C68.564 108.255 66.2307 110.499 63.373 110.499V109.499C65.7705 109.499 67.7137 107.556 67.7139 105.158Z" fill="black" />
+                            <path d="M111.449 65.9874C111.449 68.9374 109.057 71.3289 106.107 71.3289C103.157 71.3289 100.766 68.9374 100.766 65.9874C100.766 63.0374 103.157 60.646 106.107 60.646C109.057 60.646 111.449 63.0374 111.449 65.9874Z" fill="black" />
+                            <path d="M110.448 65.9878C110.448 63.5902 108.505 61.6462 106.107 61.646C103.71 61.646 101.766 63.5901 101.766 65.9878C101.766 68.3854 103.71 70.3286 106.107 70.3286V71.3286L105.832 71.3218C103.101 71.1832 100.911 68.9934 100.772 66.2622L100.766 65.9878C100.766 63.0378 103.157 60.646 106.107 60.646L106.382 60.6528C109.204 60.7958 111.448 63.1299 111.448 65.9878L111.441 66.2622C111.298 69.0844 108.965 71.3284 106.107 71.3286V70.3286C108.505 70.3284 110.448 68.3852 110.448 65.9878Z" fill="black" />
+                          </svg>
+                        </article>
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">
+                          <svg width="24" height="24" viewBox="0 0 129 141" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M44.8403 85.6251C34.2379 112.254 67.1339 127.747 84.9072 132.164C82.5449 124.356 82.6898 107.754 102.169 103.809C121.647 99.8642 126.106 86.3442 125.9 80.0773C130.832 71.4475 127.955 58.1946 125.9 52.6468C130.832 43.0308 123.846 34.2572 119.736 31.0723C116.284 13.8127 103.093 12.58 96.929 14.121C83.3679 -10.5356 72.9916 2.61463 69.4986 12.2718C59.1428 11.5321 57.3757 25.9357 57.7867 33.2299C46.6912 33.2299 46.7936 49.6676 48.2317 57.8865C31.4652 63.3109 38.9847 78.6391 44.8403 85.6251Z" fill="#A1D51C" />
+                            <path d="M6.8559 93.6945C-3.74643 120.324 29.1496 135.816 46.9228 140.234C44.5605 132.426 44.7055 115.824 64.1841 111.879C83.6628 107.934 88.1216 94.4135 87.9161 88.1466C92.8474 79.5168 89.9708 66.2639 87.9161 60.7162C92.8474 51.1001 85.8614 42.3265 81.752 39.1417C78.3 21.8821 65.1088 20.6493 58.9446 22.1903C45.3835 -2.46624 35.0072 10.684 31.5142 20.3411C21.1584 19.6014 19.3914 34.005 19.8023 41.2992C8.70685 41.2992 8.80919 57.737 10.2473 65.9558C-6.51918 71.3803 1.00033 86.7084 6.8559 93.6945Z" fill="#C4F236" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M46.8324 33.3122C47.3285 33.4332 47.6326 33.9335 47.5116 34.4296L44.4295 47.0661C44.3936 47.2133 44.3221 47.3494 44.2212 47.4624L34.4498 58.4183L42.5251 76.3636C42.602 76.5343 42.6252 76.7243 42.5917 76.9085L38.3048 100.486L38.7386 103.244L53.6189 85.3469V66.264C53.6189 66.0891 53.6686 65.9177 53.7621 65.7698L67.4063 44.1953C67.6793 43.7637 68.2504 43.6351 68.682 43.9081C69.1136 44.181 69.2422 44.7522 68.9692 45.1837L55.4682 66.5319V83.1228L62.5455 74.6109C62.872 74.2182 63.4549 74.1646 63.8476 74.4911C64.2403 74.8176 64.2939 75.4005 63.9674 75.7932L48.9508 93.8538L59.3088 90.9548C59.3899 90.9321 59.4737 90.9206 59.558 90.9206H70.6534C71.1641 90.9206 71.5781 91.3346 71.5781 91.8452C71.5781 92.3559 71.1641 92.7699 70.6534 92.7699H59.6849L46.8699 96.3565L39.1212 105.676L42.5954 127.762C42.6747 128.266 42.3301 128.74 41.8256 128.819C41.3212 128.898 40.8479 128.554 40.7686 128.049L38.7739 115.369L24.6512 99.2348C24.5216 99.0866 24.4426 98.9009 24.4257 98.7048L21.6519 66.343C21.6083 65.8342 21.9854 65.3864 22.4941 65.3428C23.0029 65.2992 23.4507 65.6763 23.4944 66.1851L26.2423 98.2449L38.2355 111.946L36.4537 100.619C36.4375 100.516 36.4388 100.412 36.4574 100.31L40.7208 76.8604L32.5172 58.6301C32.4635 58.5108 32.4357 58.3815 32.4357 58.2506V42.2239C32.4357 41.7132 32.8497 41.2992 33.3604 41.2992C33.871 41.2992 34.285 41.7132 34.285 42.2239V55.8248L42.6876 46.4037L45.715 33.9914C45.836 33.4953 46.3363 33.1912 46.8324 33.3122Z" fill="#7EBC2B" />
+                          </svg>
+                        </article>
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">
+                          <svg width="24" height="24" viewBox="0 0 128 245" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M64.9296 241.206C125.638 212.243 106.91 121.061 92.2323 81.9062L37.601 70.6426C43.6747 93.8135 20.0033 135.006 8.74799 163.97C-23.1419 246.034 40.606 250.861 64.9296 241.206Z" fill="#7157A4" />
+                            <path d="M42.4492 58.0554C54.6714 41.2499 61.801 37.1759 66.8936 36.6666L69.9491 0L82.1713 6.1111V36.6666C96.838 40.3333 101.523 55.5092 102.032 62.6388C102.96 75.6267 119.856 84.5369 128.005 90.1387C117.005 101.139 94.9028 91.6665 85.2269 85.5554L60.7825 111.528L51.6158 79.4443C41.8381 85.5554 19.5325 79.4443 14.9492 65.6943C30.227 65.6943 38.8844 61.6203 42.4492 58.0554Z" fill="#3BB777" />
+                          </svg>
+                        </article>
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">
+                          <svg width="24" height="24" viewBox="0 0 130 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M116.009 19.4745L89.6928 46.6397L83.5 40.4468C85.2963 38.1519 102.344 21.8357 110.916 13.5321C110.916 7.58969 116.009 -7.69065 122.396 7.59017C131.329 11.835 132.987 18.1162 116.009 19.4745Z" fill="white" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M112.627 8.18015C112.065 10.156 111.764 12.145 111.764 13.5321V13.8917L111.505 14.1418C109.845 15.7505 107.869 17.6574 105.748 19.704C102.388 22.9459 98.6655 26.5383 95.258 29.8514C92.4798 32.5526 89.9158 35.0636 87.9352 37.0416C86.4413 38.5335 85.3076 39.6946 84.658 40.4052L89.6823 45.4295L115.621 18.6538L115.941 18.6283C120.145 18.2919 123.128 17.6546 125.107 16.8545C127.116 16.0421 127.904 15.1421 128.097 14.4009C128.283 13.6844 128.002 12.7517 126.938 11.6315C125.89 10.5282 124.212 9.39369 122.031 8.35697L121.737 8.21747L121.612 7.91758C120.829 6.04396 120.08 4.67549 119.381 3.7135C118.678 2.74562 118.06 2.23802 117.556 2.00959C117.084 1.7955 116.676 1.80819 116.282 1.97212C115.856 2.1492 115.397 2.52608 114.929 3.12496C113.991 4.32613 113.192 6.19502 112.627 8.18015ZM83.2486 40.6975H82.4961C82.4961 40.5124 82.5552 40.3714 82.5759 40.3237C82.6046 40.2575 82.637 40.2013 82.6616 40.1614C82.7115 40.0805 82.772 39.9986 82.8307 39.9236C83.3198 39.2987 84.7688 37.8043 86.7354 35.8403C88.7243 33.8541 91.2948 31.3367 94.0745 28.6341C97.4827 25.3204 101.212 21.7213 104.575 18.4767C106.588 16.5339 108.469 14.7183 110.071 13.1671C110.118 11.6265 110.446 9.64265 110.994 7.7156C111.584 5.6419 112.457 3.53156 113.591 2.07995C114.159 1.35244 114.836 0.734543 115.63 0.404316C116.456 0.0609369 117.354 0.0537816 118.257 0.463181C119.129 0.858234 119.957 1.61744 120.755 2.71555C121.515 3.76247 122.281 5.16253 123.052 6.96451C125.205 8.01622 126.978 9.20803 128.169 10.4623C129.398 11.7561 130.145 13.2745 129.74 14.8286C129.342 16.3582 127.92 17.5485 125.743 18.4285C123.592 19.2983 120.519 19.9448 116.396 20.2943L89.7016 47.8498L82.8989 41.0471L83.2486 40.6975Z" fill="black" />
+                            <path d="M81.2012 38.9995L90.5392 48.3375L79.5045 78.8984C81.5419 104.705 69.6655 118.409 61.6773 122.193C45.548 129.833 10.4019 135.096 2.25232 98.4234C-5.89724 61.7504 27.7197 53.148 45.5468 53.431L81.2012 38.9995Z" fill="#DD8737" />
+                            <g filter="url(#filter0_i_0_1)">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M81.4051 38.0017L91.522 48.1187L80.3662 79.0148C82.3559 104.993 70.3823 119.009 62.042 122.96C53.8694 126.831 40.8625 130.117 28.8106 127.759C22.768 126.576 16.9487 123.971 12.1181 119.293C7.28655 114.615 3.492 107.91 1.42485 98.6076C-0.641398 89.3095 -0.0741405 81.7218 2.2806 75.5783C4.63557 69.4342 8.75274 64.8017 13.6742 61.3723C23.4238 54.5784 36.3796 52.4661 45.3886 52.5798L81.4051 38.0017ZM80.9997 39.9974L45.7069 54.2826L45.5346 54.2799C36.723 54.14 24.0606 56.2041 14.6449 62.7652C9.95241 66.0351 6.07919 70.4117 3.86595 76.186C1.65248 81.9609 1.07371 89.2009 3.08224 98.2393C5.08987 107.274 8.74466 113.663 13.2991 118.073C17.8545 122.484 23.3579 124.962 29.1367 126.093C40.7275 128.361 53.3583 125.195 61.3152 121.426C68.9314 117.818 80.674 104.484 78.6594 78.9652L78.645 78.7825L89.5588 48.5565L80.9997 39.9974Z" fill="black" />
+                            </g>
+                            <defs>
+                              <filter id="filter0_i_0_1" x="0.152344" y="38.0017" width="24" height="24" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dx="12" dy="6" />
+                                <feGaussianBlur stdDeviation="4" />
+                                <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                                <feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_1" />
+                              </filter>
+                            </defs>
+                          </svg>
+                        </article>
+                        <article className="d-flex align-items-center justify-content-center w-75 icon-carousel">1</article>
+                      </Slider>
 
-                                      </div>
-                                      {icon.type!=="Animated"&&(
-                                      <code className="mt-2 codet p-2 bg-light01 d-inline-block w-100 rounded" style={{ fontSize: '0.75rem', wordBreak: 'break-word' }}>
-                                        {renderedSvg}
-                                      </code>
-                                      )}
-                                      
-
-
-                                      <div className="comon-groups-div01 justify-content-end mt-3 d-flex align-items-center">
-                                            {icon.type !=="Animated" &&(
-                                              <button
-                                                onClick={handleCopy}
-                                                className="btn btn-sec ms-3"
-                                                title="Copy SVG Code"
-                                              >
-                                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(255,255,255,1)"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM6.9998 11V13H12.9998V11H6.9998ZM6.9998 15V17H12.9998V15H6.9998Z"></path></svg> Copy Code
-                                              </button>
-                                            )}
-                                      
-                                      </div>
-
-                                      
-                                      {showToast && (
-                                          <div
-                                            className="position-fixed top-0 start-50 translate-middle-x p-2 px-4 bg-dark text-white rounded shadow"
-                                            style={{ zIndex: 1050, marginTop: '80px' }}
-                                          >
-                                            ✅ SVG code copied!
-                                          </div>
-                                        )}
-
-                                      
+                    </li>
+                    <li>
+                      <Link href='/' className="see-all-variations">See all variations &#62;</Link>
+                    </li>
+                  </ul>
 
 
 
 
-                                  </div>
-                              </div>
-                       </div>
-                   </div>
 
-                    <ul className="nav nav-tabs tabs-newd" id="myTab" role="tablist">
-                      <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" 
-                        data-bs-target="#home" type="button" role="tab" aria-controls="home"
-                         aria-selected="true">Details</button>
-                      </li>
-                      <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="profile-tab" data-bs-toggle="tab" 
-                        data-bs-target="#profile" type="button" role="tab" aria-controls="profile" 
-                        aria-selected="false">Versions </button>
-                      </li>
-                      <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="contact-tab" data-bs-toggle="tab" 
-                        data-bs-target="#contact" type="button" role="tab" aria-controls="contact"
-                         aria-selected="false">License Info </button>
-                      </li>
-                      <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="contact-tab" data-bs-toggle="tab" 
-                        data-bs-target="#contact" type="button" role="tab" aria-controls="contact"
-                         aria-selected="false">Usage Tips </button>
-                      </li>
-
-                    </ul>
-                    <div className="tab-content" id="myTabContent">
-                      <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-                      <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-                      <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                </div>
+              </div>
+              <div className="col-lg-6 col-xl-5 buttons-group01 d-grid justify-content-end">
+                <div className="right-details-lis01">
+                  <div className="groups-list-btn">
+                    <h2 className="icon-headings">{icon.icon_name}</h2>
+                    <div className="d-flex align-items-center user-icons-list08">
+                      <span className="user-nams01">
+                        <Image src="/user01.svg" width={64} height={64} alt="names" />
+                      </span>
+                      <h6 className="m-0"> <small> Author </small> IconsGuru </h6>
                     </div>
 
-                   <div className="styles-icons-div  comon-rows mt-0 d-block w-100">
-                      <h4 className="sub-titels-h1">Related Icons with the same style</h4>
-                      <div className="relatesd t-ind-icons d-block w-100">
-                        <div className="row row-cols-1 row-cols-lg-6 gy-2 gy-lg-3">
-                          {relatedIcons.map((icon) => (
-                            <article key={icon.Id} className="col">
-                              <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0 position-relative">
-                                  {icon.type === "Animated" ? (
-                                  <img
-                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
-                                    alt={icon.icon_name}
-                                    width={60}
-                                    height={60}
-                                  />
-                                ) : (
-                                  <div
-                                  className="svg-img d-grid"
-                                  dangerouslySetInnerHTML={{ __html: icon.icon_svg }}
-                                />
-                                )}
-                                
+                    <div className="list-on0-div w-100">
+                      <ul className="crm-tagsd d-flex align-items-center flex-wrap m-0 p-0">
+                        {icon.tags?.split(",").map((tag, index) => {
+                          const trimmedTag = tag.trim();
+                          if (!trimmedTag) return null;
+
+                          return (
+                            <li key={index} className="me-2 mb-3 list-unstyled">
+                              <Link
+                                href={`/icons/${encodeURIComponent(icon.icon_category)}?tag=${encodeURIComponent(trimmedTag)}`}
+                                className="btn"
+                              >
+                                {trimmedTag}
                               </Link>
-                            </article>
-                          ))}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+
+                    <h5 className="list-texr style-list mt-3 mb-2 d-flex flex-column position-relative">
+                      <span><strong>Style :</strong> {icon.type}</span>
+                    </h5>
+                    <p className="mt-2 lice-text"> License: Free for personal use </p>
+
+                    <div className="customize-sctions01 pt-2 d-block w-100">
+                      <h5> Customization </h5>
+
+                      <div className="comon-groups-div01 w-100 mt-3">
+
+                        <div className="form-group">
+                          <label className="form-label d-block"> Size </label>
+
+                          <div className="input-divs d-flex align-items-center w-100">
+                            {!showCustom ? (
+                              <select
+                                id="size"
+                                className="form-select"
+                                value={size}
+                                onChange={(e) => {
+                                  if (e.target.value === "custom") {
+                                    setShowCustom(true);
+                                    setSize(""); // clear size on custom
+                                  } else {
+                                    setSize(Number(e.target.value));
+                                  }
+                                }}
+                              >
+                                <option value="">-- Select a Size --</option>
+                                <option value="16">16px</option>
+                                <option value="24">24px</option>
+                                <option value="32">32px</option>
+                                <option value="64">64px</option>
+                                <option value="120">128px</option>
+                                <option value="240">256px</option>
+                                <option value="240">512px</option>
+                                <option value="custom">Custom</option>
+                              </select>
+                            ) : (
+                              <div className="d-flex align-items-center">
+                                <input
+                                  type="number"
+                                  className="form-control me-2"
+                                  placeholder="Enter custom size"
+                                  value={size}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    setSize(value === '' ? '' : Number(value));
+                                  }}
+                                  style={{ width: "150px" }}
+                                />
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary"
+                                  onClick={() => {
+                                    setShowCustom(false);
+                                    setSize("");
+                                  }}
+                                >
+                                  Back
+                                </button>
+                              </div>
+                            )}
+                          </div>
+
                         </div>
+                        <div className="form-group mt-3">
+                          <label className="form-label d-block"> Color </label>
+                          <div className="bodret-details012 w-100">
+                            {icon.icon_category !== "Emoji" && icon.icon_category !== "Stickers" && icon.type !== "Animated" && (
+
+                              <input
+                                type="color"
+                                id="colos"
+                                value={color || "#000000"}
+                                onChange={(e) => setColor(e.target.value)}
+                                className="form-control form-control-color"
+                              />
+                            )}
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+                    <div className="comon-groups-div01 mb-0 align-items-center justify-content-between">
+
+                      <div className="input-divs mt-3 w-100 d-flex justify-content-between align-items-center">
+
+
+                        <div className="dropdown col-9">
+                          <button className="btn w-100 btn-download015 dropdown-toggle" data-bs-auto-close="outside" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>
+                              <svg width="200" height="200" viewBox="0 0 86 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 57.0703C0 55.4135 1.34315 54.0703 3 54.0703C4.65685 54.0703 6 55.4135 6 57.0703V68.8174L6.00586 69.3584C6.06209 72.0964 6.51343 75.3116 7.98828 77.8584C9.41808 80.3273 11.9642 82.464 17.1387 82.6162H66.46C68.6851 82.6162 71.9392 81.9588 74.5586 79.9697C77.0318 78.0916 79.2451 74.8051 79.2451 68.8242V57.0703C79.2451 55.4135 80.5883 54.0703 82.2451 54.0703C83.9018 54.0705 85.2451 55.4136 85.2451 57.0703V68.8242C85.2451 76.5454 82.2588 81.6557 78.1865 84.748C74.2604 87.7293 69.6215 88.6162 66.46 88.6162H17.0645L17.0244 88.6152C9.78825 88.4199 5.30007 85.1894 2.7959 80.8652C0.430791 76.7811 0.00769019 72.0299 0 68.832V57.0703Z" fill="#ffffff" />
+                                <path d="M38.6111 3C38.6111 1.34315 39.9542 0 41.6111 0C43.2679 0.000114414 44.6111 1.34322 44.6111 3V54.5283L60.3113 38.8281C61.4828 37.6566 63.3829 37.6567 64.5545 38.8281C65.726 39.9997 65.726 41.8997 64.5545 43.0713L41.6111 66.0146L18.6677 43.0713C17.4962 41.8997 17.4962 39.9997 18.6677 38.8281C19.8392 37.657 21.7384 37.657 22.9099 38.8281L38.6111 54.5293V3Z" fill="#ffffff" />
+                              </svg>
+                            </span>
+                            Download
+                          </button>
+                          <ul className="dropdown-menu w-100">
+                            {icon.type !== "Animated" && (
+                              <>
+                                <li className="dropdown-item">
+                                  <button type="button" onClick={handleDownloadSVG} className="btn w-100 svg-bn btn-comons01 crm-btn01">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(255,255,255,1)"><path d="M2.80577 5.20006L7.00505 7.99958L11.1913 2.13881C11.5123 1.6894 12.1369 1.58531 12.5863 1.90631C12.6761 1.97045 12.7546 2.04901 12.8188 2.13881L17.0051 7.99958L21.2043 5.20006C21.6639 4.89371 22.2847 5.01788 22.5911 5.47741C22.7228 5.67503 22.7799 5.91308 22.7522 6.14895L21.109 20.1164C21.0497 20.62 20.6229 20.9996 20.1158 20.9996H3.8943C3.38722 20.9996 2.9604 20.62 2.90115 20.1164L1.25792 6.14895C1.19339 5.60045 1.58573 5.10349 2.13423 5.03896C2.37011 5.01121 2.60816 5.06832 2.80577 5.20006ZM12.0051 14.9996C13.1096 14.9996 14.0051 14.1042 14.0051 12.9996C14.0051 11.895 13.1096 10.9996 12.0051 10.9996C10.9005 10.9996 10.0051 11.895 10.0051 12.9996C10.0051 14.1042 10.9005 14.9996 12.0051 14.9996Z"></path></svg>
+                                    SVG </button>
+                                </li>
+                                <li className="dropdown-item">
+                                  <button type="button" onClick={() => svgToCanvasDownload("png")} className="btn w-100 png-bn btn-comons01 crm-btn01">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+                                    PNG </button>
+                                </li>
+                                <li className="dropdown-item">
+                                  <button type="button" onClick={() => svgToCanvasDownload("webp")} className="btn w-100 png-bn btn-comons01 crm-btn01">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+                                    WEBP </button>
+                                </li>
+                              </>
+                            )}
+
+                            <li>
+                              {icon.type === "Animated" && (
+                                <button
+                                  type="button"
+                                  onClick={handleDownloadGIF}
+                                  className="btn png-bn btn-comons01 crm-btn01"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black">
+                                    <path d="M3 3H21V21H3V3ZM5 5V19H19V5H5ZM8 7H10V17H8V7ZM14 7H16V17H14V7Z" />
+                                  </svg>
+                                  GIF
+                                </button>
+
+                              )}
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="col-3 d-grid justify-content-end">
+                          <div className="dropdown">
+                            <button type="button" className="btn btn-shares" data-bs-toggle="dropdown"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill=""><path d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z"></path></svg>
+                            </button>
+
+                            <ul className="dropdown-menu px-3 drop-divu py-3" aria-labelledby="dropdownMenuButton1">
+                              <li><button className="dropdown-item facebook-btn text-center" onClick={shareToFacebook}>
+                                <span> <svg width="16" height="16" viewBox="0 0 73 136" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M23.0805 24.5077V51.1005H0V74.6825H23.0805V135.896H48.168V74.6825H72.252V51.1005H48.168V33.5391C47.3652 23.9055 53.1855 22.1661 56.196 22.5006H72.252V1.33165C30.6067 -5.19014 23.5822 13.8038 23.0805 24.5077Z" fill="#ffffff" />
+                                </svg>
+
+                                </span> Facebook</button></li>
+                              <li className="mt-2"><button className="dropdown-item twitter-btn text-center" onClick={shareToX}>
+                                <span>
+                                  <svg width="16" height="16" viewBox="0 0 138 140" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M73.1883 54.4075L120.569 0.661621L125.874 5.33818L78.493 59.084L73.1883 54.4075ZM0.339844 135.036L54.7929 72.8041L60.115 77.4609L5.66193 139.693L0.339844 135.036Z" fill="#ffffff" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.25391 2.29272H43.7544L137.728 138.779H94.4822L1.25391 2.29272ZM14.6485 9.36455L98.2158 131.707H124.273L40.0375 9.36455H14.6485Z" fill="#ffffff" />
+                                  </svg>
+                                </span> (Twitter)</button></li>
+
+                              <li className="mt-2">
+                                <button className="dropdown-item pinterest-btn text-center" onClick={shareToPinterest}>
+                                  <span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M12.04 2C6.46 2 2 6.15 2 11.58C2 15.07 3.94 17.84 6.87 18.75C7.1 18.81 7.21 18.68 7.21 18.56C7.21 18.45 7.2 18.11 7.2 17.76C5.1 18.22 4.59 16.94 4.59 16.94C4.37 16.36 4 16.12 4 16.12C3.45 15.71 4.04 15.71 4.04 15.71C4.65 15.76 4.97 16.34 4.97 16.34C5.5 17.29 6.43 17.02 6.81 16.84C6.87 16.42 7.03 16.14 7.2 15.96C5.38 15.75 3.46 15.08 3.46 11.77C3.46 10.84 3.8 10.08 4.35 9.5C4.26 9.29 3.96 8.4 4.44 7.15C4.44 7.15 5.14 6.91 7.2 8.28C7.87 8.11 8.59 8.02 9.31 8.02C10.03 8.02 10.75 8.11 11.42 8.28C13.47 6.91 14.17 7.15 14.17 7.15C14.65 8.4 14.35 9.29 14.26 9.5C14.8 10.08 15.14 10.84 15.14 11.77C15.14 15.08 13.22 15.75 11.4 15.96C11.65 16.2 11.86 16.65 11.86 17.33C11.86 18.3 11.84 18.98 11.84 19.21C11.84 19.33 11.95 19.47 12.18 19.41C15.17 18.51 17.14 15.64 17.14 11.58C17.14 6.15 12.68 2 12.04 2Z" />
+                                    </svg>
+                                  </span> Pinterest
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+
+                      </div>
+
+                      <hr />
+                      <div className="form-group">
+                        <label className="form-label"> Attribuion  </label>
+                      </div>
+
+                    </div>
+                    {icon.type !== "Animated" && (
+                      <code className="mt-2 codet p-2 bg-light01 d-inline-block w-100 rounded" style={{ fontSize: '0.75rem', wordBreak: 'break-word' }}>
+                        {renderedSvg}
+                      </code>
+                    )}
+
+
+
+                    <div className="comon-groups-div01 justify-content-end mt-3 d-flex align-items-center">
+                      {icon.type !== "Animated" && (
+                        <button
+                          onClick={handleCopy}
+                          className="btn btn-sec ms-3"
+                          title="Copy SVG Code"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(255,255,255,1)"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM6.9998 11V13H12.9998V11H6.9998ZM6.9998 15V17H12.9998V15H6.9998Z"></path></svg> Copy Code
+                        </button>
+                      )}
+
+                    </div>
+
+
+                    {showToast && (
+                      <div
+                        className="position-fixed top-0 start-50 translate-middle-x p-2 px-4 bg-dark text-white rounded shadow"
+                        style={{ zIndex: 1050, marginTop: '80px' }}
+                      >
+                        ✅ SVG code copied!
+                      </div>
+                    )}
+
+
+
+
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <ul className="nav nav-tabs tabs-newd" id="myTab" role="tablist">
+              <li className="nav-item" role="presentation">
+                <button className="nav-link active" id="home-tab" data-bs-toggle="tab"
+                  data-bs-target="#home" type="button" role="tab" aria-controls="home"
+                  aria-selected="true">Details</button>
+              </li>
+
+              <li className="nav-item" role="presentation">
+                <button className="nav-link" id="contact-tab" data-bs-toggle="tab"
+                  data-bs-target="#contact" type="button" role="tab" aria-controls="contact"
+                  aria-selected="false">License Info </button>
+              </li>
+              <li className="nav-item" role="presentation">
+                <button className="nav-link" id="contact-tab" data-bs-toggle="tab"
+                  data-bs-target="#contact" type="button" role="tab" aria-controls="contact"
+                  aria-selected="false">Usage Tips </button>
+              </li>
+
+            </ul>
+            <div className="tab-content" id="myTabContent">
+              <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <ul className="icon-detail">
+                          <li>File formats</li>
+                          <li>Dimensions</li>
+                          <li>File size</li>
+                          <li>Category</li>
+                          <li>Tags</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <ul className="icon-detail">
+                          <li>SVG,PNG,JPG</li>
+                          <li>1024 X 1024 px</li>
+                          <li>12 KB</li>
+                          <li>Animal</li>
+                          <li>
+                            <span className="iconbadge">bird</span>
+                          </li>
+                        </ul>
                       </div>
                     </div>
 
 
+                    <ul className="inputColor-ul">
+                      <li>
+                        <h5 className="">Try Icon on Backgrond</h5>
+                      </li>
+                      <li className="inputtype">
+                        <input type="color" value="#ffffff" />
+                        <input type="color" value="#000000" />
+                        <input type="color" value="#16610E" />
+                        <input type="color" value="#5409DA" />
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col-lg-6">
+                    <ul className="detail-right">
+                      <li>
+                        <h6>More by this creator</h6>
+                      </li>
+                      <li className="d-flex justify-content-between gap-4">
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 134 149" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M108.768 42.9062C109.281 41.6242 110.735 41.0007 112.017 41.5135C114.671 42.575 117.516 44.3299 119.974 46.4664C122.416 48.59 124.638 51.2306 125.843 54.1364C127.075 57.1091 127.277 60.4955 125.361 63.6622C123.517 66.7105 119.969 69.1097 114.724 70.8582C113.414 71.2948 111.998 70.5869 111.562 69.2771C111.125 67.9672 111.833 66.5514 113.143 66.1148C117.853 64.5448 120.113 62.6773 121.083 61.0737C121.982 59.5886 122.006 57.938 121.224 56.0514C120.414 54.098 118.784 52.0571 116.693 50.2399C114.618 48.4357 112.247 46.9906 110.16 46.1558C108.878 45.6431 108.255 44.1881 108.768 42.9062Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M120.199 27.2123C117.843 23.2289 113.734 18.6148 108.208 17.1247C101.668 15.3611 94.3961 18.2303 87.2527 28.1518C86.9976 28.5061 86.8397 28.921 86.7948 29.3553L84.0121 56.2541C76.5649 67.4676 51.6072 86.1597 13.0336 77.426C12.2923 77.2582 11.5149 77.4367 10.9211 77.9111C10.3272 78.3855 9.98149 79.1043 9.98149 79.8643C9.98149 84.4702 11.565 88.2404 13.8988 91.3801L3.38992 89.7208C2.45725 89.5736 1.52118 89.9644 0.970053 90.731C0.418927 91.4977 0.346781 92.5095 0.783547 93.3467C6.7979 104.874 19.6567 116.17 35.7125 121.808C51.8578 127.478 71.3613 127.468 90.5515 116.151C90.5791 116.135 90.6064 116.118 90.6334 116.101C97.5945 111.626 106.034 103.782 111.248 91.7885C116.298 80.1741 118.238 64.8608 113.129 45.2941C114.998 44.5797 117.436 43.8132 120.035 43.3008C123.724 42.5735 127.404 42.4269 130.209 43.362C131.108 43.6614 132.098 43.4276 132.768 42.758C133.437 42.0884 133.671 41.098 133.372 40.1997C132.656 38.0527 131.134 34.9004 128.806 32.2347C126.756 29.8878 123.876 27.6981 120.199 27.2123ZM91.6987 30.5414C98.0339 21.9895 103.265 20.9704 106.906 21.9522C111.047 23.0688 114.538 27.0766 116.456 30.7659C116.886 31.5934 117.741 32.1125 118.674 32.1125C121.088 32.1125 123.225 33.4452 125.04 35.5237C125.652 36.2241 126.197 36.9772 126.672 37.7309C124.085 37.6185 121.454 37.9248 119.068 38.3952C115.007 39.1956 111.31 40.5414 109.093 41.5648C107.976 42.0803 107.4 43.3318 107.735 44.5155C113.284 64.1229 111.386 78.9317 106.663 89.7949C101.932 100.676 94.2752 107.806 87.9699 111.869C70.1959 122.334 52.2639 122.321 37.369 117.091C24.5466 112.588 14.0659 104.251 7.94414 95.5019L20.6249 97.5041C21.7451 97.681 22.844 97.0817 23.3019 96.0442C23.7599 95.0067 23.4621 93.791 22.5766 93.0825C18.9852 90.2095 16.2781 87.0106 15.3398 83.0141C54.7016 90.5224 80.648 70.9565 88.5508 58.4437C88.7565 58.118 88.8841 57.7492 88.9238 57.366L91.6987 30.5414ZM89.5405 74.5333C90.9138 74.6764 91.9111 75.9056 91.768 77.2789C90.9311 85.3134 86.9275 95.7627 78.8364 101.993C74.7384 105.149 69.6256 107.188 63.4859 107.253C57.3761 107.318 50.4075 105.429 42.5447 101.006C41.3413 100.329 40.9145 98.805 41.5914 97.6016C42.2683 96.3982 43.7926 95.9714 44.996 96.6483C52.3036 100.759 58.4116 102.307 63.4326 102.253C68.4238 102.2 72.4962 100.565 75.7858 98.0317C82.4701 92.8845 86.0516 83.8967 86.7949 76.7609C86.938 75.3876 88.1672 74.3903 89.5405 74.5333Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M70.3185 119.084C71.6993 119.084 72.8185 120.203 72.8185 121.584V138.547L92.0325 129.741C93.2876 129.166 94.7715 129.717 95.3468 130.972C95.922 132.227 95.3709 133.711 94.1157 134.286L78.7738 141.318L93.4851 143.77C94.847 143.997 95.7671 145.285 95.5401 146.647C95.3131 148.009 94.025 148.929 92.6631 148.702L69.9075 144.909C68.7021 144.708 67.8185 143.665 67.8185 142.443V121.584C67.8185 120.203 68.9378 119.084 70.3185 119.084Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M100.578 5.67282C98.0839 6.3225 95.685 8.72319 94.2457 11.026C93.96 11.4831 93.5343 11.8356 93.0319 12.031C89.8886 13.2533 88.2292 14.6028 87.3958 15.7749C86.609 16.8814 86.4238 18.0141 86.6266 19.2174C87.0753 21.8802 89.4408 24.8019 91.8059 26.7236C92.8775 27.5943 93.0404 29.1688 92.1697 30.2404C91.2991 31.312 89.7246 31.4749 88.653 30.6042C85.9613 28.4172 82.4483 24.5123 81.6961 20.0482C81.2984 17.6881 81.682 15.1823 83.3209 12.8774C84.8021 10.7943 87.1753 9.06134 90.4642 7.67661C92.2776 5.03333 95.3724 1.86191 99.3179 0.834256C101.571 0.24751 104.041 0.38303 106.508 1.64364C108.649 2.7379 110.653 4.60867 112.509 7.30735C113.943 7.46399 115.488 7.77268 116.96 8.28544C118.86 8.94703 120.859 10.0257 122.245 11.7756C123.716 13.6317 124.312 16.0158 123.698 18.7701C123.111 21.4004 121.45 24.2775 118.659 27.4665C117.75 28.5056 116.171 28.6109 115.132 27.7017C114.092 26.7925 113.987 25.2131 114.896 24.174C117.416 21.2949 118.488 19.1625 118.818 17.682C119.12 16.3257 118.815 15.4978 118.326 14.8806C117.753 14.1572 116.734 13.5014 115.316 13.0073C113.925 12.523 112.358 12.2676 110.964 12.1978C110.147 12.157 109.402 11.7193 108.969 11.0259C107.226 8.23727 105.592 6.79067 104.233 6.09603C102.927 5.42874 101.723 5.37463 100.578 5.67282Z" fill="black" />
+                            <path d="M108.244 29.614C108.244 31.1849 106.971 32.4584 105.4 32.4584C103.829 32.4584 102.556 31.1849 102.556 29.614C102.556 28.043 103.829 26.7695 105.4 26.7695C106.971 26.7695 108.244 28.043 108.244 29.614Z" fill="black" />
+                          </svg>
+                        </div>
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 134 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M127.984 108.955C127.676 103.636 123.019 98.8603 117.437 99.1543C115.783 99.2415 114.371 97.9708 114.284 96.3163C114.197 94.6617 115.467 93.2498 117.122 93.1626C126.414 92.6732 133.5 100.423 133.974 108.608C134.22 112.847 132.72 117.217 129.021 120.692C125.371 124.122 119.787 126.495 112.122 127.323C110.475 127.501 108.995 126.31 108.817 124.663C108.639 123.016 109.83 121.536 111.477 121.358C118.295 120.621 122.497 118.59 124.913 116.32C127.281 114.095 128.13 111.469 127.984 108.955Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M52.9981 6.60557C52.8622 7.79885 52.6571 9.04612 52.3658 10.1887C51.9136 11.9617 51.3714 12.9981 50.9654 13.404C49.7939 14.5756 49.7939 16.4751 50.9654 17.6467C52.137 18.8182 54.0365 18.8182 55.2081 17.6467C56.8083 16.0464 57.6698 13.6708 58.1797 11.6713C58.7196 9.55437 58.999 7.29682 59.1265 5.46144C59.347 2.28799 56.5263 -0.175594 53.4429 0.38707C32.6479 4.18171 26.8779 22.2941 26.6031 31.0884C26.5513 32.7445 27.8518 34.1289 29.5079 34.1807C31.1639 34.2324 32.5484 32.9319 32.6001 31.2758C32.8209 24.2123 37.3357 10.2629 52.9981 6.60557Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M55.4253 17.8273C49.3462 21.9001 44.7696 27.4374 42.2359 31.584C41.2081 33.2661 39.3195 34.1987 37.3775 34.0214C30.6274 33.4051 21.6627 34.5983 15.1245 39.7376C8.82738 44.6874 4.12298 53.8305 6.7324 70.6468C6.93686 71.9644 7.65585 73.3333 9.28733 74.3372C10.9759 75.3762 13.9156 76.1842 18.7825 75.6836C22.4584 75.3055 25.259 78.7603 24.5038 82.1706C22.0494 93.2551 29.3889 100.843 34.7202 103.937C36.217 104.805 37.2986 106.434 37.2986 108.354V117.643C37.2986 120.487 35.0295 122.465 32.6334 122.733C26.2829 123.444 23.2322 128.481 22.114 133.083H45.2751C45.4841 130.65 46.3542 127.962 48.2383 125.462C51.0949 121.672 56.0355 118.63 63.7178 117.331C63.7271 117.306 63.7361 117.279 63.7441 117.25C63.759 117.195 63.7683 117.142 63.773 117.095C59.4977 113.239 55.5894 107.695 55.8369 100.976C56.0926 94.0346 60.7246 87.0282 71.0228 80.3343C72.4119 79.4314 74.2701 79.8255 75.173 81.2147C76.076 82.6039 75.6819 84.462 74.2927 85.365C64.7547 91.5647 61.9852 97.0591 61.8328 101.196C61.6767 105.434 64.2075 109.468 67.9805 112.808C69.943 114.545 69.9934 117.139 69.5326 118.828C69.0734 120.512 67.6949 122.77 65.0378 123.195C58.2513 124.28 54.7687 126.766 53.0298 129.074C52.011 130.425 51.5026 131.829 51.3133 133.083H87.417C97.0773 132.331 103.721 128.822 108.032 124.049C112.391 119.224 114.598 112.85 114.869 106.039C115.419 92.2241 108.023 77.6655 96.4399 72.2599C91.1739 69.8025 83.1003 67.4926 74.7258 65.6233C66.3994 63.7647 58.0029 62.3909 52.2124 61.7483C49.6827 61.4676 47.7382 59.337 47.7382 56.759V48.9933C47.7382 46.8915 49.052 45.0828 50.8953 44.3324C73.8565 34.9844 77.218 19.9844 76.3499 12.6226C68.3506 11.4373 61.2665 13.9139 55.4253 17.8273ZM52.0857 12.8426C59.0537 8.17434 67.9828 5.02011 78.2356 6.85184C80.13 7.1903 81.7677 8.65331 82.1327 10.7204C83.8815 20.6231 79.5431 38.901 53.7382 49.6504V55.8838C59.7123 56.5876 67.9175 57.9559 76.0329 59.7674C84.499 61.6571 93.097 64.0787 98.9772 66.8228C113.228 73.473 121.488 90.6193 120.864 106.278C120.548 114.205 117.96 122.01 112.485 128.071C106.978 134.166 98.7821 138.242 87.7574 139.074C87.6823 139.08 87.607 139.083 87.5317 139.083H20.7393C17.9888 139.083 15.3837 136.699 15.9077 133.514C16.8523 127.772 20.7282 118.401 31.2986 116.856V108.883C25.0242 105.075 15.8226 95.7114 18.4686 81.7358C13.2204 82.1421 9.13487 81.2883 6.1429 79.4472C2.91979 77.4639 1.2599 74.5089 0.803361 71.5668C-2.04896 53.1852 3.00074 41.6357 11.4167 35.0204C19.4054 28.7409 29.8126 27.4095 37.3974 28.0017C40.3382 23.3249 45.3733 17.3396 52.0857 12.8426Z" fill="black" />
+                            <path d="M29 50C29 52.2091 27.2091 54 25 54C22.7909 54 21 52.2091 21 50C21 47.7909 22.7909 46 25 46C27.2091 46 29 47.7909 29 50Z" fill="black" />
+                          </svg>
+                        </div>
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 130 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M122.662 68.7039C116.717 69.2672 110.86 66.9323 107.883 65.0273L111.117 59.9736C113.346 61.4 117.951 63.1704 122.233 62.7169C124.433 62.4838 126.466 63.5817 127.673 64.8743C128.311 65.5568 128.919 66.5002 129.14 67.6574C129.377 68.907 129.123 70.2663 128.216 71.409C123.255 77.659 114.565 83.9694 102.628 82.4773L103.372 76.5236C111.946 77.5953 118.458 73.51 122.662 68.7039ZM123.322 69.0098C123.328 69.0165 123.33 69.0199 123.329 69.02C123.329 69.0201 123.327 69.0167 123.322 69.0098Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.23544 59.1075C8.49539 46.6818 20.7293 44.6681 26.4495 45.5348L25.5506 51.4671C22.0257 50.933 13.5113 52.0579 7.685 60.1761C10.4424 59.8525 13.4648 59.7423 16.0609 60.1455C17.6934 60.3991 19.454 60.8982 20.8746 61.9263C22.434 63.0549 23.5 64.7805 23.5 67.0011H17.5C17.5 66.9874 17.501 66.976 17.5019 66.9658C17.5063 66.9134 17.5077 66.8961 17.3568 66.7869C17.0379 66.5561 16.3487 66.2621 15.1401 66.0744C12.7547 65.7039 9.49155 65.9125 6.48688 66.401C4.53384 66.7185 2.71842 65.8971 1.63679 64.5383C0.518153 63.1329 0.115344 61.0246 1.23544 59.1075Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M82.9466 92.9415C103.589 79.9699 110.021 56.6713 100.472 41.4755C90.9225 26.2797 67.1399 21.9684 46.4979 34.94C25.8559 47.9117 19.4236 71.2103 28.9728 86.4061C38.522 101.602 62.3046 105.913 82.9466 92.9415ZM86.1391 98.0217C108.689 83.8513 117.38 57.1054 105.552 38.283C93.7237 19.4606 65.8551 15.6895 43.3055 29.8598C20.7559 44.0302 12.0645 70.7761 23.8926 89.5985C35.7208 108.421 63.5895 112.192 86.1391 98.0217Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M67.8551 41.4001L70.8855 21.4863L76.8172 22.389L73.7146 42.7776L85.8493 54.9124L110.051 51.3269L110.93 57.2621L87.2765 60.7664L83.323 78.557L95.0061 90.2401L90.7634 94.4828L79.094 82.8133L62.282 86.723L59.696 106.549L53.7464 105.773L56.4104 85.349L43.2748 72.2134L19.5229 75.3505L18.7373 69.4021L41.9581 66.3352L46.2456 49.9649L34.1389 37.8582L38.3816 33.6156L50.5039 45.7379L67.8551 41.4001ZM69.6002 47.1485L52.0355 51.5397L47.6875 68.1409L60.5194 80.9728L77.5183 77.0196L81.5097 59.0581L69.6002 47.1485Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M64.9576 1.31582C66.3443 2.42947 67.2178 4.31932 66.9087 6.34432C66.4927 9.07023 66.4676 12.3272 67.1527 15.2771C67.8388 18.2311 69.1643 20.6034 71.2204 22.0427L67.7797 26.9581C64.1136 24.3918 62.2003 20.4755 61.3083 16.6344C60.6083 13.6205 60.4924 10.4841 60.718 7.67707C56.0272 12.0346 51.564 19.2208 52.4844 28.1943L46.5157 28.8065C45.176 15.7444 52.7934 5.98644 59.1112 1.19779C61.1299 -0.332323 63.4834 0.131955 64.9576 1.31582Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M83.3621 99.6006C87.363 112.331 78.1373 121.922 71.1455 126.551C69.0346 127.948 66.7218 127.352 65.3051 126.135C63.9625 124.981 63.1239 123.087 63.435 121.074C64.4098 114.767 61.0143 109.152 58.9338 107.175L63.0663 102.825C65.9831 105.596 70.1389 112.323 69.5534 120.329C75.3414 115.944 80.1072 109.256 77.6381 101.4L83.3621 99.6006Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.76 9.9497C100.188 11.3211 97.6949 14.7802 97.2891 18.0269C97.1545 19.1041 96.7249 20.2747 96.2329 21.3175C95.7182 22.4083 95.0361 23.5665 94.2411 24.6482C93.4519 25.7219 92.4955 26.7965 91.4085 27.6589C90.3478 28.5004 88.959 29.3008 87.3313 29.4816L86.6687 23.5183C86.754 23.5089 87.0967 23.4207 87.6795 22.9584C88.2359 22.517 88.8349 21.8726 89.4065 21.0948C89.9722 20.3251 90.4563 19.4996 90.8066 18.7571C91.1796 17.9667 91.3139 17.4547 91.3354 17.2827C92.0114 11.875 95.9374 6.52606 101.609 4.34836C107.561 2.06351 114.808 3.45314 121.653 10.2986C124.888 13.5337 126.457 19.582 125.126 25.1453C123.719 31.0251 119.13 36.3377 110.321 38.1628C110.28 38.1836 110.219 38.216 110.136 38.264C109.877 38.4138 109.527 38.6461 109.135 38.9514C108.33 39.5775 107.525 40.3708 106.996 41.1641L102.004 37.8359C102.998 36.3452 104.316 35.098 105.451 34.215C106.029 33.7657 106.604 33.3763 107.127 33.0732C107.552 32.8266 108.234 32.4619 108.951 32.3187C115.718 30.9651 118.448 27.2715 119.291 23.7488C120.22 19.8668 118.934 16.0652 117.41 14.5412C111.875 9.00559 107.053 8.68543 103.76 9.9497Z" fill="black" />
+                            <path d="M108 16.5C108 17.8807 106.881 19 105.5 19C104.119 19 103 17.8807 103 16.5C103 15.1193 104.119 14 105.5 14C106.881 14 108 15.1193 108 16.5Z" fill="black" />
+                            <path d="M116 22.5C116 23.8807 114.881 25 113.5 25C112.119 25 111 23.8807 111 22.5C111 21.1193 112.119 20 113.5 20C114.881 20 116 21.1193 116 22.5Z" fill="black" />
+                          </svg>
+                        </div>
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 130 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M122.662 68.7039C116.717 69.2672 110.86 66.9323 107.883 65.0273L111.117 59.9736C113.346 61.4 117.951 63.1704 122.233 62.7169C124.433 62.4838 126.466 63.5817 127.673 64.8743C128.311 65.5568 128.919 66.5002 129.14 67.6574C129.377 68.907 129.123 70.2663 128.216 71.409C123.255 77.659 114.565 83.9694 102.628 82.4773L103.372 76.5236C111.946 77.5953 118.458 73.51 122.662 68.7039ZM123.322 69.0098C123.328 69.0165 123.33 69.0199 123.329 69.02C123.329 69.0201 123.327 69.0167 123.322 69.0098Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.23544 59.1075C8.49539 46.6818 20.7293 44.6681 26.4495 45.5348L25.5506 51.4671C22.0257 50.933 13.5113 52.0579 7.685 60.1761C10.4424 59.8525 13.4648 59.7423 16.0609 60.1455C17.6934 60.3991 19.454 60.8982 20.8746 61.9263C22.434 63.0549 23.5 64.7805 23.5 67.0011H17.5C17.5 66.9874 17.501 66.976 17.5019 66.9658C17.5063 66.9134 17.5077 66.8961 17.3568 66.7869C17.0379 66.5561 16.3487 66.2621 15.1401 66.0744C12.7547 65.7039 9.49155 65.9125 6.48688 66.401C4.53384 66.7185 2.71842 65.8971 1.63679 64.5383C0.518153 63.1329 0.115344 61.0246 1.23544 59.1075Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M82.9466 92.9415C103.589 79.9699 110.021 56.6713 100.472 41.4755C90.9225 26.2797 67.1399 21.9684 46.4979 34.94C25.8559 47.9117 19.4236 71.2103 28.9728 86.4061C38.522 101.602 62.3046 105.913 82.9466 92.9415ZM86.1391 98.0217C108.689 83.8513 117.38 57.1054 105.552 38.283C93.7237 19.4606 65.8551 15.6895 43.3055 29.8598C20.7559 44.0302 12.0645 70.7761 23.8926 89.5985C35.7208 108.421 63.5895 112.192 86.1391 98.0217Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M67.8551 41.4001L70.8855 21.4863L76.8172 22.389L73.7146 42.7776L85.8493 54.9124L110.051 51.3269L110.93 57.2621L87.2765 60.7664L83.323 78.557L95.0061 90.2401L90.7634 94.4828L79.094 82.8133L62.282 86.723L59.696 106.549L53.7464 105.773L56.4104 85.349L43.2748 72.2134L19.5229 75.3505L18.7373 69.4021L41.9581 66.3352L46.2456 49.9649L34.1389 37.8582L38.3816 33.6156L50.5039 45.7379L67.8551 41.4001ZM69.6002 47.1485L52.0355 51.5397L47.6875 68.1409L60.5194 80.9728L77.5183 77.0196L81.5097 59.0581L69.6002 47.1485Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M64.9576 1.31582C66.3443 2.42947 67.2178 4.31932 66.9087 6.34432C66.4927 9.07023 66.4676 12.3272 67.1527 15.2771C67.8388 18.2311 69.1643 20.6034 71.2204 22.0427L67.7797 26.9581C64.1136 24.3918 62.2003 20.4755 61.3083 16.6344C60.6083 13.6205 60.4924 10.4841 60.718 7.67707C56.0272 12.0346 51.564 19.2208 52.4844 28.1943L46.5157 28.8065C45.176 15.7444 52.7934 5.98644 59.1112 1.19779C61.1299 -0.332323 63.4834 0.131955 64.9576 1.31582Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M83.3621 99.6006C87.363 112.331 78.1373 121.922 71.1455 126.551C69.0346 127.948 66.7218 127.352 65.3051 126.135C63.9625 124.981 63.1239 123.087 63.435 121.074C64.4098 114.767 61.0143 109.152 58.9338 107.175L63.0663 102.825C65.9831 105.596 70.1389 112.323 69.5534 120.329C75.3414 115.944 80.1072 109.256 77.6381 101.4L83.3621 99.6006Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.76 9.9497C100.188 11.3211 97.6949 14.7802 97.2891 18.0269C97.1545 19.1041 96.7249 20.2747 96.2329 21.3175C95.7182 22.4083 95.0361 23.5665 94.2411 24.6482C93.4519 25.7219 92.4955 26.7965 91.4085 27.6589C90.3478 28.5004 88.959 29.3008 87.3313 29.4816L86.6687 23.5183C86.754 23.5089 87.0967 23.4207 87.6795 22.9584C88.2359 22.517 88.8349 21.8726 89.4065 21.0948C89.9722 20.3251 90.4563 19.4996 90.8066 18.7571C91.1796 17.9667 91.3139 17.4547 91.3354 17.2827C92.0114 11.875 95.9374 6.52606 101.609 4.34836C107.561 2.06351 114.808 3.45314 121.653 10.2986C124.888 13.5337 126.457 19.582 125.126 25.1453C123.719 31.0251 119.13 36.3377 110.321 38.1628C110.28 38.1836 110.219 38.216 110.136 38.264C109.877 38.4138 109.527 38.6461 109.135 38.9514C108.33 39.5775 107.525 40.3708 106.996 41.1641L102.004 37.8359C102.998 36.3452 104.316 35.098 105.451 34.215C106.029 33.7657 106.604 33.3763 107.127 33.0732C107.552 32.8266 108.234 32.4619 108.951 32.3187C115.718 30.9651 118.448 27.2715 119.291 23.7488C120.22 19.8668 118.934 16.0652 117.41 14.5412C111.875 9.00559 107.053 8.68543 103.76 9.9497Z" fill="black" />
+                            <path d="M108 16.5C108 17.8807 106.881 19 105.5 19C104.119 19 103 17.8807 103 16.5C103 15.1193 104.119 14 105.5 14C106.881 14 108 15.1193 108 16.5Z" fill="black" />
+                            <path d="M116 22.5C116 23.8807 114.881 25 113.5 25C112.119 25 111 23.8807 111 22.5C111 21.1193 112.119 20 113.5 20C114.881 20 116 21.1193 116 22.5Z" fill="black" />
+                          </svg>
+                        </div>
+                      </li>
+                      <li className="my-3">
+                        <Link href='/' className="icon-details-page">More</Link>
+                        <span className="morearrow">&#62;</span>
+                      </li>
+                      <li>
+                        <h6>Users also viewed</h6>
+                      </li>
+                      <li className="d-flex justify-content-between gap-4">
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 134 149" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M108.768 42.9062C109.281 41.6242 110.735 41.0007 112.017 41.5135C114.671 42.575 117.516 44.3299 119.974 46.4664C122.416 48.59 124.638 51.2306 125.843 54.1364C127.075 57.1091 127.277 60.4955 125.361 63.6622C123.517 66.7105 119.969 69.1097 114.724 70.8582C113.414 71.2948 111.998 70.5869 111.562 69.2771C111.125 67.9672 111.833 66.5514 113.143 66.1148C117.853 64.5448 120.113 62.6773 121.083 61.0737C121.982 59.5886 122.006 57.938 121.224 56.0514C120.414 54.098 118.784 52.0571 116.693 50.2399C114.618 48.4357 112.247 46.9906 110.16 46.1558C108.878 45.6431 108.255 44.1881 108.768 42.9062Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M120.199 27.2123C117.843 23.2289 113.734 18.6148 108.208 17.1247C101.668 15.3611 94.3961 18.2303 87.2527 28.1518C86.9976 28.5061 86.8397 28.921 86.7948 29.3553L84.0121 56.2541C76.5649 67.4676 51.6072 86.1597 13.0336 77.426C12.2923 77.2582 11.5149 77.4367 10.9211 77.9111C10.3272 78.3855 9.98149 79.1043 9.98149 79.8643C9.98149 84.4702 11.565 88.2404 13.8988 91.3801L3.38992 89.7208C2.45725 89.5736 1.52118 89.9644 0.970053 90.731C0.418927 91.4977 0.346781 92.5095 0.783547 93.3467C6.7979 104.874 19.6567 116.17 35.7125 121.808C51.8578 127.478 71.3613 127.468 90.5515 116.151C90.5791 116.135 90.6064 116.118 90.6334 116.101C97.5945 111.626 106.034 103.782 111.248 91.7885C116.298 80.1741 118.238 64.8608 113.129 45.2941C114.998 44.5797 117.436 43.8132 120.035 43.3008C123.724 42.5735 127.404 42.4269 130.209 43.362C131.108 43.6614 132.098 43.4276 132.768 42.758C133.437 42.0884 133.671 41.098 133.372 40.1997C132.656 38.0527 131.134 34.9004 128.806 32.2347C126.756 29.8878 123.876 27.6981 120.199 27.2123ZM91.6987 30.5414C98.0339 21.9895 103.265 20.9704 106.906 21.9522C111.047 23.0688 114.538 27.0766 116.456 30.7659C116.886 31.5934 117.741 32.1125 118.674 32.1125C121.088 32.1125 123.225 33.4452 125.04 35.5237C125.652 36.2241 126.197 36.9772 126.672 37.7309C124.085 37.6185 121.454 37.9248 119.068 38.3952C115.007 39.1956 111.31 40.5414 109.093 41.5648C107.976 42.0803 107.4 43.3318 107.735 44.5155C113.284 64.1229 111.386 78.9317 106.663 89.7949C101.932 100.676 94.2752 107.806 87.9699 111.869C70.1959 122.334 52.2639 122.321 37.369 117.091C24.5466 112.588 14.0659 104.251 7.94414 95.5019L20.6249 97.5041C21.7451 97.681 22.844 97.0817 23.3019 96.0442C23.7599 95.0067 23.4621 93.791 22.5766 93.0825C18.9852 90.2095 16.2781 87.0106 15.3398 83.0141C54.7016 90.5224 80.648 70.9565 88.5508 58.4437C88.7565 58.118 88.8841 57.7492 88.9238 57.366L91.6987 30.5414ZM89.5405 74.5333C90.9138 74.6764 91.9111 75.9056 91.768 77.2789C90.9311 85.3134 86.9275 95.7627 78.8364 101.993C74.7384 105.149 69.6256 107.188 63.4859 107.253C57.3761 107.318 50.4075 105.429 42.5447 101.006C41.3413 100.329 40.9145 98.805 41.5914 97.6016C42.2683 96.3982 43.7926 95.9714 44.996 96.6483C52.3036 100.759 58.4116 102.307 63.4326 102.253C68.4238 102.2 72.4962 100.565 75.7858 98.0317C82.4701 92.8845 86.0516 83.8967 86.7949 76.7609C86.938 75.3876 88.1672 74.3903 89.5405 74.5333Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M70.3185 119.084C71.6993 119.084 72.8185 120.203 72.8185 121.584V138.547L92.0325 129.741C93.2876 129.166 94.7715 129.717 95.3468 130.972C95.922 132.227 95.3709 133.711 94.1157 134.286L78.7738 141.318L93.4851 143.77C94.847 143.997 95.7671 145.285 95.5401 146.647C95.3131 148.009 94.025 148.929 92.6631 148.702L69.9075 144.909C68.7021 144.708 67.8185 143.665 67.8185 142.443V121.584C67.8185 120.203 68.9378 119.084 70.3185 119.084Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M100.578 5.67282C98.0839 6.3225 95.685 8.72319 94.2457 11.026C93.96 11.4831 93.5343 11.8356 93.0319 12.031C89.8886 13.2533 88.2292 14.6028 87.3958 15.7749C86.609 16.8814 86.4238 18.0141 86.6266 19.2174C87.0753 21.8802 89.4408 24.8019 91.8059 26.7236C92.8775 27.5943 93.0404 29.1688 92.1697 30.2404C91.2991 31.312 89.7246 31.4749 88.653 30.6042C85.9613 28.4172 82.4483 24.5123 81.6961 20.0482C81.2984 17.6881 81.682 15.1823 83.3209 12.8774C84.8021 10.7943 87.1753 9.06134 90.4642 7.67661C92.2776 5.03333 95.3724 1.86191 99.3179 0.834256C101.571 0.24751 104.041 0.38303 106.508 1.64364C108.649 2.7379 110.653 4.60867 112.509 7.30735C113.943 7.46399 115.488 7.77268 116.96 8.28544C118.86 8.94703 120.859 10.0257 122.245 11.7756C123.716 13.6317 124.312 16.0158 123.698 18.7701C123.111 21.4004 121.45 24.2775 118.659 27.4665C117.75 28.5056 116.171 28.6109 115.132 27.7017C114.092 26.7925 113.987 25.2131 114.896 24.174C117.416 21.2949 118.488 19.1625 118.818 17.682C119.12 16.3257 118.815 15.4978 118.326 14.8806C117.753 14.1572 116.734 13.5014 115.316 13.0073C113.925 12.523 112.358 12.2676 110.964 12.1978C110.147 12.157 109.402 11.7193 108.969 11.0259C107.226 8.23727 105.592 6.79067 104.233 6.09603C102.927 5.42874 101.723 5.37463 100.578 5.67282Z" fill="black" />
+                            <path d="M108.244 29.614C108.244 31.1849 106.971 32.4584 105.4 32.4584C103.829 32.4584 102.556 31.1849 102.556 29.614C102.556 28.043 103.829 26.7695 105.4 26.7695C106.971 26.7695 108.244 28.043 108.244 29.614Z" fill="black" />
+                          </svg>
+                        </div>
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 134 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M127.984 108.955C127.676 103.636 123.019 98.8603 117.437 99.1543C115.783 99.2415 114.371 97.9708 114.284 96.3163C114.197 94.6617 115.467 93.2498 117.122 93.1626C126.414 92.6732 133.5 100.423 133.974 108.608C134.22 112.847 132.72 117.217 129.021 120.692C125.371 124.122 119.787 126.495 112.122 127.323C110.475 127.501 108.995 126.31 108.817 124.663C108.639 123.016 109.83 121.536 111.477 121.358C118.295 120.621 122.497 118.59 124.913 116.32C127.281 114.095 128.13 111.469 127.984 108.955Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M52.9981 6.60557C52.8622 7.79885 52.6571 9.04612 52.3658 10.1887C51.9136 11.9617 51.3714 12.9981 50.9654 13.404C49.7939 14.5756 49.7939 16.4751 50.9654 17.6467C52.137 18.8182 54.0365 18.8182 55.2081 17.6467C56.8083 16.0464 57.6698 13.6708 58.1797 11.6713C58.7196 9.55437 58.999 7.29682 59.1265 5.46144C59.347 2.28799 56.5263 -0.175594 53.4429 0.38707C32.6479 4.18171 26.8779 22.2941 26.6031 31.0884C26.5513 32.7445 27.8518 34.1289 29.5079 34.1807C31.1639 34.2324 32.5484 32.9319 32.6001 31.2758C32.8209 24.2123 37.3357 10.2629 52.9981 6.60557Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M55.4253 17.8273C49.3462 21.9001 44.7696 27.4374 42.2359 31.584C41.2081 33.2661 39.3195 34.1987 37.3775 34.0214C30.6274 33.4051 21.6627 34.5983 15.1245 39.7376C8.82738 44.6874 4.12298 53.8305 6.7324 70.6468C6.93686 71.9644 7.65585 73.3333 9.28733 74.3372C10.9759 75.3762 13.9156 76.1842 18.7825 75.6836C22.4584 75.3055 25.259 78.7603 24.5038 82.1706C22.0494 93.2551 29.3889 100.843 34.7202 103.937C36.217 104.805 37.2986 106.434 37.2986 108.354V117.643C37.2986 120.487 35.0295 122.465 32.6334 122.733C26.2829 123.444 23.2322 128.481 22.114 133.083H45.2751C45.4841 130.65 46.3542 127.962 48.2383 125.462C51.0949 121.672 56.0355 118.63 63.7178 117.331C63.7271 117.306 63.7361 117.279 63.7441 117.25C63.759 117.195 63.7683 117.142 63.773 117.095C59.4977 113.239 55.5894 107.695 55.8369 100.976C56.0926 94.0346 60.7246 87.0282 71.0228 80.3343C72.4119 79.4314 74.2701 79.8255 75.173 81.2147C76.076 82.6039 75.6819 84.462 74.2927 85.365C64.7547 91.5647 61.9852 97.0591 61.8328 101.196C61.6767 105.434 64.2075 109.468 67.9805 112.808C69.943 114.545 69.9934 117.139 69.5326 118.828C69.0734 120.512 67.6949 122.77 65.0378 123.195C58.2513 124.28 54.7687 126.766 53.0298 129.074C52.011 130.425 51.5026 131.829 51.3133 133.083H87.417C97.0773 132.331 103.721 128.822 108.032 124.049C112.391 119.224 114.598 112.85 114.869 106.039C115.419 92.2241 108.023 77.6655 96.4399 72.2599C91.1739 69.8025 83.1003 67.4926 74.7258 65.6233C66.3994 63.7647 58.0029 62.3909 52.2124 61.7483C49.6827 61.4676 47.7382 59.337 47.7382 56.759V48.9933C47.7382 46.8915 49.052 45.0828 50.8953 44.3324C73.8565 34.9844 77.218 19.9844 76.3499 12.6226C68.3506 11.4373 61.2665 13.9139 55.4253 17.8273ZM52.0857 12.8426C59.0537 8.17434 67.9828 5.02011 78.2356 6.85184C80.13 7.1903 81.7677 8.65331 82.1327 10.7204C83.8815 20.6231 79.5431 38.901 53.7382 49.6504V55.8838C59.7123 56.5876 67.9175 57.9559 76.0329 59.7674C84.499 61.6571 93.097 64.0787 98.9772 66.8228C113.228 73.473 121.488 90.6193 120.864 106.278C120.548 114.205 117.96 122.01 112.485 128.071C106.978 134.166 98.7821 138.242 87.7574 139.074C87.6823 139.08 87.607 139.083 87.5317 139.083H20.7393C17.9888 139.083 15.3837 136.699 15.9077 133.514C16.8523 127.772 20.7282 118.401 31.2986 116.856V108.883C25.0242 105.075 15.8226 95.7114 18.4686 81.7358C13.2204 82.1421 9.13487 81.2883 6.1429 79.4472C2.91979 77.4639 1.2599 74.5089 0.803361 71.5668C-2.04896 53.1852 3.00074 41.6357 11.4167 35.0204C19.4054 28.7409 29.8126 27.4095 37.3974 28.0017C40.3382 23.3249 45.3733 17.3396 52.0857 12.8426Z" fill="black" />
+                            <path d="M29 50C29 52.2091 27.2091 54 25 54C22.7909 54 21 52.2091 21 50C21 47.7909 22.7909 46 25 46C27.2091 46 29 47.7909 29 50Z" fill="black" />
+                          </svg>
+                        </div>
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 130 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M122.662 68.7039C116.717 69.2672 110.86 66.9323 107.883 65.0273L111.117 59.9736C113.346 61.4 117.951 63.1704 122.233 62.7169C124.433 62.4838 126.466 63.5817 127.673 64.8743C128.311 65.5568 128.919 66.5002 129.14 67.6574C129.377 68.907 129.123 70.2663 128.216 71.409C123.255 77.659 114.565 83.9694 102.628 82.4773L103.372 76.5236C111.946 77.5953 118.458 73.51 122.662 68.7039ZM123.322 69.0098C123.328 69.0165 123.33 69.0199 123.329 69.02C123.329 69.0201 123.327 69.0167 123.322 69.0098Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.23544 59.1075C8.49539 46.6818 20.7293 44.6681 26.4495 45.5348L25.5506 51.4671C22.0257 50.933 13.5113 52.0579 7.685 60.1761C10.4424 59.8525 13.4648 59.7423 16.0609 60.1455C17.6934 60.3991 19.454 60.8982 20.8746 61.9263C22.434 63.0549 23.5 64.7805 23.5 67.0011H17.5C17.5 66.9874 17.501 66.976 17.5019 66.9658C17.5063 66.9134 17.5077 66.8961 17.3568 66.7869C17.0379 66.5561 16.3487 66.2621 15.1401 66.0744C12.7547 65.7039 9.49155 65.9125 6.48688 66.401C4.53384 66.7185 2.71842 65.8971 1.63679 64.5383C0.518153 63.1329 0.115344 61.0246 1.23544 59.1075Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M82.9466 92.9415C103.589 79.9699 110.021 56.6713 100.472 41.4755C90.9225 26.2797 67.1399 21.9684 46.4979 34.94C25.8559 47.9117 19.4236 71.2103 28.9728 86.4061C38.522 101.602 62.3046 105.913 82.9466 92.9415ZM86.1391 98.0217C108.689 83.8513 117.38 57.1054 105.552 38.283C93.7237 19.4606 65.8551 15.6895 43.3055 29.8598C20.7559 44.0302 12.0645 70.7761 23.8926 89.5985C35.7208 108.421 63.5895 112.192 86.1391 98.0217Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M67.8551 41.4001L70.8855 21.4863L76.8172 22.389L73.7146 42.7776L85.8493 54.9124L110.051 51.3269L110.93 57.2621L87.2765 60.7664L83.323 78.557L95.0061 90.2401L90.7634 94.4828L79.094 82.8133L62.282 86.723L59.696 106.549L53.7464 105.773L56.4104 85.349L43.2748 72.2134L19.5229 75.3505L18.7373 69.4021L41.9581 66.3352L46.2456 49.9649L34.1389 37.8582L38.3816 33.6156L50.5039 45.7379L67.8551 41.4001ZM69.6002 47.1485L52.0355 51.5397L47.6875 68.1409L60.5194 80.9728L77.5183 77.0196L81.5097 59.0581L69.6002 47.1485Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M64.9576 1.31582C66.3443 2.42947 67.2178 4.31932 66.9087 6.34432C66.4927 9.07023 66.4676 12.3272 67.1527 15.2771C67.8388 18.2311 69.1643 20.6034 71.2204 22.0427L67.7797 26.9581C64.1136 24.3918 62.2003 20.4755 61.3083 16.6344C60.6083 13.6205 60.4924 10.4841 60.718 7.67707C56.0272 12.0346 51.564 19.2208 52.4844 28.1943L46.5157 28.8065C45.176 15.7444 52.7934 5.98644 59.1112 1.19779C61.1299 -0.332323 63.4834 0.131955 64.9576 1.31582Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M83.3621 99.6006C87.363 112.331 78.1373 121.922 71.1455 126.551C69.0346 127.948 66.7218 127.352 65.3051 126.135C63.9625 124.981 63.1239 123.087 63.435 121.074C64.4098 114.767 61.0143 109.152 58.9338 107.175L63.0663 102.825C65.9831 105.596 70.1389 112.323 69.5534 120.329C75.3414 115.944 80.1072 109.256 77.6381 101.4L83.3621 99.6006Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.76 9.9497C100.188 11.3211 97.6949 14.7802 97.2891 18.0269C97.1545 19.1041 96.7249 20.2747 96.2329 21.3175C95.7182 22.4083 95.0361 23.5665 94.2411 24.6482C93.4519 25.7219 92.4955 26.7965 91.4085 27.6589C90.3478 28.5004 88.959 29.3008 87.3313 29.4816L86.6687 23.5183C86.754 23.5089 87.0967 23.4207 87.6795 22.9584C88.2359 22.517 88.8349 21.8726 89.4065 21.0948C89.9722 20.3251 90.4563 19.4996 90.8066 18.7571C91.1796 17.9667 91.3139 17.4547 91.3354 17.2827C92.0114 11.875 95.9374 6.52606 101.609 4.34836C107.561 2.06351 114.808 3.45314 121.653 10.2986C124.888 13.5337 126.457 19.582 125.126 25.1453C123.719 31.0251 119.13 36.3377 110.321 38.1628C110.28 38.1836 110.219 38.216 110.136 38.264C109.877 38.4138 109.527 38.6461 109.135 38.9514C108.33 39.5775 107.525 40.3708 106.996 41.1641L102.004 37.8359C102.998 36.3452 104.316 35.098 105.451 34.215C106.029 33.7657 106.604 33.3763 107.127 33.0732C107.552 32.8266 108.234 32.4619 108.951 32.3187C115.718 30.9651 118.448 27.2715 119.291 23.7488C120.22 19.8668 118.934 16.0652 117.41 14.5412C111.875 9.00559 107.053 8.68543 103.76 9.9497Z" fill="black" />
+                            <path d="M108 16.5C108 17.8807 106.881 19 105.5 19C104.119 19 103 17.8807 103 16.5C103 15.1193 104.119 14 105.5 14C106.881 14 108 15.1193 108 16.5Z" fill="black" />
+                            <path d="M116 22.5C116 23.8807 114.881 25 113.5 25C112.119 25 111 23.8807 111 22.5C111 21.1193 112.119 20 113.5 20C114.881 20 116 21.1193 116 22.5Z" fill="black" />
+                          </svg>
+                        </div>
+                        <div className="morebyicons d-flex justify-content-center align-items-center">
+                          <svg width="64" height="64" viewBox="0 0 130 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M122.662 68.7039C116.717 69.2672 110.86 66.9323 107.883 65.0273L111.117 59.9736C113.346 61.4 117.951 63.1704 122.233 62.7169C124.433 62.4838 126.466 63.5817 127.673 64.8743C128.311 65.5568 128.919 66.5002 129.14 67.6574C129.377 68.907 129.123 70.2663 128.216 71.409C123.255 77.659 114.565 83.9694 102.628 82.4773L103.372 76.5236C111.946 77.5953 118.458 73.51 122.662 68.7039ZM123.322 69.0098C123.328 69.0165 123.33 69.0199 123.329 69.02C123.329 69.0201 123.327 69.0167 123.322 69.0098Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.23544 59.1075C8.49539 46.6818 20.7293 44.6681 26.4495 45.5348L25.5506 51.4671C22.0257 50.933 13.5113 52.0579 7.685 60.1761C10.4424 59.8525 13.4648 59.7423 16.0609 60.1455C17.6934 60.3991 19.454 60.8982 20.8746 61.9263C22.434 63.0549 23.5 64.7805 23.5 67.0011H17.5C17.5 66.9874 17.501 66.976 17.5019 66.9658C17.5063 66.9134 17.5077 66.8961 17.3568 66.7869C17.0379 66.5561 16.3487 66.2621 15.1401 66.0744C12.7547 65.7039 9.49155 65.9125 6.48688 66.401C4.53384 66.7185 2.71842 65.8971 1.63679 64.5383C0.518153 63.1329 0.115344 61.0246 1.23544 59.1075Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M82.9466 92.9415C103.589 79.9699 110.021 56.6713 100.472 41.4755C90.9225 26.2797 67.1399 21.9684 46.4979 34.94C25.8559 47.9117 19.4236 71.2103 28.9728 86.4061C38.522 101.602 62.3046 105.913 82.9466 92.9415ZM86.1391 98.0217C108.689 83.8513 117.38 57.1054 105.552 38.283C93.7237 19.4606 65.8551 15.6895 43.3055 29.8598C20.7559 44.0302 12.0645 70.7761 23.8926 89.5985C35.7208 108.421 63.5895 112.192 86.1391 98.0217Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M67.8551 41.4001L70.8855 21.4863L76.8172 22.389L73.7146 42.7776L85.8493 54.9124L110.051 51.3269L110.93 57.2621L87.2765 60.7664L83.323 78.557L95.0061 90.2401L90.7634 94.4828L79.094 82.8133L62.282 86.723L59.696 106.549L53.7464 105.773L56.4104 85.349L43.2748 72.2134L19.5229 75.3505L18.7373 69.4021L41.9581 66.3352L46.2456 49.9649L34.1389 37.8582L38.3816 33.6156L50.5039 45.7379L67.8551 41.4001ZM69.6002 47.1485L52.0355 51.5397L47.6875 68.1409L60.5194 80.9728L77.5183 77.0196L81.5097 59.0581L69.6002 47.1485Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M64.9576 1.31582C66.3443 2.42947 67.2178 4.31932 66.9087 6.34432C66.4927 9.07023 66.4676 12.3272 67.1527 15.2771C67.8388 18.2311 69.1643 20.6034 71.2204 22.0427L67.7797 26.9581C64.1136 24.3918 62.2003 20.4755 61.3083 16.6344C60.6083 13.6205 60.4924 10.4841 60.718 7.67707C56.0272 12.0346 51.564 19.2208 52.4844 28.1943L46.5157 28.8065C45.176 15.7444 52.7934 5.98644 59.1112 1.19779C61.1299 -0.332323 63.4834 0.131955 64.9576 1.31582Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M83.3621 99.6006C87.363 112.331 78.1373 121.922 71.1455 126.551C69.0346 127.948 66.7218 127.352 65.3051 126.135C63.9625 124.981 63.1239 123.087 63.435 121.074C64.4098 114.767 61.0143 109.152 58.9338 107.175L63.0663 102.825C65.9831 105.596 70.1389 112.323 69.5534 120.329C75.3414 115.944 80.1072 109.256 77.6381 101.4L83.3621 99.6006Z" fill="black" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.76 9.9497C100.188 11.3211 97.6949 14.7802 97.2891 18.0269C97.1545 19.1041 96.7249 20.2747 96.2329 21.3175C95.7182 22.4083 95.0361 23.5665 94.2411 24.6482C93.4519 25.7219 92.4955 26.7965 91.4085 27.6589C90.3478 28.5004 88.959 29.3008 87.3313 29.4816L86.6687 23.5183C86.754 23.5089 87.0967 23.4207 87.6795 22.9584C88.2359 22.517 88.8349 21.8726 89.4065 21.0948C89.9722 20.3251 90.4563 19.4996 90.8066 18.7571C91.1796 17.9667 91.3139 17.4547 91.3354 17.2827C92.0114 11.875 95.9374 6.52606 101.609 4.34836C107.561 2.06351 114.808 3.45314 121.653 10.2986C124.888 13.5337 126.457 19.582 125.126 25.1453C123.719 31.0251 119.13 36.3377 110.321 38.1628C110.28 38.1836 110.219 38.216 110.136 38.264C109.877 38.4138 109.527 38.6461 109.135 38.9514C108.33 39.5775 107.525 40.3708 106.996 41.1641L102.004 37.8359C102.998 36.3452 104.316 35.098 105.451 34.215C106.029 33.7657 106.604 33.3763 107.127 33.0732C107.552 32.8266 108.234 32.4619 108.951 32.3187C115.718 30.9651 118.448 27.2715 119.291 23.7488C120.22 19.8668 118.934 16.0652 117.41 14.5412C111.875 9.00559 107.053 8.68543 103.76 9.9497Z" fill="black" />
+                            <path d="M108 16.5C108 17.8807 106.881 19 105.5 19C104.119 19 103 17.8807 103 16.5C103 15.1193 104.119 14 105.5 14C106.881 14 108 15.1193 108 16.5Z" fill="black" />
+                            <path d="M116 22.5C116 23.8807 114.881 25 113.5 25C112.119 25 111 23.8807 111 22.5C111 21.1193 112.119 20 113.5 20C114.881 20 116 21.1193 116 22.5Z" fill="black" />
+                          </svg>
+                        </div>
+                      </li>
+                      <li className="my-3">
+                        <Link href='/' className="icon-details-page">Suces</Link>
+                        <span className="morearrow">&#62;</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="">
+                    <input type="text" placeholder="Write your comments..." className="w-100 detail-input-comment" />
+                  </div>
+                </div>
 
-               </div>
-              
+
+              </div>
+              <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"></div>
+              <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+
+
+
+
+
+                <ul className="licenseinfo">
+                  <li><h5>License summary</h5></li>
+                  <li> <h6>Our license allows you to use the content.</h6></li>
+                  <li>For <strong>commercial and personal</strong> projects.</li>
+                  <li>On  <strong>digital or printed</strong> media.</li>
+                  <li>For an <strong>unlimited number of times</strong> and perpetually.</li>
+                  <li>Anywhere in the world.</li>
+                  <li>To make modifications and derived works.</li>
+                </ul>
+              </div>
             </div>
-              
-        </main>
-       <Footer/>
-       
+
+            <div className="styles-icons-div  comon-rows mt-0 d-block w-100">
+              <h4 className="sub-titels-h1">Related Icons with the same style</h4>
+              <div className="relatesd t-ind-icons d-block w-100">
+                <div className="row row-cols-1 row-cols-lg-6 gy-2 gy-lg-3">
+                  {relatedIcons.map((icon) => (
+                    <article key={icon.Id} className="col">
+                      <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0 position-relative">
+                        {icon.type === "Animated" ? (
+                          <img
+                            src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                            alt={icon.icon_name}
+                            width={60}
+                            height={60}
+                          />
+                        ) : (
+                          <div
+                            className="svg-img d-grid"
+                            dangerouslySetInnerHTML={{ __html: icon.icon_svg }}
+                          />
+                        )}
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+
     </>
-   
+
   );
 }
