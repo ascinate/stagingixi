@@ -40,6 +40,7 @@ export default function Icons() {
     '/shopping.svg',
     '/signup.svg',
     '/smoking.svg',
+    '/sms.svg',
     '/social.svg',
     '/sports.svg',
     '/birthday_stickers.svg',
