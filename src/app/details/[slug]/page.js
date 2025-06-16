@@ -762,17 +762,38 @@ const [bgColor, setBgColor] = useState(null);
                       </div>
                     </div>
 
-
                   <ul className="inputColor-ul">
                     <li>
-                        <h5 className="">Try Icon on Backgrond</h5>
-                      </li>
+                      <h5 className="">Try Icon on Background</h5>
+                    </li>
+
+                    {/* Default background remover */}
+                    <li
+                      onClick={() => setBgColor(null)}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                        cursor: "pointer",
+                        border: bgColor === null ? "2px solid #000" : "1px solid #ccc",
+                        backgroundColor: "#fff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "10px",
+                      }}
+                      title="Default"
+                    >
+                      ×
+                    </li>
+
+                    {/* Color variations */}
                     {[
                       { hex: "#ff0000", name: "Red" },
                       { hex: "#ffff00", name: "Yellow" },
                       { hex: "#0000ff", name: "Blue" },
                     ].map((item) => (
-                      <li 
+                      <li
                         key={item.hex}
                         onClick={() => setBgColor(item.hex)}
                         style={{
@@ -782,12 +803,12 @@ const [bgColor, setBgColor] = useState(null);
                           borderRadius: "50%",
                           cursor: "pointer",
                           border: bgColor === item.hex ? "2px solid #000" : "1px solid #ccc",
-                          
                         }}
                         title={item.name}
                       ></li>
                     ))}
                   </ul>
+
 
 
                   </div>
