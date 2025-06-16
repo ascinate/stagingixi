@@ -2207,10 +2207,10 @@ footer{
   margin-top:100px
 }
 .slick-next {
-    right: -22px;
+    right: -22px !important;
 }
 .slick-next:before, .slick-prev:before{
-    font-size: 25px;
-    color: #1fb141;
+    font-size: 25px !important;
+    color: #1fb141 !important;
 }
  
