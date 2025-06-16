@@ -19,7 +19,11 @@ export default function IconDetailPage() {
   const slug = params?.slug;
   const id = slug?.split('_').pop();
   const [icon, setIcon] = useState(null);
-  const [color, setColor] = useState(null); // null to preserve original
+  const [color, setColor] = useState(null); 
+const [bgColor, setBgColor] = useState(null);
+// default background
+
+// null to preserve original
   const [size, setSize] = useState(200);
   const [relatedIcons, setRelatedIcons] = useState([]);
   const [variations, setVariations] = useState([]);
@@ -390,7 +394,14 @@ export default function IconDetailPage() {
           <div className="top-sections01 mt-2 cmr-details01  details-coderyt">
             <div className="row">
               <div className="col-lg-6 col-xl-7 position-relative p-0">
-                <div className="blox-icons-div01" style={{ backgroundColor: isLightColor(color) ? "#000000" : "#eaf3fa", }}>
+                <div
+                    className="blox-icons-div01"
+                    style={{
+                      backgroundColor: bgColor !== null ? bgColor : isLightColor(color) ? "#000000" : "#eaf3fa",
+                    }}
+                  >
+
+
                   <div
                     className="d-table mx-auto"
                     style={{
@@ -752,17 +763,33 @@ export default function IconDetailPage() {
                     </div>
 
 
-                    <ul className="inputColor-ul">
-                      <li>
+                  <ul className="inputColor-ul">
+                    <li>
                         <h5 className="">Try Icon on Backgrond</h5>
                       </li>
-                      <li className="inputtype">
-                        <input type="color" value="#ffffff" />
-                        <input type="color" value="#000000" />
-                        <input type="color" value="#16610E" />
-                        <input type="color" value="#5409DA" />
-                      </li>
-                    </ul>
+                    {[
+                      { hex: "#ff0000", name: "Red" },
+                      { hex: "#ffff00", name: "Yellow" },
+                      { hex: "#0000ff", name: "Blue" },
+                    ].map((item) => (
+                      <li 
+                        key={item.hex}
+                        onClick={() => setBgColor(item.hex)}
+                        style={{
+                          backgroundColor: item.hex,
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50%",
+                          cursor: "pointer",
+                          border: bgColor === item.hex ? "2px solid #000" : "1px solid #ccc",
+                          
+                        }}
+                        title={item.name}
+                      ></li>
+                    ))}
+                  </ul>
+
+
                   </div>
                   <div className="col-lg-6">
                     <ul className="detail-right">
