@@ -125,7 +125,7 @@ export default function Icons() {
                           </div>
                         ) : (
                              
-                        <div className="row row-cols-1 row-cols-lg-3 gy-4 g-lg-4 mt-4">
+                        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gy-4 g-lg-4 mt-4">
       
                             {icontypes.map((type) => (
                                     <div className="col" key={type.id}>
