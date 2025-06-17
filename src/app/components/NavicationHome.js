@@ -72,7 +72,7 @@ function NavicationHome(){
             <div className="mobile-menus01">
                 <ul className="p-0">
                     {mianmenu.map((page) => (
-                        <li className="nav-item" key={page.id}>
+                        <li className="nav-item" key={page.id} data-bs-dismiss="offcanvas">
                             <Link href={page.link} className="nav-link"> {page.title} </Link>
                         </li>
                     ))}

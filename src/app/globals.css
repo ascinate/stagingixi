@@ -2272,9 +2272,7 @@ footer{
 @media(max-width:768px){
 }
 @media(max-width:668px){
- .search-sections-home{
-    width: 90%;
-  }
+
 }
 @media(max-width:480px){
   .right-menus-div01{
@@ -2289,5 +2287,11 @@ footer{
   .banner-parts01 h2, .comon-head {
         font-size: 23px;
   }
- 
+  .search-sections-home{
+    width: 95%;
+  }
+  .fb-icon svg{
+    width: 18px;
+    height: 18px;
+  }
 }
