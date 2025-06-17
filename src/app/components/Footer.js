@@ -54,7 +54,7 @@ function Footer(){
         <>
         <footer className="float-start comon-short-parts w-100">
             <div className="container">
-                <div className="row row-cols-1 row-cols-lg-5">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-5">
                     <div className="col">
                         <div className="comon-footers-div01">
                             <Link href='/'>
@@ -69,7 +69,7 @@ function Footer(){
                             
                         </div>
                     </div>
-                    <div className="col d-grid justify-content-center">
+                    <div className="col d-lg-grid justify-content-center">
                         <div className="comon-footers-div01">
                            <h5 className="text-white"> Help & Support </h5>
                            <ul className="comon-links mt-4 ms-0 p-0">
@@ -81,7 +81,7 @@ function Footer(){
                             </ul>
                         </div>
                     </div>
-                    <div className="col d-grid justify-content-center">
+                    <div className="col d-lg-grid justify-content-center">
                         <div className="comon-footers-div01">
                            <h5 className="text-white"> Company </h5>
                             
@@ -94,7 +94,7 @@ function Footer(){
                             </ul>
                         </div>
                     </div>
-                    <div className="col d-grid justify-content-center">
+                    <div className="col d-lg-grid justify-content-center">
                         <div className="comon-footers-div01">
                            <h5 className="text-white"> Top Icons </h5>
                            
@@ -107,7 +107,7 @@ function Footer(){
                             </ul>
                         </div>
                     </div>
-                    <div className="col d-grid justify-content-end">
+                    <div className="col d-lg-grid justify-content-end">
                         <div className="comon-footers-div01">
                            <h5 className="text-white"> Social media </h5>
                            
@@ -140,65 +140,68 @@ function Footer(){
 
                     
                 </div>
-                <div className="row row-cols-1 row-cols-lg-5 mt-5">
-                    <div className="col"></div>
-                    <div className="col d-grid justify-content-center">
-                        <div className="comon-footers-div01">
-                           <h5 className="text-white"> For developers </h5>
-                           <ul className="comon-links mt-4 ms-0 p-0">
-                                {developmenrs.map((page) => (
-                                    <li key={page.id}>
-                                      <Link href={page.link}> {page.title} </Link>
-                                    </li>
-                                ))}
-                            </ul>
+            
+                
+                <div className="col-lg-10 ms-auto">
+                    <div className="row row-cols-1 row-cols-lg-2 row-cols-lg-5">
+                        <div className="col d-lg-grid justify-content-center">
+                            <div className="comon-footers-div01">
+                            <h5 className="text-white"> For developers </h5>
+                            <ul className="comon-links mt-4 ms-0 p-0">
+                                    {developmenrs.map((page) => (
+                                        <li key={page.id}>
+                                        <Link href={page.link}> {page.title} </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div className="col d-grid justify-content-center">
-                        <div className="comon-footers-div01">
-                           <h5 className="text-white"> Online tools </h5>
+                        <div className="col d-lg-grid justify-content-center">
+                            <div className="comon-footers-div01">
+                            <h5 className="text-white"> Online tools </h5>
+                                
+                                <ul className="comon-links mt-4 ms-0 p-0">
+                                    {onlinetools.map((page) => (
+                                        <li key={page.id}>
+                                        <Link href={page.link}> {page.title} </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="col d-lg-grid justify-content-center">
+                            <div className="comon-footers-div01">
+                            <h5 className="text-white"> Licenses </h5>
+                            
+                                <ul className="comon-links mt-4 ms-0 p-0">
+                                    {lincesn.map((page) => (
+                                        <li key={page.id}>
+                                        <Link href={page.link}> {page.title} </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="col d-grid">
+                            <div className="comon-footers-div01">
+                            <h5 className="text-white"> Request </h5>
+                            
+
                             
                             <ul className="comon-links mt-4 ms-0 p-0">
-                                {onlinetools.map((page) => (
-                                    <li key={page.id}>
-                                      <Link href={page.link}> {page.title} </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="col d-grid justify-content-center">
-                        <div className="comon-footers-div01">
-                           <h5 className="text-white"> Licenses </h5>
-                           
-                            <ul className="comon-links mt-4 ms-0 p-0">
-                                {lincesn.map((page) => (
-                                    <li key={page.id}>
-                                      <Link href={page.link}> {page.title} </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="col d-grid">
-                        <div className="comon-footers-div01">
-                           <h5 className="text-white"> Request </h5>
-                           
-
-                           
-                           <ul className="comon-links mt-4 ms-0 p-0">
-                                {request.map((page) => (
-                                    <li key={page.id}>
-                                      <Link href={page.link}> {page.title} </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                           
+                                    {request.map((page) => (
+                                        <li key={page.id}>
+                                        <Link href={page.link}> {page.title} </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            
+                            </div>
                         </div>
                     </div>
                 </div>
                 <hr/>
-                <div className="row row-cols-1 row-cols-lg-2 g-lg-0">
+                <div className="row row-cols-1 trust01-div row-cols-sm-2 g-lg-0">
                    <div className="col">
                       <ul className="d-flex align-items-center copy-text1 p-0 m-0 copt-lisk">
                         <li>
