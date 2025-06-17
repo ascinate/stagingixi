@@ -74,9 +74,9 @@ const [bgColor, setBgColor] = useState(null);
       {
         breakpoint: 668,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 1,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          initialSlide: 3,
           infinite: true,
           arrows: true,
           dots: false
@@ -85,9 +85,9 @@ const [bgColor, setBgColor] = useState(null);
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 1,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          initialSlide: 3,
           infinite: true,
           arrows: true,
           dots: false
@@ -96,7 +96,7 @@ const [bgColor, setBgColor] = useState(null);
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
           arrows: true,
@@ -950,7 +950,7 @@ const [bgColor, setBgColor] = useState(null);
             <div className="styles-icons-div  comon-rows mt-0 d-block w-100">
               <h4 className="sub-titels-h1">Related Icons with the same style</h4>
               <div className="relatesd t-ind-icons d-block w-100">
-                <div className="row row-cols-1 row-cols-lg-6 gy-2 gy-lg-3">
+                <div className="row row-cols-1 row-cols-sm-3  row-cols-lg-6 gy-2 gy-lg-3">
                   {relatedIcons.map((icon) => (
                     <article key={icon.Id} className="col">
                       <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0 position-relative">
