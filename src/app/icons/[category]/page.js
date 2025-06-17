@@ -90,7 +90,7 @@ export default function CategorySearchPage() {
 
       <main className="listing-pages floate-start w-100">
         <div className="container">
-          <div className="row">
+          <div className="row gy-4 gy-lg-0">
             <div className="col-lg-3">
             <SidebarFilter
               onFilterChange={(newFilters) => {
@@ -111,8 +111,8 @@ export default function CategorySearchPage() {
 
 
             </div>
-            <div className="col-lg-9 ps-lg-4">
-              <div className="main-divs g-col-6">
+            <div className="col-lg-9 ps-lg-4 ">
+              <div className="main-divs g-col-6 mt-4">
                 <h2 className="search-listings01">{iconname} icons</h2>
                 <p>
                   Showing <strong className="serch-data">{totalIcons}</strong> Icons

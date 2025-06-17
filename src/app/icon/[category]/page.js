@@ -82,7 +82,7 @@ export default function CategorySearchPage() {
 
       <main className="listing-pages floate-start w-100 mb-5">
         <div className="container">
-          <div className="row">
+          <div className="row gy-4 gy-lg-0">
             <div className="col-lg-3">
               <SidebarFilter
                 onFilterChange={(newFilters) => {
