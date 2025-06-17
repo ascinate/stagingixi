@@ -2284,4 +2284,10 @@ footer{
     font-size: 12px;
     list-style-type: none;
   }
+  .banner-parts01 h2, .comon-head {
+        font-size: 23px;
+  }
+  .search-sections-home{
+    width: 95%;
+  }
 }
