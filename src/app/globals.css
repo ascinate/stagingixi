@@ -2275,6 +2275,9 @@ footer{
 @media(max-width:768px){
 }
 @media(max-width:668px){
+  .new-icons-bm{
+        grid-template-columns: 90px 90px 90px 90px;
+  }
 
 }
 @media(max-width:480px){
@@ -2297,4 +2300,8 @@ footer{
     width: 18px;
     height: 18px;
   }
+  .new-icons-bm{
+        grid-template-columns: 90px 90px 90px;
+  }
+  
 }
