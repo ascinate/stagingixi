@@ -46,7 +46,7 @@ export default async function Home() {
    <main className="float-start w-100 main-body">
          <section className="float-start about-sections comon-short-parts w-100">
              <aside className="container">
-                 <div className="row row-cols-1 row-cols-lg-2 align-items-center">
+                 <div className="row row-cols-1 row-cols-md-2 flex-column-reverse align-items-center">
                     <div className="col">
                        <div className="ab-left">
                           <h2 className="comon-head"> Your workflow <span className="d-lg-block"> been never so fast </span> </h2>
@@ -56,7 +56,7 @@ export default async function Home() {
                        </div>
                     </div>
                     <div className="col">
-                       <figure className="m-0">
+                       <figure className="mt-3 m-md-0">
                            <Image loading="lazy" src="/musics.svg"
                                         alt="user"
                                         width={500}
@@ -72,7 +72,7 @@ export default async function Home() {
                 <h2 className="text-center comon-head"> Featured premium icon sets </h2>
                 <p className="text-center"> Download the perfection and largest unique icons drawn by hand. </p>
 
-                  <div className="row row-cols-1 row-cols-lg-3 gy-4 g-lg-4 mt-5">
+                  <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gy-4 g-lg-4 mt-5">
 
                     {icontypes.map((type) => (
                               <div className="col" key={type.id}>
@@ -107,7 +107,7 @@ export default async function Home() {
 
          <section className="float-start about-sections comon-short-parts w-100">
              <aside className="container">
-                 <div className="row row-cols-1 row-cols-lg-2 align-items-center">
+                 <div className="row row-cols-1 row-cols-md-2 align-items-center">
                     <div className="col">
                        <div className="ab-left">
                           <h2 className="comon-head"> All the style that <span className="d-lg-block"> you need! </span> </h2>
@@ -168,7 +168,7 @@ export default async function Home() {
              <div className="container">
                 <h2 className="text-center comon-head"> Professional Icon Set Features </h2>
                 <p className="text-center"> Download the perfection and largest unique icons drawn by hand. </p>
-                <div className="row row-cols-1 show-list04 row-cols-lg-3 gy-4 g-lg-4 mt-5 categort-list01">
+                <div className="row row-cols-1 row-cols-sm-2  justify-content-center justify-content-lg-between show-list04 row-cols-lg-3 gy-4 g-lg-4 mt-5 categort-list01">
 
                 {categorytypes.map((type) => (
                               <div className="col" key={type.id}>
@@ -203,13 +203,13 @@ export default async function Home() {
 
          <section className="float-start about-sections comon-short-parts mb-5 w-100">
              <aside className="container">
-                 <div className="row row-cols-1 row-cols-lg-2 align-items-center">
+                 <div className="row row-cols-1 flex-column-reverse row-cols-md-2 align-items-center">
                     <div className="col">
                        <div className="ab-left">
                           <h2 className="comon-head"> What’s New<span className="d-lg-block"> in Iconsguru </span> </h2>
                           <p className="col-lg-9 mt-2"> Level up your designs with our premium icons! Whether you need sleek, modern, or creative icons, we’ve got you covered.  </p>
                           <h5 className="mt-4"> Available Formats </h5>
-                          <ul className="p-0 d-flex align-items-center flex-wrap m-0 fe-list fe-list2 mt-4">
+                          <ul className="p-0 d-flex align-items-center flex-lg-wrap m-0 fe-list fe-list2 mt-4">
                             <li className="d-flex align-items-baseline">
                                 <h5 className="m-0"> PNG 
                                 </h5>
