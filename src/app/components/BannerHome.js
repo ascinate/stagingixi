@@ -46,8 +46,8 @@ function BannerHome({ totalIcons }) {
          <p className="text-center text-para1"> Download the perfection and largest unique icons drawn by hand. </p>
           <SerchInputes/>
          
-         <div className="favi-icons mt-4 col-lg-7 mx-auto d-flex align-items-center justify-content-center">
-             <p className="m-0">Favorite Icons: </p>
+         <div className="favi-icons mt-4 col-lg-7 mx-auto d-sm-flex align-items-center justify-content-center">
+             <p className="mb-3 m-md-0 text-center text-lg-start">Favorite Icons: </p>
              <ul className="d-flex align-items-center ms-3">
                 {favicons.map((icon) => (
                      <li key={icon.id}>
