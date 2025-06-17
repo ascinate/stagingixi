@@ -445,10 +445,12 @@ const [bgColor, setBgColor] = useState(null);
                             key={variation.id}
                             className="d-flex align-items-center justify-content-center w-75 icon-carousel"
                           >
+                          <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0 position-relative">
                             <div
                               className="svg-img d-grid"
                               dangerouslySetInnerHTML={{ __html: variation.icon_svg }}
                             />
+                            </Link>
                           </article>
                         ))}
                       </Slider>
