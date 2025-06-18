@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+
 import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
@@ -12,9 +13,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 
+
+
+
+
+
+
 export default function IconDetailPage() {
 
-
+const router = useRouter();
   const params = useParams();
   const slug = params?.slug;
   const id = slug?.split('_').pop();
@@ -955,8 +962,15 @@ const [bgColor, setBgColor] = useState(null);
               <div className="relatesd t-ind-icons d-block w-100">
                 <div className="row row-cols-1 row-cols-sm-3  row-cols-lg-6 gy-2 gy-lg-3">
                   {relatedIcons.map((icon) => (
-                    <article key={icon.Id} className="col">
-                      <Link href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0 position-relative">
+                    <article key={icon.Id} className="col" style={{ cursor: "pointer" }}>
+                      <div
+                        className="btn icons-list p-0 position-relative"
+                        onClick={() => {
+                          
+                          router.push(`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`, undefined, { shallow: true });
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                      >
                         {icon.type === "Animated" ? (
                           <img
                             src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
@@ -970,8 +984,9 @@ const [bgColor, setBgColor] = useState(null);
                             dangerouslySetInnerHTML={{ __html: icon.icon_svg }}
                           />
                         )}
-                      </Link>
+                      </div>
                     </article>
+
                   ))}
                 </div>
               </div>
