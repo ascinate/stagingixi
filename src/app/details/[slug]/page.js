@@ -46,7 +46,7 @@ const [bgColor, setBgColor] = useState(null);
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
-    initialSlide: 0,
+    initialSlide: 4,
     autoplaySpeed: 2000,
     pauseOnHover: true,
     responsive: [
@@ -64,8 +64,8 @@ const [bgColor, setBgColor] = useState(null);
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 2,
+          slidesToScroll: 2,
           infinite: true,
           arrows: true,
           dots: false
@@ -400,8 +400,6 @@ const [bgColor, setBgColor] = useState(null);
                       backgroundColor: bgColor !== null ? bgColor : isLightColor(color) ? "#000000" : "#eaf3fa",
                     }}
                   >
-
-
                   <div
                     className="d-table mx-auto"
                     style={{
@@ -431,8 +429,6 @@ const [bgColor, setBgColor] = useState(null);
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path></svg>
                   </button>
 
-
-
                 </div>
 
                 <div className="varitions-div d-block w-100 mt-4">
@@ -445,10 +441,17 @@ const [bgColor, setBgColor] = useState(null);
                             key={variation.id}
                             className="d-flex align-items-center justify-content-center w-75 icon-carousel"
                           >
-                            <div
+                        {variation.type==="Animated" ?(
+                            <img
+                        src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(variation.icon_svg)}`}
+                        alt={variation.icon_name}
+                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                      />):(   <div
                               className="svg-img d-grid"
                               dangerouslySetInnerHTML={{ __html: variation.icon_svg }}
                             />
+                          )}
+                         
                           </article>
                         ))}
                       </Slider>

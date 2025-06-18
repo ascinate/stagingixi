@@ -46,7 +46,7 @@ export default async function Home() {
    <main className="float-start w-100 main-body">
          <section className="float-start about-sections comon-short-parts w-100">
              <aside className="container">
-                 <div className="row row-cols-1 row-cols-md-2 flex-column-reverse align-items-center">
+                 <div className="row row-cols-1 row-cols-md-2 flex-column-reverse flex-lg-row-reverse align-items-center">
                     <div className="col">
                        <div className="ab-left">
                           <h2 className="comon-head"> Your workflow <span className="d-lg-block"> been never so fast </span> </h2>
