@@ -129,15 +129,11 @@ export default function CategorySearchPage() {
                               />
                             ) : (
                                  <span
-                                  aria-label={`${icon.icon_name} icon`}
-                                  role="img"
-                                  dangerouslySetInnerHTML={{
-                                    __html: icon.icon_svg.replace(
-                                      '<svg',
-                                      `<svg><title>${icon.icon_name} icon</title>`
-                                    ),
-                                  }}
-                                ></span>
+                              aria-label={`${icon.icon_name} icon`}
+                              role="img"
+                              dangerouslySetInnerHTML={{ __html: icon.icon_svg }}
+                            ></span>
+
                             )}
                           </Link>
                           <div className="hover-divs">
