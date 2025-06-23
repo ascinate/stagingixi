@@ -7,31 +7,18 @@ import { useEffect, useState } from "react";
 import SidebarFilter from "@/app/components/SidebarFilter";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams, useSearchParams, useRouter, usePathname } from 'next/navigation'; // ✅ added
+import { useParams } from 'next/navigation';
 
 export default function CategorySearchPage() {
   const params = useParams();
   const category = params.category;
 
-  const searchParams = useSearchParams(); // ✅ added
-  const router = useRouter(); // ✅ added
-  const pathname = usePathname(); // ✅ added
-
-  const currentPage = parseInt(searchParams.get('page') || '1', 10); // ✅ added
-  const [page, setPage] = useState(currentPage); // ✅ updated
-
+  const [page, setPage] = useState(1);
   const [icons, setIcons] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({ categories: [category], colors: [], types: [] });
   const [totalIcons, setTotalIcons] = useState(0);
-
-  // ✅ sync URL when page changes
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", page);
-    router.push(`${pathname}?${params.toString()}`);
-  }, [page]);
 
   useEffect(() => {
     const fetchIcons = async () => {
@@ -68,6 +55,9 @@ export default function CategorySearchPage() {
 
     fetchIcons();
   }, [page, filters]);
+
+
+
 
   return (
     <>
