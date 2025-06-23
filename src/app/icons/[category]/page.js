@@ -149,7 +149,6 @@ export default function CategorySearchPage() {
                                   dangerouslySetInnerHTML={{ __html: icon.icon_svg }}
                                 ></span>
 
-
                                 )}
                                 
                               </Link>
