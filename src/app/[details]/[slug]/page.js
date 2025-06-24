@@ -972,7 +972,7 @@ const [bgColor, setBgColor] = useState(null);
                         className="btn icons-list p-0 position-relative"
                         onClick={() => {
 
-                          router.push(`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`, undefined, { shallow: true });
+                          router.push(`/${icon.icon_category.toLowerCase()}/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`, undefined, { shallow: true });
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                       >
