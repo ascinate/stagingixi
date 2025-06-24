@@ -108,7 +108,7 @@ export default function CategorySearchPage() {
                       icons.map((icon) => (
                         <article key={icon.Id} className="svg-item position-relative">
                           <Link
-                            href={`/details/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} // ✅ added page param
+                            href={`/${icon.icon_category.toLowerCase()}/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} // ✅ added page param
                             className="btn icons-list p-0"
                           >
                             {icon.type === 'Animated' ? (
