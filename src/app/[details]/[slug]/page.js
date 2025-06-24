@@ -449,7 +449,7 @@ const [bgColor, setBgColor] = useState(null);
                             className="d-flex align-items-center justify-content-center w-75 icon-carousel"
                             onClick={() => {
 
-                          router.push(`/details/${variation.icon_name.replace(/\s+/g, "-").toLowerCase()}_${variation.Id}`, undefined, { shallow: true });
+                          router.push(`/${variation.icon_category.toLowerCase()}/${variation.icon_name.replace(/\s+/g, "-").toLowerCase()}_${variation.Id}`, undefined, { shallow: true });
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                           >
