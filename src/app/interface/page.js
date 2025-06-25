@@ -78,7 +78,8 @@ export default function InterfaceIconsPage() {
                     {icons.map((icon) => (
                       
                         <article className="svg-item position-relative" key={icon.Id}>
-                          <Link href={`/${icon.icon_category.toLowerCase()}/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0">
+                             <Link href={`/${icon.icon_category.toLowerCase()}/${icon.slug}`}
+                                  className="btn icons-list p-0">
                             <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
                           </Link>
                         </article>

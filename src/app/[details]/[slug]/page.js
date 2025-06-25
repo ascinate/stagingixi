@@ -23,8 +23,8 @@ export default function IconDetailPage() {
 
 const router = useRouter();
   const params = useParams();
-  const slug = params?.slug;
-  const id = slug?.split('_').pop();
+const { slug } = params;
+
   const [icon, setIcon] = useState(null);
   const [color, setColor] = useState(null); 
 const [bgColor, setBgColor] = useState(null);
@@ -38,6 +38,38 @@ const [bgColor, setBgColor] = useState(null);
   const [showCustom, setShowCustom] = useState(false);
 
 
+const [dimensions, setDimensions] = useState("1024 X 1024 px");
+  const [fileSize, setFileSize] = useState("N/A");
+
+  useEffect(() => {
+    if (!icon?.icon_svg) return;
+
+    // 1. Extract width/height from SVG
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(icon.icon_svg, "image/svg+xml");
+    const svgTag = svgDoc.querySelector("svg");
+
+    let width = svgTag?.getAttribute("width");
+    let height = svgTag?.getAttribute("height");
+
+    // Fallback if width/height are not set directly
+    if (!width || !height) {
+      const viewBox = svgTag?.getAttribute("viewBox");
+      if (viewBox) {
+        const [, , w, h] = viewBox.split(" ");
+        width = w;
+        height = h;
+      }
+    }
+
+    if (width && height) {
+      setDimensions(`${width} X ${height} px`);
+    }
+
+    // 2. Calculate approximate SVG size
+    const sizeInKB = new Blob([icon.icon_svg], { type: "image/svg+xml" }).size / 1024;
+    setFileSize(`${Math.ceil(sizeInKB)} KB`);
+  }, [icon]);
 
 
 
@@ -133,11 +165,12 @@ const [bgColor, setBgColor] = useState(null);
 
 
   useEffect(() => {
-    if (!id) return;
+
+    
 
     const fetchIcon = async () => {
       try {
-        const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon/${id}`);
+        const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-by-slug/${slug}`);
         const data = await res.json();
         setIcon(data.icons);
       } catch (err) {
@@ -146,54 +179,55 @@ const [bgColor, setBgColor] = useState(null);
     };
 
     fetchIcon();
-  }, [id]);
+  }, [slug]);
 
   const uploadIconAsImage = async () => {
-    if (icon.type === "Animated") {
-      const gifurl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
-      return gifurl;
-    }
-    else {
-      const svgString = icon.icon_svg;
+      if (icon.type === "Animated") {
+        const gifurl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
+        return gifurl;
+      }
+      else {
+        const svgString = icon.icon_svg;
 
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
 
-      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(svgBlob);
+        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
 
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = async () => {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0);
-          URL.revokeObjectURL(url);
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = async () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
 
-          canvas.toBlob(async (blob) => {
-            const formData = new FormData();
-            formData.append('image', blob, 'shared-image.png');
+            canvas.toBlob(async (blob) => {
+              const formData = new FormData();
+              formData.append('image', blob, 'shared-image.png');
 
-            try {
-              const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
-                method: 'POST',
-                body: formData,
-              });
+              try {
+                const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
+                  method: 'POST',
+                  body: formData,
+                });
 
-              const data = await res.json();
-              resolve(data.url);
-            } catch (err) {
-              reject(err);
-            }
-          }, 'image/png');
-        };
+                const data = await res.json();
+                resolve(data.url);
+              } catch (err) {
+                reject(err);
+              }
+            }, 'image/png');
+          };
 
-        img.onerror = reject;
-        img.src = url;
-      });
-    }
+          img.onerror = reject;
+          img.src = url;
+        });
+      }
 
-  };
+    };
+
   const shareToPinterest = async () => {
     try {
       const imageUrl = await uploadIconAsImage();
@@ -229,9 +263,10 @@ const [bgColor, setBgColor] = useState(null);
 
 
   useEffect(() => {
+    if (!icon || !icon.Id) return;
     const fetchRelatedIcons = async () => {
       try {
-        const res = await fetch(`https://iconsguru.ascinatetech.com/api/related-icons/${id}`);
+        const res = await fetch(`https://iconsguru.ascinatetech.com/api/related-icons/${icon.Id}`);
         const data = await res.json();
         console.log("Related fetch icon:", data)
         setRelatedIcons(data.icons || []);
@@ -240,26 +275,25 @@ const [bgColor, setBgColor] = useState(null);
       }
     };
 
-    if (id) {
+  
       fetchRelatedIcons();
-    }
-  }, [id]);
+  
+  }, [icon?.Id]);
 
   useEffect(() => {
+    if (!icon || !icon.Id) return;
   const fetchVariations = async () => {
     try {
-      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-variations/${id}`);
+      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-variations/${icon.Id}`);
       const data = await res.json();
       setVariations(data.variations || []);
     } catch (err) {
       console.error("Variation fetch error:", err);
     }
   };
-
-  if (id) {
     fetchVariations();
-  }
-}, [id]);
+
+}, [icon?.Id]);
 
 
 
@@ -301,40 +335,59 @@ const [bgColor, setBgColor] = useState(null);
     return luminance > 200;
   };
 
+const svgToCanvasDownload = async (type = "png") => {
+  if (!icon || !icon.icon_svg) {
+    console.error("Icon data is missing");
+    return;
+  }
 
-  const svgToCanvasDownload = (type = "png") => {
-    const finalSvg = applyColorAndSize(icon.icon_svg);
-    const blob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
+  try {
+    // Track download
+    await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+      method: "POST",
+    });
+  } catch (err) {
+    console.warn("Download count API failed", err);
+  }
 
-    const img = new Image();
-    img.onload = async () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, size, size);
-      ctx.drawImage(img, 0, 0, size, size);
+  const finalSvg = applyColorAndSize(icon.icon_svg);
+  const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(svgBlob);
+
+  const img = new window.Image(); // ✅ Use native Image constructor
+  img.crossOrigin = "anonymous";
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, size, size);
+    ctx.drawImage(img, 0, 0, size, size);
+
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        console.error("Canvas export failed");
+        return;
+      }
 
       const link = document.createElement("a");
       link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
-      link.href = canvas.toDataURL(`image/${type}`);
+      link.href = URL.createObjectURL(blob);
       link.click();
 
-      URL.revokeObjectURL(url);
-
-      // ✅ Call the download count API
-      try {
-        await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-          method: 'POST',
-        });
-      } catch (err) {
-        console.error("Download count error:", err);
-      }
-    };
-
-    img.src = url;
+      URL.revokeObjectURL(link.href);
+    }, `image/${type}`);
   };
+
+  img.onerror = (err) => {
+    console.error("Image load failed", err);
+    URL.revokeObjectURL(url);
+  };
+
+  img.src = url;
+};
+
+
 
 
   const handleDownloadSVG = async () => {
@@ -379,8 +432,7 @@ const [bgColor, setBgColor] = useState(null);
 
   const renderedSvg = applyColorAndSize(icon.icon_svg);
 
-
-
+ 
 
 
 
@@ -449,7 +501,7 @@ const [bgColor, setBgColor] = useState(null);
                             className="d-flex align-items-center justify-content-center w-75 icon-carousel"
                             onClick={() => {
 
-                          router.push(`/${variation.icon_category.toLowerCase()}/${variation.icon_name.replace(/\s+/g, "-").toLowerCase()}_${variation.Id}`, undefined, { shallow: true });
+                          router.push(`/${variation.icon_category.toLowerCase()}/${variation.slug}`, undefined, { shallow: true });
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                           >
@@ -761,18 +813,16 @@ const [bgColor, setBgColor] = useState(null);
                           <li>Dimensions</li>
                           <li>File size</li>
                           <li>Category</li>
-                          <li>Tags</li>
+                       
                         </ul>
                       </div>
                       <div>
                         <ul className="icon-detail">
-                          <li>SVG,PNG,JPG</li>
-                          <li>1024 X 1024 px</li>
-                          <li>12 KB</li>
-                          <li>Animal</li>
-                          <li>
-                            <span className="iconbadge">bird</span>
-                          </li>
+                           <li>{icon?.type === "Animated" ? "GIF" : "SVG, PNG, JPG"}</li>
+                            <li>{dimensions}</li>
+                            <li>{fileSize}</li>
+                            <li>{icon?.icon_category || "Uncategorized"}</li>
+                                          
                         </ul>
                       </div>
                     </div>
@@ -972,7 +1022,7 @@ const [bgColor, setBgColor] = useState(null);
                         className="btn icons-list p-0 position-relative"
                         onClick={() => {
 
-                          router.push(`/${icon.icon_category.toLowerCase()}/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`, undefined, { shallow: true });
+                          router.push(`/${icon.icon_category.toLowerCase()}/${icon.slug}`, undefined, { shallow: true });
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                       >

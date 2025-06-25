@@ -135,7 +135,11 @@ export default function CategorySearchPage() {
                           icons.map((icon) => (
 
                             <article key={icon.Id} className="svg-item position-relative">
-                              <Link href={`/${icon.icon_category.toLowerCase()}/${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}_${icon.Id}`} className="btn icons-list p-0">
+                              <Link
+                                  href={`/${icon.icon_category.toLowerCase()}/${icon.slug}`}
+                                  className="btn icons-list p-0"
+                                >
+
                                {icon.type === "Animated" ? (
                                   <img
                                     src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
