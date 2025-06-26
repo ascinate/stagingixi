@@ -4,6 +4,7 @@ import { AutoComplete } from 'primereact/autocomplete';
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import SerchInputes from "./SerchInputes";
+import Image from "next/image";
 
 
 
@@ -39,10 +40,14 @@ function BannerHome({ totalIcons }) {
   return (
    
 
-     <section className="float-start w-100 banner-parts01 d-grid align-content-center">
+  <section className="float-start position-relative w-100 banner-parts01 d-grid align-content-center">
      <div className="container">
-         <h5 className="text-center sub-headings">  {totalIcons.toLocaleString()} FREE ICONS </h5>
-         <h2 className="text-center">We Deliver the World’s Best Icons</h2>
+         <div className="mx-auto updates-icons01  d-flex align-items-center">
+            <span className="updates01"> Update </span>
+            <h1 className="text-center sub-headings mb-0"> 
+           <strong> {totalIcons.toLocaleString()} </strong> FREE ICONS </h1>
+          </div>
+         <h2 className="text-center">We Deliver <span className="text-colors"> the World's </span> Best Icons</h2>
          <p className="text-center text-para1"> Download the perfection and largest unique icons drawn by hand. </p>
           <SerchInputes/>
          
@@ -60,6 +65,20 @@ function BannerHome({ totalIcons }) {
              </ul>
          </div>
      </div>
+     <div className="ima-ban015">
+        <Image src="/rockets.png" width={230} height={156} alt="nam"/>
+     </div>
+
+     <div className="icon-nams015">
+       <Image src="/icon01-ani.png" className="bounce2" width={60} height={62} alt="nam"/>
+     </div>
+     <div className="icon-nams016">
+       <Image src="/flags-icon01.svg" className="fade-in-down" width={33} height={39} alt="nam"/>
+     </div>
+     <div className="icon-nams017">
+       <Image src="/crm-pen01.svg" className="wobble" width={45} height={43} alt="nam"/>
+     </div>
+
   </section>
   );
 }
