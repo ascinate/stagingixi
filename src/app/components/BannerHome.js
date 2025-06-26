@@ -47,7 +47,7 @@ function BannerHome({ totalIcons }) {
             <h1 className="text-center sub-headings mb-0"> 
            <strong> {totalIcons.toLocaleString()} </strong> FREE ICONS </h1>
           </div>
-         <h2 className="text-center">We Deliver <span className="text-colors"> the Worlds </span> Best Icons</h2>
+         <h2 className="text-center">We Deliver <span className="text-colors"> the World&#39;s </span> Best Icons</h2>
          <p className="text-center text-para1"> Download the perfection and largest unique icons drawn by hand. </p>
           <SerchInputes/>
          
@@ -70,7 +70,7 @@ function BannerHome({ totalIcons }) {
      </div>
 
      <div className="icon-nams015">
-       <Image src="/icon01-ani.png" className="bounce2" width={60} height={62} alt="nam"/>
+       <Image src="/icon01-ani.webp" className="bounce2" width={60} height={62} alt="nam"/>
      </div>
      <div className="icon-nams016">
        <Image src="/flags-icon01.svg" className="fade-in-down" width={33} height={39} alt="nam"/>
