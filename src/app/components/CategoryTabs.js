@@ -55,20 +55,16 @@ export default function CategoryTabs() {
         <div className="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
           {icons.map((icon) => (
             <article key={icon.Id} className="svg-item  position-relative">
-                               <Link
-                                  href={`/${icon.icon_category.toLowerCase()}/${icon.slug}`}
-                                  className="btn icons-list p-0"
-                                >
-                               {icon.type === "Animated" ? (
-                                  <img
-                                    src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
-                                    alt={icon.icon_name}
-                                   style={{ height: "100%",width: "100%" }}
-                                  />
-                                ) : (
-                                <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
-                                )}
-                              </Link>
+              <Link href={`/${icon.icon_category.toLowerCase()}/${icon.slug}`} className="btn icons-list p-0" >
+                   {icon.type === "Animated" ? (
+                      <img src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(icon.icon_svg)}`}
+                         alt={icon.icon_name}
+                         style={{ height: "100%",width: "100%" }}
+                      />
+                     ) : (
+                    <span dangerouslySetInnerHTML={{ __html: icon.icon_svg }}></span>
+                     )}
+             </Link>
                               
            </article>
           ))}
