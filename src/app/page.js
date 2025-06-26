@@ -8,7 +8,7 @@ import Link from "next/link";
 import Footer from "./components/Footer";
 import Head from "next/head";
 
-
+import CategoryTabs from './components/CategoryTabs';
 
 async function getTotalIcons() {
   try {
@@ -200,7 +200,7 @@ export default async function Home() {
              </div>
          </section>
           
-
+        <CategoryTabs />
          <section className="float-start about-sections comon-short-parts mb-5 w-100">
              <aside className="container">
                  <div className="row row-cols-1 flex-column-reverse row-cols-md-2 align-items-center">
