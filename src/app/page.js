@@ -44,35 +44,28 @@ export default async function Home() {
    <BannerHome totalIcons={totalIcons} />
 
    <main className="float-start w-100 main-body">
-         <section className="float-start about-sections comon-short-parts w-100">
-             <aside className="container">
-                 <div className="row row-cols-1 row-cols-md-2 flex-column-reverse flex-lg-row-reverse align-items-center">
-                    <div className="col">
-                       <div className="ab-left">
-                          <h2 className="comon-head"> Your workflow <span className="d-lg-block"> been never so fast </span> </h2>
-                          <p className="col-lg-8 mt-2"> We’ve developed from scratch our tools to browse, customize and quickly use our assets. Drop our icons and. </p>
-                          <Link href='/icons' className="btn btn-expolre mt-3"> Explore now </Link>
-                          
-                       </div>
-                    </div>
-                    <div className="col">
-                       <figure className="mt-3 m-md-0">
-                           <Image loading="lazy" src="/musics.svg"
-                                        alt="user"
-                                        width={500}
-                                        height={383} />
-                       </figure>
-                    </div>
-                 </div>
-             </aside>
-         </section>
+         
 
          <section className="float-start fetures-acountins-sections w-100">
             <div className="container">
-                <h2 className="text-center comon-head"> Featured premium icon sets </h2>
-                <p className="text-center"> Download the perfection and largest unique icons drawn by hand. </p>
+              <div className="row align-items-center">
+                 <div className="col-lg-9">
+                     <h2 className="comon-head mb-0 page-haeding01 mb-2"> Top <span> Icon </span> packages </h2>
+                     <p> Download the perfection and largest unique icons drawn by hand. </p>
+                 </div>
+                 <div className="col-lg-3">
+                     <Link href="/" className="btn d-table btn-mores ms-auto">More packages
+                       <span className="ms-2">
+                          <svg width="16" height="16" viewBox="0 0 136 84" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M91.6249 1.17157C93.187 -0.390524 95.7197 -0.390524 97.2818 1.17157L134.828 38.7182C136.391 40.2803 136.391 42.813 134.828 44.3751L97.2818 81.9218C95.7197 83.4839 93.187 83.4839 91.6249 81.9218C90.0628 80.3597 90.0628 77.827 91.6249 76.2649L122.343 45.5467H4C1.79086 45.5467 0 43.7558 0 41.5467C0 39.3375 1.79086 37.5467 4 37.5467H122.343L91.6249 6.82843C90.0628 5.26633 90.0628 2.73367 91.6249 1.17157Z" fill="#ffffff"/>
+                          </svg>
+                       </span>
+                     </Link>
+                 </div>
+              </div>
+                
 
-                  <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gy-4 g-lg-4 mt-5">
+                  <div className="row cats-div01 row-cols-1 row-cols-sm-2 row-cols-lg-4 gy-4 g-lg-4 mt-3">
 
                     {icontypes.map((type) => (
                               <div className="col" key={type.id}>
@@ -105,62 +98,16 @@ export default async function Home() {
             </div>
          </section>
 
-         <section className="float-start about-sections comon-short-parts w-100">
-             <aside className="container">
-                 <div className="row row-cols-1 row-cols-md-2 align-items-center">
-                    <div className="col">
-                       <div className="ab-left">
-                          <h2 className="comon-head"> All the style that <span className="d-lg-block"> you need! </span> </h2>
-                          <p className="col-lg-8 mt-2"> We’ve developed from scratch our tools to browse, customize and quickly us.  </p>
-                          <ul className="p-0 m-0 fe-list mt-4">
-                            <li className="d-flex align-items-baseline">
-                                <span className="icoh">
-                                  <Image loading="lazy" src="/flag.svg"
-                                        alt="user"
-                                        width={32}
-                                        height={32} />
-                                
-                                </span>
-                                <h5 className="ms-3"> Line black 
-                                  <small className="d-block"> We offer 3 style of line icons  </small> 
-                                </h5>
-                            </li>
-                            <li className="d-flex align-items-baseline">
-                                <span className="icoh">
-                                  <Image loading="lazy" src="/fill-b.svg"
-                                        alt="user"
-                                        width={32}
-                                        height={32} />
-                                
-                                </span>
-                                <h5 className="ms-3"> Fill black 
-                                  <small className="d-block"> This style is great for you project  </small> 
-                                </h5>
-                            </li>
-                            <li className="d-flex align-items-baseline">
-                                <span className="icoh">
-                                  <Image loading="lazy" src="/color.svg"
-                                        alt="user"
-                                        width={32}
-                                        height={32} />
-                                
-                                </span>
-                                <h5 className="ms-3"> Colors 
-                                  <small className="d-block"> We offer 5 style of line icons   </small> 
-                                </h5>
-                            </li>
-                          </ul>
-                       </div>
-                    </div>
-                    <div className="col">
-                       <figure className="m-0">
-                           <Image loading="lazy" src="/style-icon.svg"
-                                        alt="user"
-                                        width={500}
-                                        height={383} />
-                       </figure>
-                    </div>
-                 </div>
+         <section className="float-start libary-parts w-100">
+             <aside className="container position-relative">
+                  <div className="comon-heading-sec d-block w-100 text-center">
+                      <h5 className="bg-white sub-libray d-table mx-auto">Icons Library</h5>
+                      <h2 className="text-white"> Browse Icons Effortlessly with Modern UI </h2>
+                      <p className="text-white"> Your Icons, Your Way – Search, Tweak, Download in Seconds </p>
+                  </div>
+                  <figure>
+                     <Image src="/broswer-divs01.webp" width={3563} height={1709} alt="fm"/>
+                  </figure>
              </aside>
          </section>
 

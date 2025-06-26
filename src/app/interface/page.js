@@ -38,7 +38,7 @@ export default function InterfaceIconsPage() {
       </Head>
 
       <NavicationHome />
-      <section className="sub-banners d-inline-block w-100 float-start mt-2">
+      <section className="sub-banners icon-cate d-inline-block w-100 float-start mt-2">
                 <div className="container">
                     <div className="row align-items-center">
                       <div className="col-lg-6">

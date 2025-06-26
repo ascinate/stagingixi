@@ -1301,10 +1301,8 @@ button.btn.btn-sec.ms-3 svg{
 .relatesd .icons-list:hover::before {
   opacity: 1;
 }
-.sub-banners{
-  background: #f3f3f3;
-  border-radius: 7px;
-  margin-top: -30px;
+.sub-banners.icon-cate {
+  margin-top: 70px !important;
 }
 .sub-banners .container{
 
@@ -1313,6 +1311,98 @@ button.btn.btn-sec.ms-3 svg{
   font-size: 36px;
   font-weight: 800;
   color: var(--head-color);
+}
+.btn-mores{
+  background: var(--primaycolor) !important;
+  color: var(--background) !important;
+  padding: 10px 25px !important;
+  box-shadow: #ff47308a 3px 13px 29px;
+}
+.btn-mores:focus{
+  box-shadow: none !important;
+}
+.btn-mores:hover{
+  background: var(--foreground) !important;
+   box-shadow: #0a152f69 3px 13px 29px;
+}
+.btn-mores span{
+  width: 16px;
+  display: inline-block;
+}
+.btn-mores svg{
+  width: 18px;
+  height: 18px;
+}
+.page-haeding01{
+  font-size: 30px;
+}
+.page-haeding01 span{
+  color: var(--primaycolor);
+}
+.cats-div01{
+
+}
+.cats-div01 > div:first-child .comon-types01 {
+  background: #e8eee3;
+}
+.cats-div01 > div:nth-child(2) .comon-types01 {
+  background: #dce4e8;
+}
+.cats-div01 > div:nth-child(3) .comon-types01 {
+  background: #f6efe4;
+}
+.cats-div01 > div:nth-child(4) .comon-types01 {
+  background: #fdebd1;
+}
+.cats-div01 > div:nth-child(5) .comon-types01 {
+  background: #f5fd69;
+}
+.cats-div01 > div:nth-child(6) .comon-types01 {
+  background: #fde4e3;
+}
+.cats-div01 > div:nth-child(7) .comon-types01 {
+  background: #f9f9f9;
+}
+.cats-div01 > div:nth-child(8) .comon-types01 {
+  background: #d6ffe9;
+}
+
+.sub-libray{
+  background: var(--background);
+  border-radius: 50px;
+  color: var(--head-color);
+  font-size: 14px;
+  padding: 10px 25px;
+}
+.libary-parts{
+  padding: 90px 0 90px 0;
+}
+.libary-parts figure{
+  width: 100%;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top:0;
+}
+.libary-parts figure img{
+  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+}
+.libary-parts .comon-heading-sec{
+  position: relative;
+  z-index: 2;
+  top: 60px;
+}
+.libary-parts .comon-heading-sec h2{
+  font-size: 40px;
+  font-weight: 800;
+  margin-top: 12px;
+  margin-bottom: 15px;
+}
+.libary-parts .comon-heading-sec p{
+  font-size: 18px;
 }
 @media (width >= 1200px) {
   .comon-rows .row > div.col {
