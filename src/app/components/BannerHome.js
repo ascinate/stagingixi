@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link";
-import { AutoComplete } from 'primereact/autocomplete';
+
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import SerchInputes from "./SerchInputes";
@@ -47,7 +47,7 @@ function BannerHome({ totalIcons }) {
             <h1 className="text-center sub-headings mb-0"> 
            <strong> {totalIcons.toLocaleString()} </strong> FREE ICONS </h1>
           </div>
-         <h2 className="text-center">We Deliver <span className="text-colors"> the World's </span> Best Icons</h2>
+         <h2 className="text-center">We Deliver <span className="text-colors"> the Worlds </span> Best Icons</h2>
          <p className="text-center text-para1"> Download the perfection and largest unique icons drawn by hand. </p>
           <SerchInputes/>
          
