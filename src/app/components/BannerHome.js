@@ -66,7 +66,7 @@ function BannerHome({ totalIcons }) {
          </div>
      </div>
      <div className="ima-ban015">
-        <Image src="/rockets.png" width={230} height={156} alt="nam"/>
+        <Image src="/rockets.webp" width={230} height={156} alt="nam"/>
      </div>
 
      <div className="icon-nams015">
