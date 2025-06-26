@@ -165,9 +165,6 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
 
 
   useEffect(() => {
-
-    
-
     const fetchIcon = async () => {
       try {
         const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-by-slug/${slug}`);
