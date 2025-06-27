@@ -13,12 +13,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 
-
-
-
-
-
-
 export default function IconDetailPage() {
 
 const router = useRouter();
@@ -70,10 +64,6 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
     const sizeInKB = new Blob([icon.icon_svg], { type: "image/svg+xml" }).size / 1024;
     setFileSize(`${Math.ceil(sizeInKB)} KB`);
   }, [icon]);
-
-
-
-
 
 
   var settings = {
@@ -145,8 +135,6 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
     ]
   };
 
-
-
   const handleCopy = async () => {
     navigator.clipboard.writeText(renderedSvg);
     setShowToast(true);
@@ -160,9 +148,6 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
       console.error("Download count error:", err);
     }
   };
-
-
-
 
   useEffect(() => {
     const fetchIcon = async () => {
@@ -254,10 +239,6 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
     }
 
   };
-
-
-
-
 
   useEffect(() => {
     if (!icon || !icon.Id) return;
@@ -453,12 +434,12 @@ const getSchema = (icon) => {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": name,
-    "image": `data:image/svg+xml;utf8,${encodeURIComponent(icon.icon_svg)}`,
+    "image": "data:image/svg+xml;utf8,${encodeURIComponent(icon.icon_svg)}",
     "description": description,
     "sku": icon.id,
     "offers": {
       "@type": "Offer",
-      "url": `https://iconsguru.com/icon/${icon.slug}`,
+      "url": "https://iconsguru.com/icon/${icon.slug}",
       "price": "0.00",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock"
