@@ -46,6 +46,11 @@ function SerchInputes({ totalIcons }) {
         onChange={(e) => setValue(e.value)}
         className="form-control w-full"
         loading={false}
+         onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearchClick();
+            }
+          }}
         />
          <button className="btn btn-search" onClick={handleSearchClick}>
             Search{" "}
