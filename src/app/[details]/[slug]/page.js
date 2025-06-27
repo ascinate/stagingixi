@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-
+import Head from "next/head";
 import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
@@ -430,11 +430,60 @@ const svgToCanvasDownload = async (type = "png") => {
   const renderedSvg = applyColorAndSize(icon.icon_svg);
 
  
+const getSchema = (icon) => {
+  // Capitalize first letter of each word
+  const capitalize = (str) =>
+    str?.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const category = capitalize(icon.icon_category || '');
+  const type = capitalize(icon.type || '');
+  const name = capitalize(icon.icon_name || 'Icon');
+   const rawTags = icon.tags;
+  const tagsArray = Array.isArray(rawTags)
+    ? rawTags
+    : typeof rawTags === "string"
+      ? rawTags.split(',').map(tag => tag.trim())
+      : [];
+  const tags = tagsArray.length ? tagsArray.join(', ') : '';
+
+
+  const description = `Download free ${type} ${name} in ${category} category${tags ? ` with tags: ${tags}` : ''}.`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": name,
+    "image": `data:image/svg+xml;utf8,${encodeURIComponent(icon.icon_svg)}`,
+    "description": description,
+    "sku": icon.id,
+    "offers": {
+      "@type": "Offer",
+      "url": `https://iconsguru.com/icon/${icon.slug}`,
+      "price": "0.00",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "isAccessibleForFree": true,
+    "license": "https://iconsguru.com/license"
+  };
+};
 
 
 
   return (
     <>
+     {/* ✅ Inject SEO schema dynamically only if icon is loaded */}
+        {icon && (
+      <Head>
+        <title>{icon.icon_name} - Free SVG Icon</title>
+        <meta name="description" content={`Download free ${icon.icon_name} icon in SVG, PNG, WebP format.`} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getSchema(icon)) }}
+        />
+      </Head>
+    )}
+
       <NavicationHome />
       <main className="details-body-parts lisu-lisn-div01 float-start w-100">
         <div className="container">
