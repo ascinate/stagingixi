@@ -6,11 +6,7 @@ import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
-import { headers } from 'next/headers';
 
-const host = headers().get('host');
-const protocol = host?.includes('localhost') ? 'http' : 'https';
-const baseUrl = `${protocol}://${host}`;
 
 //slick
 import Slider from "react-slick";
@@ -444,7 +440,7 @@ const getSchema = (icon) => {
     "sku": icon.id,
     "offers": {
       "@type": "Offer",
-      "url": "${baseUrl}/icon/${icon.slug}",
+      "url": "https://iconsguru.com/icon/${icon.slug}",
       "price": "0.00",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock"
