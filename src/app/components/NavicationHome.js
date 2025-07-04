@@ -58,7 +58,7 @@ function NavicationHome(){
                      <Link href='/whyus' className="nav-link me-3 why-menu"> Why Us </Link>
                         {user ?(
                             <>
-                            <span className="me-2">Hi, {user.email}</span>
+                            <span className="me-2">Hi&#44; {user.email}</span>
                                         <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">
                                             Logout
                                         </button>
