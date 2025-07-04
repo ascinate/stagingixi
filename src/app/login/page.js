@@ -15,6 +15,16 @@ function Login() {
   const [isVisible, setIsVisible] = useState(true);
   const [hiddend, setHiddend] = useState(false);
 
+   useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    const user = localStorage.getItem("user");
+    if (token && user) {
+      setMessage("You are already logged in.");
+      // Optionally: redirect
+      // router.push("/dashboard");
+    }
+  }, []);
+
   const hideVisiblLogin = () => {
     setIsVisible((prev) => !prev);
     setHiddend((prev) => !prev);
@@ -39,6 +49,10 @@ function Login() {
       const data = await response.json();
       if (response.ok) {
         setMessage("Login successful!");
+         localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        console.log("User:", data.user);
+        console.log("Token:", data.access_token);
       } else {
         setMessage(data.message || "Login failed.");
       }
@@ -62,6 +76,8 @@ function Login() {
   
       if (res.ok) {
         setMessage("Login successful!");
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         console.log("User:", data.user);
         console.log("Token:", data.access_token);
 
