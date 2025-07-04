@@ -1,6 +1,7 @@
+"use client"
 import Link from "next/link";
 import Image from "next/image";
-import Form from 'next/form';
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
