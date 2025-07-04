@@ -20,8 +20,7 @@ function Login() {
     const user = localStorage.getItem("user");
     if (token && user) {
       setMessage("You are already logged in.");
-      // Optionally: redirect
-      // router.push("/dashboard");
+      router.push("/");
     }
   }, []);
 
