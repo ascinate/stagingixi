@@ -6,8 +6,10 @@ import Script from "next/script";
 import Form from "next/form";
 import Image from "next/image";
 import Footer from "../components/Footer";
+import { useRouter } from "next/navigation";
 
 function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -81,6 +83,7 @@ function Login() {
         console.log("Token:", data.access_token);
 
         // handle session or redirect
+        router.push("/");
       } else {
         setMessage(data.message || "Google login failed.");
       }
