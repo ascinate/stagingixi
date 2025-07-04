@@ -369,22 +369,28 @@ const svgToCanvasDownload = async (type = "png") => {
 
 
 
-  const handleDownloadSVG = async () => {
-    try {
-      await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-        method: 'POST',
-      });
+const handleDownloadSVG = async () => {
+  try {
+    const token = localStorage.getItem("access_token");
 
-      const svg = applyColorAndSize(icon.icon_svg);
-      const blob = new Blob([svg], { type: "image/svg+xml" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
-      link.click();
-    } catch (error) {
-      console.error("Download tracking failed", error);
-    }
-  };
+    await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    const svg = applyColorAndSize(icon.icon_svg);
+    const blob = new Blob([svg], { type: "image/svg+xml" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
+    link.click();
+  } catch (error) {
+    console.error("Download tracking failed", error);
+  }
+};
+
 
   const handleDownloadGIF = async () => {
     const gifUrl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;

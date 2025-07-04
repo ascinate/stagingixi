@@ -79,9 +79,6 @@ function Login() {
         setMessage("Login successful!");
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        console.log("User:", data.user);
-        console.log("Token:", data.access_token);
-
         // handle session or redirect
         router.push("/");
       } else {
