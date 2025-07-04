@@ -59,8 +59,12 @@ function Login() {
       });
 
       const data = await res.json();
+  
       if (res.ok) {
         setMessage("Login successful!");
+        console.log("User:", data.user);
+        console.log("Token:", data.access_token);
+
         // handle session or redirect
       } else {
         setMessage(data.message || "Google login failed.");
