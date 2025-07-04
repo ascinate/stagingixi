@@ -59,7 +59,7 @@ function NavicationHome(){
                      <Link href='/whyus' className="nav-link me-3 why-menu"> Why Us </Link>
                         {user ?(
                             <>
-                            <span className="me-2 why-menu">Hi&#44; {user.email}</span>
+                            <span className="me-2 why-menu">Hi&#44; {user.email.split('@')[0].trim().replace(/\b\w/g, c => c.toUpperCase())}</span>
                                         <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">
                                             Logout
                                         </button>
