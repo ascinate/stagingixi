@@ -322,8 +322,12 @@ const svgToCanvasDownload = async (type = "png") => {
 
   try {
     // Track download
+    const token = localStorage.getItem("access_token");
     await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
       method: "POST",
+       headers: {
+        'Authorization': `Bearer ${token}`,
+      },
     });
   } catch (err) {
     console.warn("Download count API failed", err);
