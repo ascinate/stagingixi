@@ -52,8 +52,7 @@ function Login() {
         setMessage("Login successful!");
          localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        console.log("User:", data.user);
-        console.log("Token:", data.access_token);
+        router.push("/");
       } else {
         setMessage(data.message || "Login failed.");
       }
@@ -79,9 +78,6 @@ function Login() {
         setMessage("Login successful!");
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        console.log("User:", data.user);
-        console.log("Token:", data.access_token);
-        // handle session or redirect
         router.push("/");
       } else {
         setMessage(data.message || "Google login failed.");
