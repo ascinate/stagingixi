@@ -27,7 +27,7 @@ function NavicationHome(){
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
     setUser(null);
-    router.push("/login");
+    router.push("/");
   };
 
 
