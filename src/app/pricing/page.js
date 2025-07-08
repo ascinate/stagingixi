@@ -3,9 +3,63 @@ import { useEffect, useState } from "react";
 import NavicationHome from "../components/NavicationHome";
 import Footer from "../components/Footer";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 
 export default function PlansPage() {
   const [plans, setPlans] = useState([]);
+ const [user,setUser]=useState(null);
+ const router = useRouter();
+  useEffect(() => {
+    fetch("https://iconsguru.ascinatetech.com/api/subscriptions")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.subscriptions) {
+          setPlans(data.subscriptions);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching plans:", error);
+      });
+
+      const storedUser=localStorage.getItem("user");
+      const storedToken=localStorage.getItem("access_token");
+      if(storedUser && storedToken){
+        setUser({
+          ...JSON.parse(storedUser),
+          token: storedToken,
+        });
+      }
+
+  }, []);
+
+  const handleUpgrade = async (subscriptionId) =>{
+    if (!user?.token){
+      alert("Please login to upgrade your plan");
+      router.push("/login");
+      return;
+    }
+    try{
+      const res= await fetch("https://iconsguru.ascinatetech.com/api/user/upgrade-subscription",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ subscription_id: subscriptionId }),
+      });
+      const data=await res.json();
+      if(res.ok){
+        alert("Subsription upgrade sucessfully!");
+        const updatedUser= { ...user, subscription_id: subscriptionId};
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+      }else{
+        alert(data.message || "Upgrade failed");
+      }
+    }catch(err){
+      confirm.error("Upgrade error:", err);
+    }
+  };
 
   return (
     <>
@@ -15,238 +69,87 @@ export default function PlansPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavicationHome/>
+      <NavicationHome />
       <main className="pricing-pages-part float-start w-100">
-          <div className="container mt-4">
-            <h2 className="comon-heading-sub">Pricing</h2>
-            <p className="sub-texr01"> Why you should upgrade your free plan? </p>
+        <div className="container mt-4">
+          <h2 className="comon-heading-sub">Pricing</h2>
+          <p className="sub-texr01"> Why you should upgrade your free plan? </p>
 
-            <ul className="nav nav-tabs mt-5" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
-                 type="button" role="tab" aria-controls="home" aria-selected="true">Plans</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="profile-tab" data-bs-toggle="tab"
-                 data-bs-target="#profile" type="button" role="tab" aria-controls="profile" 
-                 aria-selected="false">Enterprise</button>
-              </li>
-            </ul>
-            <div className="tab-content pt-5" id="myTabContent">
-              <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div className="row align-items-start">
-                  <div className="col-lg-6">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Options</th>
-                            <th scope="col">Free</th>
-                            <th scope="col">Pro</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Unlimited download PNG</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimited download SVG & PDF</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimated modify global colors</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>No attribution required</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimited edit and save colors</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimited multi download</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Priority Support</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Share icons across team</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          
-                        </tbody>
-                      </table>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="row gy-4 g-lg-4">
-                     
-                        <div className="col-lg-6">
-                          <div className="card months-div">
-                            <h2>12 Months</h2>
-                            <h3 className="mt-3"> <strong> $9.99 </strong>  <small> / month </small> </h3>
-                            <p>Per month, billed <br/> each year <strong>  $9.99 </strong> </p>
-                            <button className="btn btn-upgrade">Upgrade now</button>
-                          </div>
-                        </div>
-                        <div className="col-lg-6">
-                          <div className="card months-div">
-                            <h2>1 Month</h2>
-                            <h3 className="mt-3"> <strong> $10.99 </strong>  <small> / month </small> </h3>
-                            <p>Per month, billed <br/> each year <strong>  $10.99 </strong> </p>
-                            <button className="btn btn-upgrade">Upgrade now</button>
-                          </div>
-                        </div>
-                       
-                    </div>
+          <div className="col-lg-6">
+            <div className="row gy-4 g-lg-4">
+              {plans.map((plan) => (
+                <div className="col-lg-4" key={plan.subscription_id}>
+                  <div className="card months-div h-100">
+                    <h2>{plan.name}</h2>
+                    <h3 className="mt-3">
+                      <strong>${parseFloat(plan.price).toFixed(2)}</strong>
+                      <small> / {plan.duration}</small>
+                    </h3>
+                    <p>
+                      {plan.icon_limit
+                        ? `${plan.icon_limit} icons`
+                        : "Unlimited icons"}
+                      <br />
+                      billed {plan.duration === "yearly" ? "per year" : "per month"}
+                    </p>
+                    <button className="btn btn-upgrade" onClick={() => handleUpgrade(plan.subscription_id)}>Upgrade now</button>
                   </div>
                 </div>
-              </div>
-              <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              <div className="row align-items-start">
-                  <div className="col-lg-6">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Options</th>
-                            <th scope="col">Free</th>
-                            <th scope="col">Pro</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Unlimited download PNG</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimited download SVG & PDF</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimated modify global colors</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>No attribution required</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimited edit and save colors</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Unlimited multi download</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Priority Support</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          <tr>
-                            <td>Share icons across team</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(201,201,201,1)"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(0,0,0,1)"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg></td>
-                          </tr>
-                          
-                        </tbody>
-                      </table>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="row gy-4 g-lg-4">
-                     
-                        <div className="col-lg-6">
-                          <div className="card months-div">
-                            <h2>12 Months</h2>
-                            <h3 className="mt-3"> <strong> $9.99 </strong>  <small> / month </small> </h3>
-                            <p>Per month, billed <br/> each year <strong>  $9.99 </strong> </p>
-                            <button className="btn btn-upgrade">Upgrade now</button>
-                          </div>
-                        </div>
-                        <div className="col-lg-6">
-                          <div className="card months-div">
-                            <h2>1 Month</h2>
-                            <h3 className="mt-3"> <strong> $10.99 </strong>  <small> / month </small> </h3>
-                            <p>Per month, billed <br/> each year <strong>  $10.99 </strong> </p>
-                            <button className="btn btn-upgrade">Upgrade now</button>
-                          </div>
-                        </div>
-                       
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-
-            <div className="faq-parts01 d-inline-block w-100">
-              <h2 className="comon-heading-sub">FAQ </h2>
-              <p className="sub-texr01"> These terms of use govern the access, browsing and use of Icons Mind by their users the download and use of 
-                certain content owned by Icons Mind as well as the.  </p>
-
-              <div className="as-divbg mt-5 d-inline-block w-100">
-                 <div className="accordion" id="accordionExample">
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="headingOne">
-                        <button className="accordion-button ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        How to download?
-                        </button>
-                      </h2>
-                      <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div className="accordion-body ps-0">
-                        <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="headingTwo">
-                        <button className="accordion-button collapsed ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        How work the free license?
-                        </button>
-                      </h2>
-                      <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div className="accordion-body ps-0">
-                        <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="headingThree">
-                        <button className="accordion-button collapsed ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        No able to upgrade?
-                        </button>
-                      </h2>
-                      <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div className="accordion-body ps-0">
-                         <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-
-            
           </div>
-       </main>
+          <div className="faq-parts01 d-inline-block w-100">
+            <h2 className="comon-heading-sub">FAQ </h2>
+            <p className="sub-texr01"> These terms of use govern the access, browsing and use of Icons Mind by their users the download and use of
+              certain content owned by Icons Mind as well as the.  </p>
 
-      <Footer/>
+            <div className="as-divbg mt-5 d-inline-block w-100">
+              <div className="accordion" id="accordionExample">
+                <div className="accordion-item">
+                  <h2 className="accordion-header" id="headingOne">
+                    <button className="accordion-button ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      How to download?
+                    </button>
+                  </h2>
+                  <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div className="accordion-body ps-0">
+                      <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="accordion-item">
+                  <h2 className="accordion-header" id="headingTwo">
+                    <button className="accordion-button collapsed ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      How work the free license?
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div className="accordion-body ps-0">
+                      <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="accordion-item">
+                  <h2 className="accordion-header" id="headingThree">
+                    <button className="accordion-button collapsed ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      No able to upgrade?
+                    </button>
+                  </h2>
+                  <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div className="accordion-body ps-0">
+                      <p> incorporated under the laws of Poland and registered in the companies register of the National Court Register held by District. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </main>
+
+      <Footer />
     </>
   );
 }
