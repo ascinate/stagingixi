@@ -435,8 +435,8 @@ export default function IconDetailPage() {
       createOrder: (data, actions) =>
         actions.order.create({
           purchase_units: [{
-            amount: { value: "0.25" },
-            description: `Purchase of ${icon.icon_name}`,
+           amount: { value: "20.00" }, // price in INR
+           currency_code: "INR",
           }],
         }),
       onApprove: async (data, actions) => {
@@ -539,7 +539,7 @@ export default function IconDetailPage() {
         
       )}
         <Script
-            src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
+            src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=INR&intent=capture&commit=true"
             strategy="afterInteractive"
           />
       <NavicationHome />
