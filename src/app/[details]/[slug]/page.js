@@ -423,78 +423,66 @@ const handleDownloadSVG = async () => {
     }
   };
 
-const handleBuyNow = async (license = "standard") => {
-  const PAYPAL_CLIENT_ID = "ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC";
-  const price = 10.0;
-  const token = localStorage.getItem("access_token");
+  const handleBuyNow = async (license = "standard") => {
+    const PAYPAL_CLIENT_ID = "ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC";
+    const price = 10.0;
+    const token = localStorage.getItem("access_token");
 
-  if (!token) {
-    alert("Please login first to purchase this icon.");
-    window.location.href = "/login";
-    return;
-  }
-
-  // Load script only once
-  if (!document.getElementById("paypal-sdk")) {
-    const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
-    script.id = "paypal-sdk";
-    script.onload = () => {
-      if (window.paypal && window.paypal.Buttons) {
-        renderPayPalButton();
-      } else {
-        console.error("PayPal SDK loaded but window.paypal.Buttons not available.");
-      }
-    };
-    script.onerror = () => {
-      console.error("Failed to load PayPal SDK.");
-    };
-    document.body.appendChild(script);
-  } else {
-    if (window.paypal && window.paypal.Buttons) {
-      renderPayPalButton();
-    } else {
-      console.error("PayPal already loaded but Buttons not available.");
+    // 🚫 If not logged in, redirect to login
+    if (!token) {
+      alert("Please login first to purchase this icon.");
+      window.location.href = "/login"; // Update path if needed
+      return;
     }
-  }
 
-  function renderPayPalButton() {
-    window.paypal.Buttons({
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: price.toFixed(2) },
-            description: `Purchase of ${icon.icon_name}`,
-          }],
-        });
-      },
-      onApprove: async (data, actions) => {
-        const details = await actions.order.capture();
+    // ✅ Load PayPal SDK once
+    if (!document.querySelector("#paypal-sdk")) {
+      const script = document.createElement("script");
+      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+      script.id = "paypal-sdk";
+      script.onload = renderPayPalButton;
+      document.body.appendChild(script);
+    } else {
+      renderPayPalButton();
+    }
 
-        await fetch(`https://iconsguru.ascinatetech.com/api/purchase-icon`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            icon_id: icon.Id,
-            license_type: license,
-            price,
-            paypal_order_id: data.orderID,
-          }),
-        });
+    function renderPayPalButton() {
+      window.paypal.Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: { value: price.toFixed(2) },
+              description: `Purchase of ${icon.icon_name}`,
+            }],
+          });
+        },
+        onApprove: async (data, actions) => {
+          const details = await actions.order.capture();
 
-        alert("Payment successful!");
-        location.reload();
-      },
-      onError: (err) => {
-        console.error("PayPal error:", err);
-        alert("Payment failed.");
-      },
-    }).render("#paypal-button-container");
-  }
-};
+          await fetch(`https://iconsguru.ascinatetech.com/api/purchase-icon`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              icon_id: icon.Id,
+              license_type: license,
+              price,
+              paypal_order_id: data.orderID,
+            }),
+          });
+
+          alert("Payment successful!");
+          location.reload();
+        },
+        onError: (err) => {
+          console.error("PayPal error:", err);
+          alert("Payment failed.");
+        },
+      }).render("#paypal-button-container");
+    }
+  };
 
 
 
