@@ -447,6 +447,7 @@ const handleDownloadSVG = async () => {
     }
 
     function renderPayPalButton() {
+      document.getElementById("paypal-button-container").innerHTML = "";
       window.paypal.Buttons({
         createOrder: (data, actions) => {
           return actions.order.create({
