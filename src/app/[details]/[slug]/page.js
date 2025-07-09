@@ -423,75 +423,66 @@ const handleDownloadSVG = async () => {
     }
   };
 
-const handleBuyNow = async (license = "standard") => {
-  const PAYPAL_CLIENT_ID = "ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC";
-  const price = 0.25;
-  const token = localStorage.getItem("access_token");
+  const handleBuyNow = async (license = "standard") => {
+    const PAYPAL_CLIENT_ID = "ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC";
+    const price = 0.25;
+    const token = localStorage.getItem("access_token");
 
-  if (!token) {
-    alert("Please login first to purchase this icon.");
-    window.location.href = "/login";
-    return;
-  }
+    // 🚫 If not logged in, redirect to login
+    if (!token) {
+      alert("Please login first to purchase this icon.");
+      window.location.href = "/login"; // Update path if needed
+      return;
+    }
 
-  // Show modal
-  const modalEl = document.getElementById('paypalModal');
-  const modal = new window.bootstrap.Modal(modalEl);
-  modal.show();
+    // ✅ Load PayPal SDK once
+    if (!document.querySelector("#paypal-sdk")) {
+      const script = document.createElement("script");
+      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+      script.id = "paypal-sdk";
+      script.onload = renderPayPalButton;
+      document.body.appendChild(script);
+    } else {
+      renderPayPalButton();
+    }
 
-  // Load PayPal SDK if not already
-  if (!document.querySelector("#paypal-sdk")) {
-    const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
-    script.id = "paypal-sdk";
-    script.onload = renderPayPalButton;
-    document.body.appendChild(script);
-  } else {
-    renderPayPalButton();
-  }
+    function renderPayPalButton() {
+      window.paypal.Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: { value: price.toFixed(2) },
+              description: `Purchase of ${icon.icon_name}`,
+            }],
+          });
+        },
+        onApprove: async (data, actions) => {
+          const details = await actions.order.capture();
 
-  function renderPayPalButton() {
-    const container = document.getElementById("paypal-button-container");
-    container.innerHTML = "";
+          await fetch(`https://iconsguru.ascinatetech.com/api/purchase-icon`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              icon_id: icon.Id,
+              license_type: license,
+              price,
+              paypal_order_id: data.orderID,
+            }),
+          });
 
-    window.paypal.Buttons({
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: price.toFixed(2) },
-            description: `Purchase of ${icon.icon_name}`,
-          }],
-        });
-      },
-      onApprove: async (data, actions) => {
-        await actions.order.capture();
-
-        await fetch(`https://iconsguru.ascinatetech.com/api/purchase-icon`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            icon_id: icon.Id,
-            license_type: license,
-            price,
-            paypal_order_id: data.orderID,
-          }),
-        });
-
-        alert("Payment successful!");
-        modal.hide();
-        location.reload();
-      },
-      onError: (err) => {
-        console.error("PayPal error:", err);
-        alert("Payment failed.");
-      },
-    }).render("#paypal-button-container");
-  }
-};
-
+          alert("Payment successful!");
+          location.reload();
+        },
+        onError: (err) => {
+          console.error("PayPal error:", err);
+          alert("Payment failed.");
+        },
+      }).render("#paypal-button-container");
+    }
+  };
 
 
 
@@ -842,10 +833,11 @@ const getSchema = (icon) => {
                             )}
                           </>
                         )}
-                      </ul>           
-                    </div>
+                      </ul>
+                      <div id="paypal-button-container" className="mt-3"></div>
                   
-
+                    
+                    </div>
 
                         <div className="col-3 d-grid justify-content-end">
                           <div className="dropdown">
@@ -1202,29 +1194,3 @@ const getSchema = (icon) => {
 
   );
 }
-<div
-  className="modal fade"
-  id="paypalModal"
-  tabIndex="-1"
-  aria-labelledby="paypalModalLabel"
-  aria-hidden="true"
->
-  <div className="modal-dialog modal-dialog-centered">
-    <div className="modal-content p-4">
-      <div className="modal-header">
-        <h5 className="modal-title" id="paypalModalLabel">
-          Complete Payment
-        </h5>
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div className="modal-body text-center">
-        <div id="paypal-button-container"></div>
-      </div>
-    </div>
-  </div>
-</div>
