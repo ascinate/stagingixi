@@ -7,6 +7,8 @@ import Footer from "@/app/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
+import Modal from 'bootstrap/js/dist/modal';
+
 
 
 
@@ -478,7 +480,7 @@ export default function IconDetailPage() {
 
         alert("✅ Payment successful!");
         const modalEl = document.getElementById("paypalModal");
-        const modalInstance = bootstrap?.Modal?.getInstance(modalEl);
+       const modalInstance = Modal.getInstance(modalEl);
         modalInstance?.hide();
         location.reload();
       } catch (err) {
