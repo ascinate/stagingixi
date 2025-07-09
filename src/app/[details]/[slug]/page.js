@@ -534,13 +534,14 @@ export default function IconDetailPage() {
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(getSchema(icon)) }}
           />
-          <Script
+         
+        </Head>
+        
+      )}
+        <Script
             src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true&disable-funding=card,credit"
             strategy="afterInteractive"
           />
-        </Head>
-      )}
-
       <NavicationHome />
       <main className="details-body-parts lisu-lisn-div01 float-start w-100">
         <div className="container">
