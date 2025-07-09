@@ -425,24 +425,32 @@ export default function IconDetailPage() {
     }
   };
 
- // Renders the PayPal button into the modal container
-  const renderPayPalButton = () => {
-    const container = document.getElementById("paypal-button-container");
-    if (!container || !window.paypal) return;
-    container.innerHTML = "";
+ const renderPayPalButton = () => {
+  const container = document.getElementById("paypal-button-container");
+  if (!container || !window.paypal) return;
 
-    window.paypal.Buttons({
-      createOrder: (data, actions) =>
-        actions.order.create({
-          purchase_units: [{
-            amount: { value: "0.25",currency_code: "USD", },
-            description: `Purchase of ${icon.icon_name}`,
-          }],
-        }),
-      onApprove: async (data, actions) => {
-        await actions.order.capture();
+  container.innerHTML = "";
+
+  window.paypal.Buttons({
+    createOrder: (data, actions) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: "0.25",
+            currency_code: "USD", // Ensure USD is explicitly passed
+          },
+          description: `Purchase of ${icon.icon_name}`,
+        }],
+      });
+    },
+
+    onApprove: async (data, actions) => {
+      try {
+        const details = await actions.order.capture();
+        console.log("✅ PayPal capture success:", details);
+
         const token = localStorage.getItem("access_token");
-        await fetch("https://iconsguru.ascinatetech.com/api/purchase-icon", {
+        const res = await fetch("https://iconsguru.ascinatetech.com/api/purchase-icon", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -455,27 +463,48 @@ export default function IconDetailPage() {
             paypal_order_id: data.orderID,
           }),
         });
-        alert("Payment successful!");
-        // Hide the modal
+
+        const resJson = await res.json();
+        console.log("📦 Backend Response:", res.status, resJson);
+
+        if (!res.ok) {
+          throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
+        }
+
+        alert("✅ Payment successful!");
         const modalEl = document.getElementById("paypalModal");
         const modalInstance = window.bootstrap.Modal.getInstance(modalEl);
-        modalInstance.hide();
+        modalInstance?.hide();
         location.reload();
-      },
-      onError: (err) => {
-        console.error("PayPal error:", err);
-        alert("Payment failed.");
-      },
-    }).render("#paypal-button-container");
+      } catch (err) {
+        console.error("❌ Payment error:", err);
+        alert("Payment failed. " + err.message);
+      }
+    },
+
+    onError: (err) => {
+      console.error("❌ PayPal button error:", err);
+      alert("Payment failed.");
+    },
+  }).render("#paypal-button-container");
+};
+
+// 🔁 Trigger PayPal button render on modal shown
+useEffect(() => {
+  const modalEl = document.getElementById("paypalModal");
+  if (!modalEl) return;
+
+  const onShown = () => {
+    console.log("🟡 Modal shown – rendering PayPal");
+    renderPayPalButton();
   };
 
-   useEffect(() => {
-    const modalEl = document.getElementById("paypalModal");
-    if (!modalEl) return;
-    const onShown = () => renderPayPalButton();
-    modalEl.addEventListener("shown.bs.modal", onShown);
-    return () => modalEl.removeEventListener("shown.bs.modal", onShown);
-  }, [icon]);
+  modalEl.addEventListener("shown.bs.modal", onShown);
+
+  return () => {
+    modalEl.removeEventListener("shown.bs.modal", onShown);
+  };
+}, [icon]);
 
   if (!icon) return null;
 
