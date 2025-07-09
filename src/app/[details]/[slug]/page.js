@@ -437,7 +437,7 @@ const handleBuyNow = async (license = "standard") => {
   // Load script only once
   if (!document.getElementById("paypal-sdk")) {
     const script = document.createElement("script");
-    script.src = `https://www.sandbox.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
     script.id = "paypal-sdk";
     script.onload = () => {
       if (window.paypal && window.paypal.Buttons) {
