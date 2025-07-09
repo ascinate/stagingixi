@@ -775,7 +775,7 @@ const getSchema = (icon) => {
                         </span>
                         Download
                       </button>
-                     <>
+                    
                        <ul className="dropdown-menu w-100">
                         {icon.is_premium ? (
                           <li className="dropdown-item">
@@ -835,7 +835,7 @@ const getSchema = (icon) => {
                         )}
                       </ul>
                       <div id="paypal-button-container" className="mt-3"></div>
-                     </>
+                  
                     
                     </div>
 
