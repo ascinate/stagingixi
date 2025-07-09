@@ -690,54 +690,81 @@ const getSchema = (icon) => {
                       <div className="input-divs mt-3 w-100 d-flex justify-content-between align-items-center">
 
 
-                        <div className="dropdown col-9">
-                          <button className="btn w-100 btn-download015 dropdown-toggle" data-bs-auto-close="outside" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>
-                              <svg width="200" height="200" viewBox="0 0 86 89" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 57.0703C0 55.4135 1.34315 54.0703 3 54.0703C4.65685 54.0703 6 55.4135 6 57.0703V68.8174L6.00586 69.3584C6.06209 72.0964 6.51343 75.3116 7.98828 77.8584C9.41808 80.3273 11.9642 82.464 17.1387 82.6162H66.46C68.6851 82.6162 71.9392 81.9588 74.5586 79.9697C77.0318 78.0916 79.2451 74.8051 79.2451 68.8242V57.0703C79.2451 55.4135 80.5883 54.0703 82.2451 54.0703C83.9018 54.0705 85.2451 55.4136 85.2451 57.0703V68.8242C85.2451 76.5454 82.2588 81.6557 78.1865 84.748C74.2604 87.7293 69.6215 88.6162 66.46 88.6162H17.0645L17.0244 88.6152C9.78825 88.4199 5.30007 85.1894 2.7959 80.8652C0.430791 76.7811 0.00769019 72.0299 0 68.832V57.0703Z" fill="#ffffff" />
-                                <path d="M38.6111 3C38.6111 1.34315 39.9542 0 41.6111 0C43.2679 0.000114414 44.6111 1.34322 44.6111 3V54.5283L60.3113 38.8281C61.4828 37.6566 63.3829 37.6567 64.5545 38.8281C65.726 39.9997 65.726 41.8997 64.5545 43.0713L41.6111 66.0146L18.6677 43.0713C17.4962 41.8997 17.4962 39.9997 18.6677 38.8281C19.8392 37.657 21.7384 37.657 22.9099 38.8281L38.6111 54.5293V3Z" fill="#ffffff" />
-                              </svg>
-                            </span>
-                            Download
-                          </button>
-                          <ul className="dropdown-menu w-100">
-                            {icon.type !== "Animated" && (
-                              <>
-                                <li className="dropdown-item">
-                                  <button type="button" onClick={handleDownloadSVG} className="btn w-100 svg-bn btn-comons01 crm-btn01">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="rgba(255,255,255,1)"><path d="M2.80577 5.20006L7.00505 7.99958L11.1913 2.13881C11.5123 1.6894 12.1369 1.58531 12.5863 1.90631C12.6761 1.97045 12.7546 2.04901 12.8188 2.13881L17.0051 7.99958L21.2043 5.20006C21.6639 4.89371 22.2847 5.01788 22.5911 5.47741C22.7228 5.67503 22.7799 5.91308 22.7522 6.14895L21.109 20.1164C21.0497 20.62 20.6229 20.9996 20.1158 20.9996H3.8943C3.38722 20.9996 2.9604 20.62 2.90115 20.1164L1.25792 6.14895C1.19339 5.60045 1.58573 5.10349 2.13423 5.03896C2.37011 5.01121 2.60816 5.06832 2.80577 5.20006ZM12.0051 14.9996C13.1096 14.9996 14.0051 14.1042 14.0051 12.9996C14.0051 11.895 13.1096 10.9996 12.0051 10.9996C10.9005 10.9996 10.0051 11.895 10.0051 12.9996C10.0051 14.1042 10.9005 14.9996 12.0051 14.9996Z"></path></svg>
-                                    SVG </button>
-                                </li>
-                                <li className="dropdown-item">
-                                  <button type="button" onClick={() => svgToCanvasDownload("png")} className="btn w-100 png-bn btn-comons01 crm-btn01">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
-                                    PNG </button>
-                                </li>
-                                <li className="dropdown-item">
-                                  <button type="button" onClick={() => svgToCanvasDownload("webp")} className="btn w-100 png-bn btn-comons01 crm-btn01">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(0,0,0,1)"><path d="M2.9918 21C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918ZM20 15V5H4V19L14 9L20 15ZM20 17.8284L14 11.8284L6.82843 19H20V17.8284ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
-                                    WEBP </button>
-                                </li>
-                              </>
-                            )}
+                      <div className="dropdown col-9">
+                        <button
+                          className="btn w-100 btn-download015 dropdown-toggle"
+                          data-bs-auto-close="outside"
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <span>
+                            {/* your SVG icon button */}
+                          </span>
+                          Download
+                        </button>
 
-                            <li>
-                              {icon.type === "Animated" && (
-                                <button
-                                  type="button"
-                                  onClick={handleDownloadGIF}
-                                  className="btn png-bn btn-comons01 crm-btn01"
-                                >
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black">
-                                    <path d="M3 3H21V21H3V3ZM5 5V19H19V5H5ZM8 7H10V17H8V7ZM14 7H16V17H14V7Z" />
-                                  </svg>
-                                  GIF
-                                </button>
-
-                              )}
+                        <ul className="dropdown-menu w-100">
+                          {icon.is_premium ? (
+                            <li className="dropdown-item">
+                              <button
+                                type="button"
+                                onClick={() => handleBuyNow("standard")}
+                                className="btn w-100 btn-warning crm-btn01"
+                              >
+                                🛒 Buy Now (Standard License)
+                              </button>
                             </li>
-                          </ul>
-                        </div>
+                          ) : (
+                            <>
+                              {icon.type !== "Animated" && (
+                                <>
+                                  <li className="dropdown-item">
+                                    <button
+                                      type="button"
+                                      onClick={handleDownloadSVG}
+                                      className="btn w-100 svg-bn btn-comons01 crm-btn01"
+                                    >
+                                      SVG
+                                    </button>
+                                  </li>
+                                  <li className="dropdown-item">
+                                    <button
+                                      type="button"
+                                      onClick={() => svgToCanvasDownload("png")}
+                                      className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                    >
+                                      PNG
+                                    </button>
+                                  </li>
+                                  <li className="dropdown-item">
+                                    <button
+                                      type="button"
+                                      onClick={() => svgToCanvasDownload("webp")}
+                                      className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                    >
+                                      WEBP
+                                    </button>
+                                  </li>
+                                </>
+                              )}
+                              {icon.type === "Animated" && (
+                                <li className="dropdown-item">
+                                  <button
+                                    type="button"
+                                    onClick={handleDownloadGIF}
+                                    className="btn png-bn btn-comons01 crm-btn01"
+                                  >
+                                    GIF
+                                  </button>
+                                </li>
+                              )}
+                            </>
+                          )}
+                        </ul>
+                      </div>
+
                         <div className="col-3 d-grid justify-content-end">
                           <div className="dropdown">
                             <button type="button" className="btn btn-shares" data-bs-toggle="dropdown"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill=""><path d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z"></path></svg>
