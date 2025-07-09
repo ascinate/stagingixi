@@ -437,7 +437,7 @@ const handleDownloadSVG = async () => {
   // Prevent reloading if already loaded
   if (!document.querySelector("#paypal-sdk")) {
     const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture&components=buttons&disable-funding=credit,card&buyer-country=IN&commit=true&vault=false&env=sandbox`;
     script.id = "paypal-sdk";
     script.onload = renderPayPalButton;
     document.body.appendChild(script);
