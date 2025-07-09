@@ -434,11 +434,12 @@ const handleBuyNow = async (license = "standard") => {
     return;
   }
 
-  // Show modal first
-  const modal = new bootstrap.Modal(document.getElementById('paypalModal'));
+  // Show modal
+  const modalEl = document.getElementById('paypalModal');
+  const modal = new window.bootstrap.Modal(modalEl);
   modal.show();
 
-  // Load PayPal SDK if not already loaded
+  // Load PayPal SDK if not already
   if (!document.querySelector("#paypal-sdk")) {
     const script = document.createElement("script");
     script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
@@ -450,7 +451,8 @@ const handleBuyNow = async (license = "standard") => {
   }
 
   function renderPayPalButton() {
-    document.getElementById("paypal-button-container").innerHTML = ""; // Clear previous render
+    const container = document.getElementById("paypal-button-container");
+    container.innerHTML = "";
 
     window.paypal.Buttons({
       createOrder: (data, actions) => {
@@ -462,7 +464,7 @@ const handleBuyNow = async (license = "standard") => {
         });
       },
       onApprove: async (data, actions) => {
-        const details = await actions.order.capture();
+        await actions.order.capture();
 
         await fetch(`https://iconsguru.ascinatetech.com/api/purchase-icon`, {
           method: "POST",
@@ -489,6 +491,7 @@ const handleBuyNow = async (license = "standard") => {
     }).render("#paypal-button-container");
   }
 };
+
 
 
 
@@ -841,20 +844,7 @@ const getSchema = (icon) => {
                         )}
                       </ul>           
                     </div>
-                    {/* PayPal Modal */}
-                      <div className="modal fade" id="paypalModal" tabIndex="-1" aria-labelledby="paypalModalLabel" aria-hidden="true">
-                        <div className="modal-dialog modal-dialog-centered">
-                          <div className="modal-content p-3">
-                            <div className="modal-header">
-                              <h5 className="modal-title" id="paypalModalLabel">Complete Your Purchase</h5>
-                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                              <div id="paypal-button-container"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  
 
 
                         <div className="col-3 d-grid justify-content-end">
@@ -1212,3 +1202,29 @@ const getSchema = (icon) => {
 
   );
 }
+<div
+  className="modal fade"
+  id="paypalModal"
+  tabIndex="-1"
+  aria-labelledby="paypalModalLabel"
+  aria-hidden="true"
+>
+  <div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content p-4">
+      <div className="modal-header">
+        <h5 className="modal-title" id="paypalModalLabel">
+          Complete Payment
+        </h5>
+        <button
+          type="button"
+          className="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div className="modal-body text-center">
+        <div id="paypal-button-container"></div>
+      </div>
+    </div>
+  </div>
+</div>
