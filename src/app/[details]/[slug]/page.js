@@ -425,7 +425,7 @@ const handleDownloadSVG = async () => {
 
   const handleBuyNow = async (license = "standard") => {
     const PAYPAL_CLIENT_ID = "ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC";
-    const price = 10.0;
+    const price = 0.25;
     const token = localStorage.getItem("access_token");
 
     // 🚫 If not logged in, redirect to login
