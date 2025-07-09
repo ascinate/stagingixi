@@ -434,13 +434,10 @@ export default function IconDetailPage() {
     window.paypal.Buttons({
       createOrder: (data, actions) =>
         actions.order.create({
-         purchase_units: [{
-        amount: {
-          currency_code: "USD",  // ← explicitly USD
-          value: "0.25"
-        },
-        description: `Purchase of ${icon.icon_name}`,
-      }],
+          purchase_units: [{
+            amount: { value: "0.25",currency_code: "USD", },
+            description: `Purchase of ${icon.icon_name}`,
+          }],
         }),
       onApprove: async (data, actions) => {
         await actions.order.capture();
