@@ -6,6 +6,8 @@ import NavicationHome from "@/app/components/NavicationHome";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
+
 
 
 //slick
@@ -16,16 +18,16 @@ import "slick-carousel/slick/slick-theme.css";
 
 export default function IconDetailPage() {
 
-const router = useRouter();
+  const router = useRouter();
   const params = useParams();
-const { slug } = params;
+  const { slug } = params;
 
   const [icon, setIcon] = useState(null);
-  const [color, setColor] = useState(null); 
-const [bgColor, setBgColor] = useState(null);
-// default background
+  const [color, setColor] = useState(null);
+  const [bgColor, setBgColor] = useState(null);
+  // default background
 
-// null to preserve original
+  // null to preserve original
   const [size, setSize] = useState(200);
   const [relatedIcons, setRelatedIcons] = useState([]);
   const [variations, setVariations] = useState([]);
@@ -33,7 +35,7 @@ const [bgColor, setBgColor] = useState(null);
   const [showCustom, setShowCustom] = useState(false);
 
 
-const [dimensions, setDimensions] = useState("1024 X 1024 px");
+  const [dimensions, setDimensions] = useState("1024 X 1024 px");
   const [fileSize, setFileSize] = useState("N/A");
 
   useEffect(() => {
@@ -165,51 +167,51 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
   }, [slug]);
 
   const uploadIconAsImage = async () => {
-      if (icon.type === "Animated") {
-        const gifurl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
-        return gifurl;
-      }
-      else {
-        const svgString = icon.icon_svg;
+    if (icon.type === "Animated") {
+      const gifurl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
+      return gifurl;
+    }
+    else {
+      const svgString = icon.icon_svg;
 
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
-        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
 
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = async () => {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            URL.revokeObjectURL(url);
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = async () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
 
-            canvas.toBlob(async (blob) => {
-              const formData = new FormData();
-              formData.append('image', blob, 'shared-image.png');
+          canvas.toBlob(async (blob) => {
+            const formData = new FormData();
+            formData.append('image', blob, 'shared-image.png');
 
-              try {
-                const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
-                  method: 'POST',
-                  body: formData,
-                });
+            try {
+              const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
+                method: 'POST',
+                body: formData,
+              });
 
-                const data = await res.json();
-                resolve(data.url);
-              } catch (err) {
-                reject(err);
-              }
-            }, 'image/png');
-          };
+              const data = await res.json();
+              resolve(data.url);
+            } catch (err) {
+              reject(err);
+            }
+          }, 'image/png');
+        };
 
-          img.onerror = reject;
-          img.src = url;
-        });
-      }
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
 
-    };
+  };
 
   const shareToPinterest = async () => {
     try {
@@ -254,25 +256,25 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
       }
     };
 
-  
-      fetchRelatedIcons();
-  
+
+    fetchRelatedIcons();
+
   }, [icon?.Id]);
 
   useEffect(() => {
     if (!icon || !icon.Id) return;
-  const fetchVariations = async () => {
-    try {
-      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-variations/${icon.Id}`);
-      const data = await res.json();
-      setVariations(data.variations || []);
-    } catch (err) {
-      console.error("Variation fetch error:", err);
-    }
-  };
+    const fetchVariations = async () => {
+      try {
+        const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-variations/${icon.Id}`);
+        const data = await res.json();
+        setVariations(data.variations || []);
+      } catch (err) {
+        console.error("Variation fetch error:", err);
+      }
+    };
     fetchVariations();
 
-}, [icon?.Id]);
+  }, [icon?.Id]);
 
 
 
@@ -314,93 +316,93 @@ const [dimensions, setDimensions] = useState("1024 X 1024 px");
     return luminance > 200;
   };
 
-const svgToCanvasDownload = async (type = "png") => {
-  if (!icon || !icon.icon_svg) {
-    console.error("Icon data is missing");
-    return;
-  }
-  const token = localStorage.getItem("access_token");
-  if (!token) {
-    alert("Please login first to purchase this icon.");
-    window.location.href = "/login";
-    return;
-  }
-  try {
-    await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-      method: "POST",
-       headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-  } catch (err) {
-    console.warn("Download count API failed", err);
-  }
+  const svgToCanvasDownload = async (type = "png") => {
+    if (!icon || !icon.icon_svg) {
+      console.error("Icon data is missing");
+      return;
+    }
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Please login first to purchase this icon.");
+      window.location.href = "/login";
+      return;
+    }
+    try {
+      await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.warn("Download count API failed", err);
+    }
 
-  const finalSvg = applyColorAndSize(icon.icon_svg);
-  const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
-  const url = URL.createObjectURL(svgBlob);
+    const finalSvg = applyColorAndSize(icon.icon_svg);
+    const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
 
-  const img = new window.Image(); // ✅ Use native Image constructor
-  img.crossOrigin = "anonymous";
-  img.onload = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, size, size);
-    ctx.drawImage(img, 0, 0, size, size);
+    const img = new window.Image(); // ✅ Use native Image constructor
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, size, size);
+      ctx.drawImage(img, 0, 0, size, size);
 
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        console.error("Canvas export failed");
-        return;
-      }
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          console.error("Canvas export failed");
+          return;
+        }
 
+        const link = document.createElement("a");
+        link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+
+        URL.revokeObjectURL(link.href);
+      }, `image/${type}`);
+    };
+
+    img.onerror = (err) => {
+      console.error("Image load failed", err);
+      URL.revokeObjectURL(url);
+    };
+
+    img.src = url;
+  };
+
+
+
+
+  const handleDownloadSVG = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Please login first to purchase this icon.");
+      window.location.href = "/login"; // Update path if needed
+      return;
+    }
+    try {
+      await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const svg = applyColorAndSize(icon.icon_svg);
+      const blob = new Blob([svg], { type: "image/svg+xml" });
       const link = document.createElement("a");
-      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
       link.href = URL.createObjectURL(blob);
+      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
       link.click();
-
-      URL.revokeObjectURL(link.href);
-    }, `image/${type}`);
+    } catch (error) {
+      console.error("Download tracking failed", error);
+    }
   };
-
-  img.onerror = (err) => {
-    console.error("Image load failed", err);
-    URL.revokeObjectURL(url);
-  };
-
-  img.src = url;
-};
-
-
-
-
-const handleDownloadSVG = async () => {
-  const token = localStorage.getItem("access_token");
-  if (!token) {
-    alert("Please login first to purchase this icon.");
-    window.location.href = "/login"; // Update path if needed
-    return;
-  }
-  try {
-    await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    const svg = applyColorAndSize(icon.icon_svg);
-    const blob = new Blob([svg], { type: "image/svg+xml" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
-    link.click();
-  } catch (error) {
-    console.error("Download tracking failed", error);
-  }
-};
 
 
   const handleDownloadGIF = async () => {
@@ -423,44 +425,23 @@ const handleDownloadSVG = async () => {
     }
   };
 
-  const handleBuyNow = async (license = "standard") => {
-    const PAYPAL_CLIENT_ID = "ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC";
-    const price = 0.25;
-    const token = localStorage.getItem("access_token");
+  const renderPayPalButton = () => {
+      const container = document.getElementById("paypal-button-container");
+      if (!container || !window.paypal) return;
+      container.innerHTML = "";
 
-    // 🚫 If not logged in, redirect to login
-    if (!token) {
-      alert("Please login first to purchase this icon.");
-      window.location.href = "/login"; // Update path if needed
-      return;
-    }
-
-    // ✅ Load PayPal SDK once
-    if (!document.querySelector("#paypal-sdk")) {
-      const script = document.createElement("script");
-      script.src = `https://www.sandbox.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture&commit=true&disable-funding=card,credit`;
-      script.id = "paypal-sdk";
-      script.onload = renderPayPalButton;
-      document.body.appendChild(script);
-    } else {
-      renderPayPalButton();
-    }
-
-    function renderPayPalButton() {
-      document.getElementById("paypal-button-container").innerHTML = "";
       window.paypal.Buttons({
-        createOrder: (data, actions) => {
-          return actions.order.create({
+        createOrder: (data, actions) =>
+          actions.order.create({
             purchase_units: [{
-              amount: { value: price.toFixed(2) },
+              amount: { value: (0.25).toFixed(2) },
               description: `Purchase of ${icon.icon_name}`,
             }],
-          });
-        },
+          }),
         onApprove: async (data, actions) => {
-          const details = await actions.order.capture();
-
-          await fetch(`https://iconsguru.ascinatetech.com/api/purchase-icon`, {
+          await actions.order.capture();
+          const token = localStorage.getItem("access_token");
+          await fetch("https://iconsguru.ascinatetech.com/api/purchase-icon", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -468,12 +449,11 @@ const handleDownloadSVG = async () => {
             },
             body: JSON.stringify({
               icon_id: icon.Id,
-              license_type: license,
-              price,
+              license_type: "standard",
+              price: 0.25,
               paypal_order_id: data.orderID,
             }),
           });
-
           alert("Payment successful!");
           location.reload();
         },
@@ -482,71 +462,89 @@ const handleDownloadSVG = async () => {
           alert("Payment failed.");
         },
       }).render("#paypal-button-container");
+    };
+
+  const handleBuyNow = () => {
+    // Ensure user is logged in
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Please login first to purchase this icon.");
+      return window.location.href = "/login";
     }
+
+    // Show the Bootstrap modal
+    const modal = new window.bootstrap.Modal(
+      document.getElementById("paypalModal")
+    );
+    modal.show();
+
+    // Render the PayPal button inside it
+    renderPayPalButton();
   };
-
-
-
 
   if (!icon) return null;
 
   const renderedSvg = applyColorAndSize(icon.icon_svg);
 
 
- 
-const getSchema = (icon) => {
-  // Capitalize first letter of each word
-  const capitalize = (str) =>
-    str?.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
-  const category = capitalize(icon.icon_category || '');
-  const type = capitalize(icon.type || '');
-  const name = capitalize(icon.icon_name || 'Icon');
-   const rawTags = icon.tags;
-  const tagsArray = Array.isArray(rawTags)
-    ? rawTags
-    : typeof rawTags === "string"
-      ? rawTags.split(',').map(tag => tag.trim())
-      : [];
-  const tags = tagsArray.length ? tagsArray.join(', ') : '';
+  const getSchema = (icon) => {
+    // Capitalize first letter of each word
+    const capitalize = (str) =>
+      str?.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+    const category = capitalize(icon.icon_category || '');
+    const type = capitalize(icon.type || '');
+    const name = capitalize(icon.icon_name || 'Icon');
+    const rawTags = icon.tags;
+    const tagsArray = Array.isArray(rawTags)
+      ? rawTags
+      : typeof rawTags === "string"
+        ? rawTags.split(',').map(tag => tag.trim())
+        : [];
+    const tags = tagsArray.length ? tagsArray.join(', ') : '';
 
 
-  const description = `Download free ${type} ${name} in ${category} category${tags ? ` with tags: ${tags}` : ''}.`;
+    const description = `Download free ${type} ${name} in ${category} category${tags ? ` with tags: ${tags}` : ''}.`;
 
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": name,
-    "image": "data:image/svg+xml;utf8,${encodeURIComponent(icon.icon_svg)}",
-    "description": description,
-    "sku": icon.id,
-    "offers": {
-      "@type": "Offer",
-      "url": "https://iconsguru.com/icon/${icon.slug}",
-      "price": "0.00",
-      "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock"
-    },
-    "isAccessibleForFree": true,
-    "license": "https://iconsguru.com/license"
+    return {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": name,
+      "image": "data:image/svg+xml;utf8,${encodeURIComponent(icon.icon_svg)}",
+      "description": description,
+      "sku": icon.id,
+      "offers": {
+        "@type": "Offer",
+        "url": "https://iconsguru.com/icon/${icon.slug}",
+        "price": "0.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "isAccessibleForFree": true,
+      "license": "https://iconsguru.com/license"
+    };
   };
-};
 
 
 
   return (
     <>
-     {/* ✅ Inject SEO schema dynamically only if icon is loaded */}
-        {icon && (
-      <Head>
-        <title>{icon.icon_name} - Free SVG Icon</title>
-        <meta name="description" content={`Download free ${icon.icon_name} icon in SVG, PNG, WebP format.`} />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(getSchema(icon)) }}
-        />
-      </Head>
-    )}
+      {/* ✅ Inject SEO schema dynamically only if icon is loaded */}
+      {icon && (
+        <Head>
+          <title>{icon.icon_name} - Free SVG Icon</title>
+          <meta name="description" content={`Download free ${icon.icon_name} icon in SVG, PNG, WebP format.`} />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(getSchema(icon)) }}
+          />
+          <Script
+            src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true&disable-funding=card,credit"
+            strategy="afterInteractive"
+          />
+        </Head>
+      )}
 
       <NavicationHome />
       <main className="details-body-parts lisu-lisn-div01 float-start w-100">
@@ -564,11 +562,11 @@ const getSchema = (icon) => {
             <div className="row">
               <div className="col-lg-6 col-xl-7 position-relative p-0">
                 <div
-                    className="blox-icons-div01"
-                    style={{
-                      backgroundColor: bgColor !== null ? bgColor : isLightColor(color) ? "#000000" : "#eaf3fa",
-                    }}
-                  >
+                  className="blox-icons-div01"
+                  style={{
+                    backgroundColor: bgColor !== null ? bgColor : isLightColor(color) ? "#000000" : "#eaf3fa",
+                  }}
+                >
                   <div
                     className="d-table mx-auto"
                     style={{
@@ -611,21 +609,21 @@ const getSchema = (icon) => {
                             className="d-flex align-items-center justify-content-center w-75 icon-carousel"
                             onClick={() => {
 
-                          router.push(`/${variation.icon_category.toLowerCase()}/${variation.slug}`, undefined, { shallow: true });
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
+                              router.push(`/${variation.icon_category.toLowerCase()}/${variation.slug}`, undefined, { shallow: true });
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
                           >
-                        {variation.type==="Animated" ?(
-                            <img
-                        src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(variation.icon_svg)}`}
-                        alt={variation.icon_name}
-                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                      />):(   <div
-                              className="svg-img d-grid"
-                              dangerouslySetInnerHTML={{ __html: variation.icon_svg }}
-                            />
-                          )}
-                         
+                            {variation.type === "Animated" ? (
+                              <img
+                                src={`https://iconsguru.ascinatetech.com/public/uploads/animated/${encodeURIComponent(variation.icon_svg)}`}
+                                alt={variation.icon_name}
+                                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                              />) : (<div
+                                className="svg-img d-grid"
+                                dangerouslySetInnerHTML={{ __html: variation.icon_svg }}
+                              />
+                            )}
+
                           </article>
                         ))}
                       </Slider>
@@ -762,83 +760,107 @@ const getSchema = (icon) => {
                       <div className="input-divs mt-3 w-100 d-flex justify-content-between align-items-center">
 
 
-                    <div className="dropdown col-9">
-                      <button
-                        className="btn w-100 btn-download015 dropdown-toggle"
-                        data-bs-auto-close="outside"
-                        type="button"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <span>
-                          {/* your SVG icon button */}
-                        </span>
-                        Download
-                      </button>
-                    
-                       <ul className="dropdown-menu w-100">
-                        {icon.is_premium ? (
-                          <li className="dropdown-item">
-                            <button
-                              type="button"
-                              onClick={() => handleBuyNow("standard")}
-                              className="btn w-100 btn-warning crm-btn01"
-                            >
-                              🛒 Buy Now (Standard License)
-                            </button>
-                          </li>
-                        ) : (
-                          <>
-                            {icon.type !== "Animated" && (
-                              <>
-                                <li className="dropdown-item">
-                                  <button
-                                    type="button"
-                                    onClick={handleDownloadSVG}
-                                    className="btn w-100 svg-bn btn-comons01 crm-btn01"
-                                  >
-                                    SVG
-                                  </button>
-                                </li>
-                                <li className="dropdown-item">
-                                  <button
-                                    type="button"
-                                    onClick={() => svgToCanvasDownload("png")}
-                                    className="btn w-100 png-bn btn-comons01 crm-btn01"
-                                  >
-                                    PNG
-                                  </button>
-                                </li>
-                                <li className="dropdown-item">
-                                  <button
-                                    type="button"
-                                    onClick={() => svgToCanvasDownload("webp")}
-                                    className="btn w-100 png-bn btn-comons01 crm-btn01"
-                                  >
-                                    WEBP
-                                  </button>
-                                </li>
-                              </>
-                            )}
-                            {icon.type === "Animated" && (
+                        <div className="dropdown col-9">
+                          <button
+                            className="btn w-100 btn-download015 dropdown-toggle"
+                            data-bs-auto-close="outside"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <span>
+                              {/* your SVG icon button */}
+                            </span>
+                            Download
+                          </button>
+
+                          <ul className="dropdown-menu w-100">
+                            {icon.is_premium ? (
                               <li className="dropdown-item">
                                 <button
                                   type="button"
-                                  onClick={handleDownloadGIF}
-                                  className="btn png-bn btn-comons01 crm-btn01"
+                                  onClick={() => handleBuyNow("standard")}
+                                  className="btn w-100 btn-warning crm-btn01"
                                 >
-                                  GIF
+                                  🛒 Buy Now (Standard License)
                                 </button>
                               </li>
+                            ) : (
+                              <>
+                                {icon.type !== "Animated" && (
+                                  <>
+                                    <li className="dropdown-item">
+                                      <button
+                                        type="button"
+                                        onClick={handleDownloadSVG}
+                                        className="btn w-100 svg-bn btn-comons01 crm-btn01"
+                                      >
+                                        SVG
+                                      </button>
+                                    </li>
+                                    <li className="dropdown-item">
+                                      <button
+                                        type="button"
+                                        onClick={() => svgToCanvasDownload("png")}
+                                        className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                      >
+                                        PNG
+                                      </button>
+                                    </li>
+                                    <li className="dropdown-item">
+                                      <button
+                                        type="button"
+                                        onClick={() => svgToCanvasDownload("webp")}
+                                        className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                      >
+                                        WEBP
+                                      </button>
+                                    </li>
+                                  </>
+                                )}
+                                {icon.type === "Animated" && (
+                                  <li className="dropdown-item">
+                                    <button
+                                      type="button"
+                                      onClick={handleDownloadGIF}
+                                      className="btn png-bn btn-comons01 crm-btn01"
+                                    >
+                                      GIF
+                                    </button>
+                                  </li>
+                                )}
+                              </>
                             )}
-                          </>
-                        )}
-                      </ul>
-                      <div id="paypal-button-container" className="mt-3"></div>
-                  
-                    
-                    </div>
+                          </ul>
+
+                        </div>
+                        <div
+                          className="modal fade"
+                          id="paypalModal"
+                          tabIndex={-1}
+                          aria-labelledby="paypalModalLabel"
+                          aria-hidden="true"
+                        >
+                          <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content p-3">
+                              <div className="modal-header">
+                                <h5 className="modal-title" id="paypalModalLabel">
+                                  Complete Your Payment
+                                </h5>
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                />
+                              </div>
+                              <div className="modal-body text-center">
+                                <div id="paypal-button-container" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
                         <div className="col-3 d-grid justify-content-end">
                           <div className="dropdown">
@@ -953,66 +975,66 @@ const getSchema = (icon) => {
                           <li>Dimensions</li>
                           <li>File size</li>
                           <li>Category</li>
-                       
+
                         </ul>
                       </div>
                       <div>
                         <ul className="icon-detail">
-                           <li>{icon?.type === "Animated" ? "GIF" : "SVG, PNG, JPG"}</li>
-                            <li>{dimensions}</li>
-                            <li>{fileSize}</li>
-                            <li>{icon?.icon_category || "Uncategorized"}</li>
-                                          
+                          <li>{icon?.type === "Animated" ? "GIF" : "SVG, PNG, JPG"}</li>
+                          <li>{dimensions}</li>
+                          <li>{fileSize}</li>
+                          <li>{icon?.icon_category || "Uncategorized"}</li>
+
                         </ul>
                       </div>
                     </div>
 
-                  <ul className="inputColor-ul">
-                    <li>
-                      <h5 className="">Try Icon on Background</h5>
-                    </li>
+                    <ul className="inputColor-ul">
+                      <li>
+                        <h5 className="">Try Icon on Background</h5>
+                      </li>
 
-                    {/* Default background remover */}
-                    <li
-                      onClick={() => setBgColor(null)}
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
-                        cursor: "pointer",
-                        border: bgColor === null ? "2px solid #000" : "1px solid #ccc",
-                        backgroundColor: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "10px",
-                      }}
-                      title="Default"
-                    >
-                      ×
-                    </li>
-
-                    {/* Color variations */}
-                    {[
-                      { hex: "#ff0000", name: "Red" },
-                      { hex: "#ffff00", name: "Yellow" },
-                      { hex: "#0000ff", name: "Blue" },
-                    ].map((item) => (
+                      {/* Default background remover */}
                       <li
-                        key={item.hex}
-                        onClick={() => setBgColor(item.hex)}
+                        onClick={() => setBgColor(null)}
                         style={{
-                          backgroundColor: item.hex,
                           width: "30px",
                           height: "30px",
                           borderRadius: "50%",
                           cursor: "pointer",
-                          border: bgColor === item.hex ? "2px solid #000" : "1px solid #ccc",
+                          border: bgColor === null ? "2px solid #000" : "1px solid #ccc",
+                          backgroundColor: "#fff",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "10px",
                         }}
-                        title={item.name}
-                      ></li>
-                    ))}
-                  </ul>
+                        title="Default"
+                      >
+                        ×
+                      </li>
+
+                      {/* Color variations */}
+                      {[
+                        { hex: "#ff0000", name: "Red" },
+                        { hex: "#ffff00", name: "Yellow" },
+                        { hex: "#0000ff", name: "Blue" },
+                      ].map((item) => (
+                        <li
+                          key={item.hex}
+                          onClick={() => setBgColor(item.hex)}
+                          style={{
+                            backgroundColor: item.hex,
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            cursor: "pointer",
+                            border: bgColor === item.hex ? "2px solid #000" : "1px solid #ccc",
+                          }}
+                          title={item.name}
+                        ></li>
+                      ))}
+                    </ul>
 
 
 
