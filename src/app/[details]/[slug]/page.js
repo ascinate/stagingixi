@@ -539,7 +539,7 @@ export default function IconDetailPage() {
         
       )}
         <Script
-            src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true&disable-funding=card,credit"
+            src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
             strategy="afterInteractive"
           />
       <NavicationHome />
