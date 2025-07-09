@@ -319,10 +319,13 @@ const svgToCanvasDownload = async (type = "png") => {
     console.error("Icon data is missing");
     return;
   }
-
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    alert("Please login first to purchase this icon.");
+    window.location.href = "/login";
+    return;
+  }
   try {
-    // Track download
-    const token = localStorage.getItem("access_token");
     await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
       method: "POST",
        headers: {
@@ -374,9 +377,13 @@ const svgToCanvasDownload = async (type = "png") => {
 
 
 const handleDownloadSVG = async () => {
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    alert("Please login first to purchase this icon.");
+    window.location.href = "/login"; // Update path if needed
+    return;
+  }
   try {
-    const token = localStorage.getItem("access_token");
-
     await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
       method: 'POST',
       headers: {
@@ -416,10 +423,74 @@ const handleDownloadSVG = async () => {
     }
   };
 
+  const handleBuyNow = async (license = "standard") => {
+  const PAYPAL_CLIENT_ID = "ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC"; // Replace this
+  const price = 10.0; // Or get it dynamically from the icon
+  const token = localStorage.getItem("access_token");
+
+  // 🚫 If not logged in, redirect to login
+  if (!token) {
+    alert("Please login first to purchase this icon.");
+    window.location.href = "/login"; // Update path if needed
+    return;
+  }
+  // Prevent reloading if already loaded
+  if (!document.querySelector("#paypal-sdk")) {
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+    script.id = "paypal-sdk";
+    script.onload = renderPayPalButton;
+    document.body.appendChild(script);
+  } else {
+    renderPayPalButton();
+  }
+
+  function renderPayPalButton() {
+    window.paypal.Buttons({
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: price.toFixed(2) },
+            description: `Purchase of ${icon.icon_name}`,
+          }],
+        });
+      },
+      onApprove: async (data, actions) => {
+        const details = await actions.order.capture();
+
+        // Save to backend
+        const token = localStorage.getItem("access_token");
+        await fetch(`https://iconsguru.ascinatetech.com/api/purchase-icon`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            icon_id: icon.Id,
+            license_type: license,
+            price,
+            paypal_order_id: data.orderID,
+          }),
+        });
+
+        alert("Payment successful!");
+        location.reload(); // To remove Buy Now and show downloads
+      },
+      onError: (err) => {
+        console.error("PayPal error:", err);
+        alert("Payment failed.");
+      },
+    }).render("#paypal-button-container");
+  }
+};
+
+
 
   if (!icon) return null;
 
   const renderedSvg = applyColorAndSize(icon.icon_svg);
+
 
  
 const getSchema = (icon) => {
@@ -690,80 +761,83 @@ const getSchema = (icon) => {
                       <div className="input-divs mt-3 w-100 d-flex justify-content-between align-items-center">
 
 
-                      <div className="dropdown col-9">
-                        <button
-                          className="btn w-100 btn-download015 dropdown-toggle"
-                          data-bs-auto-close="outside"
-                          type="button"
-                          id="dropdownMenuButton1"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <span>
-                            {/* your SVG icon button */}
-                          </span>
-                          Download
-                        </button>
-
-                        <ul className="dropdown-menu w-100">
-                          {icon.is_premium ? (
-                            <li className="dropdown-item">
-                              <button
-                                type="button"
-                                onClick={() => handleBuyNow("standard")}
-                                className="btn w-100 btn-warning crm-btn01"
-                              >
-                                🛒 Buy Now (Standard License)
-                              </button>
-                            </li>
-                          ) : (
-                            <>
-                              {icon.type !== "Animated" && (
-                                <>
-                                  <li className="dropdown-item">
-                                    <button
-                                      type="button"
-                                      onClick={handleDownloadSVG}
-                                      className="btn w-100 svg-bn btn-comons01 crm-btn01"
-                                    >
-                                      SVG
-                                    </button>
-                                  </li>
-                                  <li className="dropdown-item">
-                                    <button
-                                      type="button"
-                                      onClick={() => svgToCanvasDownload("png")}
-                                      className="btn w-100 png-bn btn-comons01 crm-btn01"
-                                    >
-                                      PNG
-                                    </button>
-                                  </li>
-                                  <li className="dropdown-item">
-                                    <button
-                                      type="button"
-                                      onClick={() => svgToCanvasDownload("webp")}
-                                      className="btn w-100 png-bn btn-comons01 crm-btn01"
-                                    >
-                                      WEBP
-                                    </button>
-                                  </li>
-                                </>
-                              )}
-                              {icon.type === "Animated" && (
+                    <div className="dropdown col-9">
+                      <button
+                        className="btn w-100 btn-download015 dropdown-toggle"
+                        data-bs-auto-close="outside"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <span>
+                          {/* your SVG icon button */}
+                        </span>
+                        Download
+                      </button>
+                     <>
+                       <ul className="dropdown-menu w-100">
+                        {icon.is_premium ? (
+                          <li className="dropdown-item">
+                            <button
+                              type="button"
+                              onClick={() => handleBuyNow("standard")}
+                              className="btn w-100 btn-warning crm-btn01"
+                            >
+                              🛒 Buy Now (Standard License)
+                            </button>
+                          </li>
+                        ) : (
+                          <>
+                            {icon.type !== "Animated" && (
+                              <>
                                 <li className="dropdown-item">
                                   <button
                                     type="button"
-                                    onClick={handleDownloadGIF}
-                                    className="btn png-bn btn-comons01 crm-btn01"
+                                    onClick={handleDownloadSVG}
+                                    className="btn w-100 svg-bn btn-comons01 crm-btn01"
                                   >
-                                    GIF
+                                    SVG
                                   </button>
                                 </li>
-                              )}
-                            </>
-                          )}
-                        </ul>
-                      </div>
+                                <li className="dropdown-item">
+                                  <button
+                                    type="button"
+                                    onClick={() => svgToCanvasDownload("png")}
+                                    className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                  >
+                                    PNG
+                                  </button>
+                                </li>
+                                <li className="dropdown-item">
+                                  <button
+                                    type="button"
+                                    onClick={() => svgToCanvasDownload("webp")}
+                                    className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                  >
+                                    WEBP
+                                  </button>
+                                </li>
+                              </>
+                            )}
+                            {icon.type === "Animated" && (
+                              <li className="dropdown-item">
+                                <button
+                                  type="button"
+                                  onClick={handleDownloadGIF}
+                                  className="btn png-bn btn-comons01 crm-btn01"
+                                >
+                                  GIF
+                                </button>
+                              </li>
+                            )}
+                          </>
+                        )}
+                      </ul>
+                      <div id="paypal-button-container" className="mt-3"></div>
+                     </>
+                    
+                    </div>
 
                         <div className="col-3 d-grid justify-content-end">
                           <div className="dropdown">
