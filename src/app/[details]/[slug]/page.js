@@ -478,7 +478,7 @@ export default function IconDetailPage() {
 
         alert("✅ Payment successful!");
         const modalEl = document.getElementById("paypalModal");
-        const modalInstance = window.bootstrap.Modal.getInstance(modalEl);
+        const modalInstance = bootstrap?.Modal?.getInstance(modalEl);
         modalInstance?.hide();
         location.reload();
       } catch (err) {
