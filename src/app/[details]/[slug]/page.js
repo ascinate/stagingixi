@@ -428,7 +428,12 @@ export default function IconDetailPage() {
  const renderPayPalButton = () => {
   const container = document.getElementById("paypal-button-container");
   if (!container || !window.paypal) return;
-
+  const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Please login first to purchase this icon.");
+      window.location.href = "/login";
+      return;
+    }
   container.innerHTML = "";
 
   window.paypal.Buttons({
