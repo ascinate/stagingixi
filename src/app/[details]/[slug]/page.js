@@ -425,62 +425,57 @@ export default function IconDetailPage() {
     }
   };
 
+ // Renders the PayPal button into the modal container
   const renderPayPalButton = () => {
-      const container = document.getElementById("paypal-button-container");
-      if (!container || !window.paypal) return;
-      container.innerHTML = "";
+    const container = document.getElementById("paypal-button-container");
+    if (!container || !window.paypal) return;
+    container.innerHTML = "";
 
-      window.paypal.Buttons({
-        createOrder: (data, actions) =>
-          actions.order.create({
-            purchase_units: [{
-              amount: { value: (0.25).toFixed(2) },
-              description: `Purchase of ${icon.icon_name}`,
-            }],
+    window.paypal.Buttons({
+      createOrder: (data, actions) =>
+        actions.order.create({
+          purchase_units: [{
+            amount: { value: "0.25" },
+            description: `Purchase of ${icon.icon_name}`,
+          }],
+        }),
+      onApprove: async (data, actions) => {
+        await actions.order.capture();
+        const token = localStorage.getItem("access_token");
+        await fetch("https://iconsguru.ascinatetech.com/api/purchase-icon", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            icon_id: icon.Id,
+            license_type: "standard",
+            price: 0.25,
+            paypal_order_id: data.orderID,
           }),
-        onApprove: async (data, actions) => {
-          await actions.order.capture();
-          const token = localStorage.getItem("access_token");
-          await fetch("https://iconsguru.ascinatetech.com/api/purchase-icon", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              icon_id: icon.Id,
-              license_type: "standard",
-              price: 0.25,
-              paypal_order_id: data.orderID,
-            }),
-          });
-          alert("Payment successful!");
-          location.reload();
-        },
-        onError: (err) => {
-          console.error("PayPal error:", err);
-          alert("Payment failed.");
-        },
-      }).render("#paypal-button-container");
-    };
-
-  const handleBuyNow = () => {
-    // Ensure user is logged in
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Please login first to purchase this icon.");
-      return window.location.href = "/login";
-    }
-
-    // Show the Bootstrap modal
-    const modal = new window.bootstrap.Modal(
-      document.getElementById("paypalModal")
-    );
-    modal.show();
-
-    // Render the PayPal button inside it
-    renderPayPalButton();
+        });
+        alert("Payment successful!");
+        // Hide the modal
+        const modalEl = document.getElementById("paypalModal");
+        const modalInstance = window.bootstrap.Modal.getInstance(modalEl);
+        modalInstance.hide();
+        location.reload();
+      },
+      onError: (err) => {
+        console.error("PayPal error:", err);
+        alert("Payment failed.");
+      },
+    }).render("#paypal-button-container");
   };
+
+   useEffect(() => {
+    const modalEl = document.getElementById("paypalModal");
+    if (!modalEl) return;
+    const onShown = () => renderPayPalButton();
+    modalEl.addEventListener("shown.bs.modal", onShown);
+    return () => modalEl.removeEventListener("shown.bs.modal", onShown);
+  }, [icon]);
 
   if (!icon) return null;
 
@@ -777,15 +772,17 @@ export default function IconDetailPage() {
 
                           <ul className="dropdown-menu w-100">
                             {icon.is_premium ? (
-                              <li className="dropdown-item">
+                             <li className="dropdown-item">
                                 <button
                                   type="button"
-                                  onClick={() => handleBuyNow("standard")}
                                   className="btn w-100 btn-warning crm-btn01"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#paypalModal"
                                 >
                                   🛒 Buy Now (Standard License)
                                 </button>
                               </li>
+
                             ) : (
                               <>
                                 {icon.type !== "Animated" && (
@@ -835,6 +832,7 @@ export default function IconDetailPage() {
                           </ul>
 
                         </div>
+                        {/* PayPal Modal */}
                         <div
                           className="modal fade"
                           id="paypalModal"
@@ -846,7 +844,7 @@ export default function IconDetailPage() {
                             <div className="modal-content p-3">
                               <div className="modal-header">
                                 <h5 className="modal-title" id="paypalModalLabel">
-                                  Complete Your Payment
+                                  Complete Your Purchase
                                 </h5>
                                 <button
                                   type="button"
@@ -861,6 +859,7 @@ export default function IconDetailPage() {
                             </div>
                           </div>
                         </div>
+
 
                         <div className="col-3 d-grid justify-content-end">
                           <div className="dropdown">
