@@ -1,6 +1,7 @@
 import { Sora, Play, Playfair, Inter, Plus_Jakarta_Sans   } from "next/font/google";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import ImportBsJS from "../app/components/ImportBsJS";
 
 const sorasans = Sora({
