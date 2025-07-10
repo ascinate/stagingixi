@@ -430,21 +430,7 @@ export default function IconDetailPage() {
     }
   };
 
-  const checkAlreadyPurchased = async (iconId, token) => {
-  try {
-    const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-icon-purchased/${iconId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!res.ok) return false;
-    const data = await res.json();
-    return data?.purchased;
-  } catch (err) {
-    console.error("❌ Error checking purchase:", err);
-    return false;
-  }
-};
+
 
 
   const renderPayPalButton = async () => {
@@ -552,6 +538,22 @@ export default function IconDetailPage() {
     }).render("#paypal-button-container");
   };
 
+
+    const checkAlreadyPurchased = async (iconId, token) => {
+    try {
+      const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-icon-purchased/${iconId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) return false;
+      const data = await res.json();
+      return data?.purchased;
+    } catch (err) {
+      console.error("❌ Error checking purchase:", err);
+      return false;
+    }
+  };
   // 🔁 Trigger PayPal button render on modal shown
   useEffect(() => {
     const modalEl = document.getElementById("paypalModal");
