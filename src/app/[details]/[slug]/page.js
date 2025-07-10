@@ -584,7 +584,7 @@ export default function IconDetailPage() {
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(getSchema(icon)) }}
           />
-          <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+          
 
         </Head>
 
