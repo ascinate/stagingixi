@@ -473,7 +473,10 @@ export default function IconDetailPage() {
           });
 
           const resJson = await res.json();
-          console.log("📦 Backend Response:", res.status, resJson);
+          if (res.status === 409) {
+              alert("⚠️ You've already purchased this icon.");
+              return;
+            }
 
           if (!res.ok) {
             throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
