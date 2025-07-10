@@ -427,91 +427,95 @@ export default function IconDetailPage() {
     }
   };
 
- const renderPayPalButton = () => {
-  const container = document.getElementById("paypal-button-container");
-  if (!container || !window.paypal) return;
-  const token = localStorage.getItem("access_token");
+  const renderPayPalButton = () => {
+    const container = document.getElementById("paypal-button-container");
+    if (!container || !window.paypal) return;
+    const token = localStorage.getItem("access_token");
     if (!token) {
       alert("Please login first to purchase this icon.");
       window.location.href = "/login";
       return;
     }
-  container.innerHTML = "";
+    container.innerHTML = "";
 
-  window.paypal.Buttons({
-    createOrder: (data, actions) => {
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: "0.25",
-            currency_code: "USD", // Ensure USD is explicitly passed
-          },
-          description: `Purchase of ${icon.icon_name}`,
-        }],
-      });
-    },
-
-    onApprove: async (data, actions) => {
-      try {
-        const details = await actions.order.capture();
-        console.log("✅ PayPal capture success:", details);
-
-        const token = localStorage.getItem("access_token");
-        const res = await fetch("https://iconsguru.ascinatetech.com/api/purchase-icon", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            icon_id: icon.Id,
-            license_type: "standard",
-            price: 0.25,
-            paypal_order_id: data.orderID,
-          }),
+    window.paypal.Buttons({
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: "0.25",
+              currency_code: "USD", // Ensure USD is explicitly passed
+            },
+            description: `Purchase of ${icon.icon_name}`,
+          }],
         });
+      },
 
-        const resJson = await res.json();
-        console.log("📦 Backend Response:", res.status, resJson);
+      onApprove: async (data, actions) => {
+        try {
+          const details = await actions.order.capture();
+          console.log("✅ PayPal capture success:", details);
 
-        if (!res.ok) {
-          throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
-        }
+          const token = localStorage.getItem("access_token");
+          const res = await fetch("https://iconsguru.ascinatetech.com/api/purchase-icon", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              icon_id: icon.Id,
+              license_type: "standard",
+              price: 0.25,
+              paypal_order_id: data.orderID,
+            }),
+          });
 
-        alert("✅ Payment successful!");
+          const resJson = await res.json();
+          console.log("📦 Backend Response:", res.status, resJson);
+
+          if (!res.ok) {
+            throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
+          }
+
+
         const modalEl = document.getElementById("paypalModal");
        const modalInstance = Modal.getInstance(modalEl);
         modalInstance?.hide();
-        location.reload();
-      } catch (err) {
-        console.error("❌ Payment error:", err);
-        alert("Payment failed. " + err.message);
-      }
-    },
 
-    onError: (err) => {
-      console.error("❌ PayPal button error:", err);
-      alert("Payment failed.");
-    },
-  }).render("#paypal-button-container");
-};
+        const successModalEl = document.getElementById("successModal");
+          const successModal = Modal.getOrCreateInstance(successModalEl);
+          successModal.show();
+        
+        } catch (err) {
+          console.error("❌ Payment error:", err);
+          alert("Payment failed. " + err.message);
+        }
+      },
 
-// 🔁 Trigger PayPal button render on modal shown
-useEffect(() => {
-  const modalEl = document.getElementById("paypalModal");
-  if (!modalEl) return;
-
-  const onShown = () => {
-    console.log("🟡 Modal shown – rendering PayPal");
-    renderPayPalButton();
+      onError: (err) => {
+        console.error("❌ PayPal button error:", err);
+        alert("Payment failed.");
+      },
+    }).render("#paypal-button-container");
   };
 
-  modalEl.addEventListener("shown.bs.modal", onShown);
+  // 🔁 Trigger PayPal button render on modal shown
+  useEffect(() => {
+    const modalEl = document.getElementById("paypalModal");
+    if (!modalEl) return;
 
-  return () => {
-    modalEl.removeEventListener("shown.bs.modal", onShown);
-  };
-}, [icon]);
+    const onShown = () => {
+      console.log("🟡 Modal shown – rendering PayPal");
+      renderPayPalButton();
+    };
+
+    modalEl.addEventListener("shown.bs.modal", onShown);
+
+    return () => {
+      modalEl.removeEventListener("shown.bs.modal", onShown);
+    };
+  }, [icon]);
 
   if (!icon) return null;
 
@@ -570,14 +574,14 @@ useEffect(() => {
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(getSchema(icon)) }}
           />
-         
+
         </Head>
-        
+
       )}
-        <Script
-            src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
-            strategy="afterInteractive"
-          />
+      <Script
+        src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
+        strategy="afterInteractive"
+      />
       <NavicationHome />
       <main className="details-body-parts lisu-lisn-div01 float-start w-100">
         <div className="container">
@@ -809,7 +813,7 @@ useEffect(() => {
 
                           <ul className="dropdown-menu w-100">
                             {icon.is_premium ? (
-                             <li className="dropdown-item">
+                              <li className="dropdown-item">
                                 <button
                                   type="button"
                                   className="btn w-100 btn-warning crm-btn01"
@@ -896,6 +900,33 @@ useEffect(() => {
                             </div>
                           </div>
                         </div>
+                         {/* Success Modal */}
+                        <div
+                          className="modal fade"
+                          id="successModal"
+                          tabIndex="-1"
+                          aria-labelledby="successModalLabel"
+                          aria-hidden="true"
+                        >
+                          <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content text-center p-4">
+                              <div className="modal-body">
+                                <h5 className="text-success mb-3">
+                                  🎉 Payment Successful!
+                                </h5>
+                                <p className="mb-4">You can now download your icon.</p>
+                                <button
+                                  type="button"
+                                  className="btn btn-success"
+                                  data-bs-dismiss="modal"
+                                >
+                                  Got it
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
 
 
                         <div className="col-3 d-grid justify-content-end">
