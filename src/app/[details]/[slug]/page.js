@@ -430,7 +430,24 @@ export default function IconDetailPage() {
     }
   };
 
-  const renderPayPalButton = () => {
+  const checkAlreadyPurchased = async (iconId, token) => {
+  try {
+    const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-icon-purchased/${iconId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    return data?.purchased;
+  } catch (err) {
+    console.error("❌ Error checking purchase:", err);
+    return false;
+  }
+};
+
+
+  const renderPayPalButton = async () => {
     const container = document.getElementById("paypal-button-container");
     if (!container || !window.paypal) return;
     const token = localStorage.getItem("access_token");
@@ -440,6 +457,14 @@ export default function IconDetailPage() {
       window.location.href = "/login";
       return;
     }
+     const alreadyPurchased = await checkAlreadyPurchased(icon.Id, token);
+  if (alreadyPurchased) {
+    alert("⚠️ You've already purchased this icon.");
+    const modalEl = document.getElementById("paypalModal");
+    const modalInstance = Modal.getInstance(modalEl);
+    modalInstance?.hide();
+    return;
+  }
     container.innerHTML = "";
 
     window.paypal.Buttons({
@@ -477,10 +502,6 @@ export default function IconDetailPage() {
           
           const resJson = await res.json();
 
-          if (res.status === 409) {
-          alert("⚠️ You've already purchased this icon.");
-          return;
-        }
           if (!res.ok) {
             throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
           }
