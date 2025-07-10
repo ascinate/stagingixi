@@ -473,17 +473,20 @@ export default function IconDetailPage() {
           });
 
           const resJson = await res.json();
-          if (res.status === 409) {
-              alert("⚠️ You've already purchased this icon.");
-              return;
-            }
-
           if (!res.ok) {
             throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
           }
         const modalEl = document.getElementById("paypalModal");
         const modalInstance = Modal.getInstance(modalEl);
         modalInstance?.hide();   
+        const successModalEl = document.getElementById("successModal");
+        const successModal = new Modal(successModalEl);
+         successModal.show();
+
+         const okBtn = document.getElementById("success-ok-btn");
+          okBtn.addEventListener("click", () => {
+            location.reload();
+          });
         
         confetti({
           particleCount: 300,
@@ -509,9 +512,7 @@ export default function IconDetailPage() {
           confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } });
         }, 200);
 
-        const successModalEl = document.getElementById("successModal");
-        const successModal = new Modal(successModalEl);
-        successModal.show();   
+    
         } catch (err) {
           console.error("❌ Payment error:", err);
           alert("Payment failed. " + err.message);
@@ -937,9 +938,7 @@ export default function IconDetailPage() {
                                 🎉 Your icon has been successfully purchased. You can now download it.
                               </div>
                               <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={() => location.reload()}>
-                                  OK
-                                </button>
+                                <button type="button" id="success-ok-btn" class="btn btn-success">OK</button>
                               </div>
                             </div>
                           </div>
