@@ -877,7 +877,6 @@ export default function IconDetailPage() {
                           <ul className="dropdown-menu w-100">
                             {icon.is_premium ? (
                               <li className="dropdown-item">
-                               
                                 <button id="buyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
                                   <i class="bi bi-cart-check-fill me-2"></i>
                                   Buy Now
