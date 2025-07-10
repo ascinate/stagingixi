@@ -490,7 +490,7 @@ export default function IconDetailPage() {
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: "0.25",
+              value: "0.10",
               currency_code: "USD",
             },
             description: `Purchase of ${icon.icon_name}`,
@@ -641,7 +641,7 @@ export default function IconDetailPage() {
         </Head>
 
       <Script
-        src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
+        src="https://www.sandbox.paypal.com/sdk/js?client-id=ATnrQmIz_bX96FDxJnjj4K0eeE9EHySAurFNSDJ38UYPI_jY6xXzGmhPnXItAJbCGCDCqSv6IFgedxxY&currency=USD&intent=capture&commit=true"
         strategy="afterInteractive"
       />
     
