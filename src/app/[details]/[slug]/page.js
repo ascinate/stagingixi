@@ -474,8 +474,13 @@ export default function IconDetailPage() {
               paypal_order_id: data.orderID,
             }),
           });
-
+          
           const resJson = await res.json();
+
+          if (res.status === 409) {
+          alert("⚠️ You've already purchased this icon.");
+          return;
+        }
           if (!res.ok) {
             throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
           }
