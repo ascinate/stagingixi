@@ -477,16 +477,12 @@ export default function IconDetailPage() {
           if (!res.ok) {
             throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
           }
-
-
         const modalEl = document.getElementById("paypalModal");
-       const modalInstance = Modal.getInstance(modalEl);
-        modalInstance?.hide();
-
+        const modalInstance = Modal.getInstance(modalEl);
+        modalInstance?.hide();    
         const successModalEl = document.getElementById("successModal");
-          const successModal = bootstrap.Modal.getOrCreateInstance(successModalEl);
-          successModal.show();
-        
+        const successModal = new Modal(successModalEl);
+        successModal.show();   
         } catch (err) {
           console.error("❌ Payment error:", err);
           alert("Payment failed. " + err.message);
@@ -902,31 +898,23 @@ export default function IconDetailPage() {
                           </div>
                         </div>
                          {/* Success Modal */}
-                        <div
-                          className="modal fade"
-                          id="successModal"
-                          tabIndex="-1"
-                          aria-labelledby="successModalLabel"
-                          aria-hidden="true"
-                        >
+                        <div className="modal fade" id="successModal" tabIndex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
                           <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content text-center p-4">
+                            <div className="modal-content text-center">
+                              <div className="modal-header">
+                                <h5 className="modal-title" id="successModalLabel">Purchase Complete</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
                               <div className="modal-body">
-                                <h5 className="text-success mb-3">
-                                  🎉 Payment Successful!
-                                </h5>
-                                <p className="mb-4">You can now download your icon.</p>
-                                <button
-                                  type="button"
-                                  className="btn btn-success"
-                                  data-bs-dismiss="modal"
-                                >
-                                  Got it
-                                </button>
+                                🎉 Your icon has been successfully purchased. You can now download it.
+                              </div>
+                              <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal">OK</button>
                               </div>
                             </div>
                           </div>
                         </div>
+
 
 
 
