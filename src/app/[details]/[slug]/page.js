@@ -576,8 +576,7 @@ export default function IconDetailPage() {
 
   return (
     <>
-      {/* ✅ Inject SEO schema dynamically only if icon is loaded */}
-      {icon && (
+
         <Head>
           <title>{icon.icon_name} - Free SVG Icon</title>
           <meta name="description" content={`Download free ${icon.icon_name} icon in SVG, PNG, WebP format.`} />
@@ -589,7 +588,6 @@ export default function IconDetailPage() {
 
         </Head>
 
-      )}
       <Script
         src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
         strategy="afterInteractive"
