@@ -449,7 +449,7 @@ export default function IconDetailPage() {
 
   // ✅ Bind Buy Now button
   useEffect(() => {
-    const buyBtn = document.getElementById("buyNowBtn"); // 🔁 Your button ID
+    const buyBtn = document.getElementById("paypalbuyNowBtn"); // 🔁 Your button ID
     if (!buyBtn) return;
 
     const handleBuyClick = async () => {
@@ -877,9 +877,13 @@ export default function IconDetailPage() {
                           <ul className="dropdown-menu w-100">
                             {icon.is_premium ? (
                               <li className="dropdown-item">
-                                <button id="buyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
-                                  <i class="bi bi-cart-check-fill me-2"></i>
-                                 🛒 Buy Now (Standard License)
+                                <button id="paypalbuyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
+                                 
+                                 💰 Pay with PayPal
+                                </button>
+                                 <button id="buyNowBtn" class="btn btn-dark text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
+                                  
+                                 💳 Pay with Stripe
                                 </button>
 
                               </li>
