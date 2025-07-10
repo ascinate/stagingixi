@@ -484,8 +484,8 @@ export default function IconDetailPage() {
         modalInstance?.hide();
 
         const successModalEl = document.getElementById("successModal");
-          const successModal = Modal.getOrCreateInstance(successModalEl);
-          successModal.show();
+         
+          successModalEl.show();
         
         } catch (err) {
           console.error("❌ Payment error:", err);
