@@ -582,10 +582,7 @@ export default function IconDetailPage() {
         src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
         strategy="afterInteractive"
       />
-      <Script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          defer
-        ></Script>
+    
       <NavicationHome />
       <main className="details-body-parts lisu-lisn-div01 float-start w-100">
         <div className="container">
