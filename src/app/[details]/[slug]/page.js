@@ -458,13 +458,10 @@ export default function IconDetailPage() {
       return;
     }
      const alreadyPurchased = await checkAlreadyPurchased(icon.Id, token);
-  if (alreadyPurchased) {
-    alert("⚠️ You've already purchased this icon.");
-    const modalEl = document.getElementById("paypalModal");
-    const modalInstance = Modal.getInstance(modalEl);
-    modalInstance?.hide();
-    return;
-  }
+    if (alreadyPurchased) {
+      alert("⚠️ You've already purchased this icon.");
+      return;
+    }
     container.innerHTML = "";
 
     window.paypal.Buttons({
