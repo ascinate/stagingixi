@@ -877,14 +877,16 @@ export default function IconDetailPage() {
                           <ul className="dropdown-menu w-100">
                             {icon.is_premium ? (
                               <li className="dropdown-item">
-                                <button id="paypalbuyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
+                               <div>
+                                 <button id="paypalbuyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
                                  
                                  💰 Pay with PayPal
                                 </button>
-                                 <button id="buyNowBtn" class="btn btn-dark text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
+                                 <button id="stripebuyNowBtn" class="btn btn-dark text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
                                   
                                  💳 Pay with Stripe
                                 </button>
+                               </div>
 
                               </li>
 
