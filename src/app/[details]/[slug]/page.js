@@ -327,6 +327,7 @@ export default function IconDetailPage() {
     const token = localStorage.getItem("access_token");
     if (!token) {
       alert("Please login first to purchase this icon.");
+      localStorage.setItem("redirect_after_login", window.location.href);
       window.location.href = "/login";
       return;
     }
@@ -385,6 +386,7 @@ export default function IconDetailPage() {
     const token = localStorage.getItem("access_token");
     if (!token) {
       alert("Please login first to purchase this icon.");
+      localStorage.setItem("redirect_after_login", window.location.href);
       window.location.href = "/login"; // Update path if needed
       return;
     }
