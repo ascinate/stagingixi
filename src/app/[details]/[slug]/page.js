@@ -431,23 +431,58 @@ export default function IconDetailPage() {
   };
 
 
+  const checkAlreadyPurchased = async (iconId, token) => {
+    try {
+      const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-icon-purchased/${iconId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) return false;
+      const data = await res.json();
+      return data?.purchased;
+    } catch (err) {
+      console.error("❌ Error checking purchase:", err);
+      return false;
+    }
+  };
 
+  // ✅ Bind Buy Now button
+  useEffect(() => {
+    const buyBtn = document.getElementById("buyNowBtn"); // 🔁 Your button ID
+    if (!buyBtn) return;
 
-  const renderPayPalButton = async () => {
+    const handleBuyClick = async () => {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        alert("Please login first to purchase this icon.");
+        localStorage.setItem("redirect_after_login", window.location.href);
+        window.location.href = "/login";
+        return;
+      }
+
+      const alreadyPurchased = await checkAlreadyPurchased(icon.Id, token);
+      if (alreadyPurchased) {
+        alert("⚠️ You've already purchased this icon.");
+        return;
+      }
+
+      const paypalModalEl = document.getElementById("paypalModal");
+      const paypalModal = new Modal(paypalModalEl);
+      paypalModal.show();
+      renderPayPalButton(); // ⬅️ Only now render PayPal button
+    };
+
+    buyBtn.addEventListener("click", handleBuyClick);
+
+    return () => buyBtn.removeEventListener("click", handleBuyClick);
+  }, [icon]);
+
+  // ✅ Renders PayPal buttons
+  const renderPayPalButton = () => {
     const container = document.getElementById("paypal-button-container");
     if (!container || !window.paypal) return;
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Please login first to purchase this icon.");
-      localStorage.setItem("redirect_after_login", window.location.href);
-      window.location.href = "/login";
-      return;
-    }
-     const alreadyPurchased = await checkAlreadyPurchased(icon.Id, token);
-    if (alreadyPurchased) {
-      alert("⚠️ You've already purchased this icon.");
-      return;
-    }
+
     container.innerHTML = "";
 
     window.paypal.Buttons({
@@ -456,7 +491,7 @@ export default function IconDetailPage() {
           purchase_units: [{
             amount: {
               value: "0.25",
-              currency_code: "USD", // Ensure USD is explicitly passed
+              currency_code: "USD",
             },
             description: `Purchase of ${icon.icon_name}`,
           }],
@@ -482,49 +517,55 @@ export default function IconDetailPage() {
               paypal_order_id: data.orderID,
             }),
           });
-          
+
           const resJson = await res.json();
 
           if (!res.ok) {
             throw new Error("❌ Backend error: " + (resJson?.message || "Unknown error"));
           }
-        const modalEl = document.getElementById("paypalModal");
-        const modalInstance = Modal.getInstance(modalEl);
-        modalInstance?.hide();   
-        const successModalEl = document.getElementById("successModal");
-        const successModal = new Modal(successModalEl);
-         successModal.show();
 
-         const okBtn = document.getElementById("success-ok-btn");
-          okBtn.addEventListener("click", () => {
-            location.reload();
+          // ✅ Hide PayPal modal
+          const modalEl = document.getElementById("paypalModal");
+          const modalInstance = Modal.getInstance(modalEl);
+          modalInstance?.hide();
+
+          // ✅ Show success modal
+          const successModalEl = document.getElementById("successModal");
+          const successModal = new Modal(successModalEl);
+          successModal.show();
+
+          // ✅ Confetti blast
+          confetti({
+            particleCount: 300,
+            spread: 360,
+            origin: { y: 0.6 },
+            zIndex: 9999,
           });
-        
-        confetti({
-          particleCount: 300,
-          spread: 360,
-          origin: { y: 0.6 },
-          zIndex: 9999,
-        });
 
-        const duration = 4 * 1000;
-        const animationEnd = Date.now() + duration;
-        const defaults = {
-          startVelocity: 50,
-          spread: 360,
-          ticks: 70,
-          zIndex: 9999,
-        };
+          const duration = 4000;
+          const animationEnd = Date.now() + duration;
+          const defaults = {
+            startVelocity: 50,
+            spread: 360,
+            ticks: 70,
+            zIndex: 9999,
+          };
 
-        const interval = setInterval(() => {
-          const timeLeft = animationEnd - Date.now();
-          if (timeLeft <= 0) return clearInterval(interval);
+          const interval = setInterval(() => {
+            const timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(interval);
+            const particleCount = 80 * (timeLeft / duration);
+            confetti({
+              ...defaults,
+              particleCount,
+              origin: { x: Math.random(), y: Math.random() - 0.2 },
+            });
+          }, 200);
 
-          const particleCount = 80 * (timeLeft / duration);
-          confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } });
-        }, 200);
+          // ✅ Refresh after "OK"
+          const okBtn = document.getElementById("success-ok-btn");
+          okBtn.addEventListener("click", () => location.reload());
 
-    
         } catch (err) {
           console.error("❌ Payment error:", err);
           alert("Payment failed. " + err.message);
@@ -538,38 +579,6 @@ export default function IconDetailPage() {
     }).render("#paypal-button-container");
   };
 
-
-    const checkAlreadyPurchased = async (iconId, token) => {
-    try {
-      const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-icon-purchased/${iconId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) return false;
-      const data = await res.json();
-      return data?.purchased;
-    } catch (err) {
-      console.error("❌ Error checking purchase:", err);
-      return false;
-    }
-  };
-  // 🔁 Trigger PayPal button render on modal shown
-  useEffect(() => {
-    const modalEl = document.getElementById("paypalModal");
-    if (!modalEl) return;
-
-    const onShown = () => {
-      console.log("🟡 Modal shown – rendering PayPal");
-      renderPayPalButton();
-    };
-
-    modalEl.addEventListener("shown.bs.modal", onShown);
-
-    return () => {
-      modalEl.removeEventListener("shown.bs.modal", onShown);
-    };
-  }, [icon]);
 
   if (!icon) return null;
 
