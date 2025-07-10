@@ -479,7 +479,22 @@ export default function IconDetailPage() {
           }
         const modalEl = document.getElementById("paypalModal");
         const modalInstance = Modal.getInstance(modalEl);
-        modalInstance?.hide();    
+        modalInstance?.hide();   
+        
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+        const interval = setInterval(function () {
+          const timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) return clearInterval(interval);
+          const particleCount = 50 * (timeLeft / duration);
+
+          confetti(Object.assign({}, defaults, {
+            particleCount,
+            origin: { x: Math.random(), y: Math.random() - 0.2 }
+          }));
+        }, 250);
         const successModalEl = document.getElementById("successModal");
         const successModal = new Modal(successModalEl);
         successModal.show();   
@@ -570,6 +585,7 @@ export default function IconDetailPage() {
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(getSchema(icon)) }}
           />
+          <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
         </Head>
 
