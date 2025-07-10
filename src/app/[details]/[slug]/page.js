@@ -909,7 +909,9 @@ export default function IconDetailPage() {
                                 🎉 Your icon has been successfully purchased. You can now download it.
                               </div>
                               <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                <button type="button" className="btn btn-primary" onClick={() => location.reload()}>
+                                  OK
+                                </button>
                               </div>
                             </div>
                           </div>
