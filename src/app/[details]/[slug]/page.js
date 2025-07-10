@@ -482,20 +482,30 @@ export default function IconDetailPage() {
         const modalInstance = Modal.getInstance(modalEl);
         modalInstance?.hide();   
         
-        const duration = 3 * 1000;
-        const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+        confetti({
+          particleCount: 300,
+          spread: 360,
+          origin: { y: 0.6 },
+          zIndex: 9999,
+        });
 
-        const interval = setInterval(function () {
+        const duration = 4 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = {
+          startVelocity: 50,
+          spread: 360,
+          ticks: 70,
+          zIndex: 9999,
+        };
+
+        const interval = setInterval(() => {
           const timeLeft = animationEnd - Date.now();
           if (timeLeft <= 0) return clearInterval(interval);
-          const particleCount = 50 * (timeLeft / duration);
 
-          confetti(Object.assign({}, defaults, {
-            particleCount,
-            origin: { x: Math.random(), y: Math.random() - 0.2 }
-          }));
-        }, 250);
+          const particleCount = 80 * (timeLeft / duration);
+          confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+        }, 200);
+
         const successModalEl = document.getElementById("successModal");
         const successModal = new Modal(successModalEl);
         successModal.show();   
