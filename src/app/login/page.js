@@ -49,11 +49,19 @@ function Login() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage("Login successful!");
-         localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        router.push("/");
+      setMessage("Login successful!");
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      const redirectURL = localStorage.getItem("redirect_after_login");
+
+      if (redirectURL) {
+        localStorage.removeItem("redirect_after_login"); // clear it after using
+        router.push(redirectURL); // ✅ redirect to original page
       } else {
+        router.push("/"); // fallback
+      }
+    } else {
         setMessage(data.message || "Login failed.");
       }
     } catch (error) {
