@@ -877,14 +877,7 @@ export default function IconDetailPage() {
                           <ul className="dropdown-menu w-100">
                             {icon.is_premium ? (
                               <li className="dropdown-item">
-                                <button
-                                  type="button"
-                                  className="btn w-100 btn-warning crm-btn01"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#paypalModal"
-                                >
-                                  🛒 Buy Now (Standard License)
-                                </button>
+                                <button id="buyNowBtn">🛒 Buy Now (Standard License)</button>
                               </li>
 
                             ) : (
