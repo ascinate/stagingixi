@@ -880,11 +880,7 @@ export default function IconDetailPage() {
                                <div>
                                  <button id="paypalbuyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
                                  
-                                 💰 Pay with PayPal
-                                </button>
-                                 <button id="stripebuyNowBtn" class="btn btn-dark text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
-                                  
-                                 💳 Pay with Stripe
+                                 🛒 Buy Now (Standard License)
                                 </button>
                                </div>
 
