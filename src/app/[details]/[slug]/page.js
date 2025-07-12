@@ -391,12 +391,17 @@ export default function IconDetailPage() {
       return;
     }
     try {
-      await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+       const res =await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
+
+        if (res === '409') {
+        alert("⚠️ you reached you download limit ");
+        return;
+      }
 
       const svg = applyColorAndSize(icon.icon_svg);
       const blob = new Blob([svg], { type: "image/svg+xml" });

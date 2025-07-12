@@ -92,7 +92,7 @@ export default function PlansPage() {
                       <br />
                       billed {plan.duration === "yearly" ? "per year" : "per month"}
                     </p>
-                    <button className="btn btn-upgrade" onClick={() => handleUpgrade(plan.subscription_id)}>Upgrade now</button>
+                    <button className="btn btn-upgrade" onClick={() => handleUpgrade(plan.subscription_id)}>Upgrade plan now</button>
                   </div>
                 </div>
               ))}
