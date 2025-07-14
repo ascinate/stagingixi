@@ -694,7 +694,7 @@ export default function IconDetailPage() {
         </Head>
 
       <Script
-        src="https://www.paypal.com/sdk/js?client-id=ATnrQmIz_bX96FDxJnjj4K0eeE9EHySAurFNSDJ38UYPI_jY6xXzGmhPnXItAJbCGCDCqSv6IFgedxxY&currency=USD&intent=capture&commit=true"
+        src="https://www.sandbox.paypal.com/sdk/js?client-id=ATjVns30hskSznRUdWTp-lBLxfPTzcj6hkTO68jr-wsptmVu2wLJKeaFHfFb6ke8reFCMjr33bpLc5OC&currency=USD&intent=capture&commit=true"
         strategy="afterInteractive"
       />
     
