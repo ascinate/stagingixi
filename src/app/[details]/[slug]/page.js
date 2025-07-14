@@ -560,7 +560,7 @@ export default function IconDetailPage() {
     buyBtn.addEventListener("click", handleBuyClick);
 
     return () => buyBtn.removeEventListener("click", handleBuyClick);
-  }, [icon]);
+  }, [icon, hasAccess]);
 
   // ✅ Renders PayPal buttons
   const renderPayPalButton = () => {
