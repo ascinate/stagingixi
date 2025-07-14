@@ -332,7 +332,7 @@ export default function IconDetailPage() {
       return;
     }
     try {
-    const res =  await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+    await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -341,14 +341,7 @@ export default function IconDetailPage() {
     } catch (err) {
       console.warn("Download count API failed", err);
     }
-     if (res.status === 403) {
-      alert("⚠️ You have reached your download limit.");
-      return;
-       }
-    if (!res.ok) {
-      console.error("Download failed with status", res.status);
-      return;
-    }
+
 
     const finalSvg = applyColorAndSize(icon.icon_svg);
     const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
@@ -410,7 +403,10 @@ export default function IconDetailPage() {
       alert("⚠️ You have reached your download limit.");
       return;
        }
-    
+      if (!res.ok) {
+      console.error("Download failed with status", res.status);
+      return;
+    }
 
       const svg = applyColorAndSize(icon.icon_svg);
       const blob = new Blob([svg], { type: "image/svg+xml" });
