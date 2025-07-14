@@ -532,6 +532,7 @@ export default function IconDetailPage() {
 
   // ✅ Bind Buy Now button
   useEffect(() => {
+    if (!icon || hasAccess || !icon.is_premium) return;
     const buyBtn = document.getElementById("paypalbuyNowBtn"); // 🔁 Your button ID
     if (!buyBtn) return;
 
