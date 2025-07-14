@@ -961,7 +961,7 @@ export default function IconDetailPage() {
                           </button>
 
                           <ul className="dropdown-menu w-100">
-                            {icon.is_premium && !hasAccess ? (
+                            {icon?.is_premium && !hasAccess ? (
                               <li className="dropdown-item">
                                <div>
                                  <button id="paypalbuyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
@@ -974,7 +974,7 @@ export default function IconDetailPage() {
 
                             ) : (
                               <>
-                                {icon.type !== "Animated" && (
+                                {icon?.type !== "Animated" && (
                                   <>
                                     <li className="dropdown-item">
                                       <button
@@ -1005,7 +1005,7 @@ export default function IconDetailPage() {
                                     </li>
                                   </>
                                 )}
-                                {icon.type === "Animated" && (
+                                {icon?.type === "Animated" && (
                                   <li className="dropdown-item">
                                     <button
                                       type="button"
