@@ -533,34 +533,42 @@ export default function IconDetailPage() {
   // ✅ Bind Buy Now button
   useEffect(() => {
     if (!icon || hasAccess || !icon.is_premium) return;
-    const buyBtn = document.getElementById("paypalbuyNowBtn"); // 🔁 Your button ID
-    if (!buyBtn) return;
 
-    const handleBuyClick = async () => {
-      const token = localStorage.getItem("access_token");
-      if (!token) {
-        alert("Please login first to purchase this icon.");
-        localStorage.setItem("redirect_after_login", window.location.href);
-        window.location.href = "/login";
-        return;
-      }
+    const interval = setInterval(() => {
+      const buyBtn = document.getElementById("paypalbuyNowBtn");
+      if (!buyBtn) return;
 
-      const alreadyPurchased = await checkAlreadyPurchased(icon.Id, token);
-      if (alreadyPurchased) {
-        alert("⚠️ You've already purchased this icon.");
-        return;
-      }
+      const handleBuyClick = async () => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          alert("Please login first to purchase this icon.");
+          localStorage.setItem("redirect_after_login", window.location.href);
+          window.location.href = "/login";
+          return;
+        }
 
-      const paypalModalEl = document.getElementById("paypalModal");
-      const paypalModal = new Modal(paypalModalEl);
-      paypalModal.show();
-      renderPayPalButton(); // ⬅️ Only now render PayPal button
-    };
+        const alreadyPurchased = await checkAlreadyPurchased(icon.Id, token);
+        if (alreadyPurchased) {
+          alert("⚠️ You've already purchased this icon.");
+          return;
+        }
 
-    buyBtn.addEventListener("click", handleBuyClick);
+        const paypalModalEl = document.getElementById("paypalModal");
+        const paypalModal = new Modal(paypalModalEl);
+        paypalModal.show();
+        renderPayPalButton();
+      };
 
-    return () => buyBtn.removeEventListener("click", handleBuyClick);
+      buyBtn.addEventListener("click", handleBuyClick);
+
+      clearInterval(interval); // ✅ Bind only once
+      return () => buyBtn.removeEventListener("click", handleBuyClick);
+    }, 100); // Retry every 100ms until the button appears
+
+    // Clean up just in case
+    return () => clearInterval(interval);
   }, [icon, hasAccess]);
+
 
   // ✅ Renders PayPal buttons
   const renderPayPalButton = () => {
