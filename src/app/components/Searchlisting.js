@@ -45,6 +45,10 @@ const searchKeyword = searchParams.get("search");
           setIcons(data.icons.data);
           setTotalPages(data.icons.last_page || 1);
           setTotalIcons(data.icons.total || 0);
+           if (data.ai_generated) {
+          console.log("⚡ AI-generated icon inserted dynamically.");
+          alert("🔮 Icon not found, generated with AI.");
+        }
         } else {
           console.error("❌ Unexpected data.icons format:", data);
           setIcons([]);
