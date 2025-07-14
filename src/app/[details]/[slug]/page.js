@@ -431,13 +431,38 @@ export default function IconDetailPage() {
 
 
   const handleDownloadGIF = async () => {
-       const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token");
     if (!token) {
       alert("Please login first to purchase this icon.");
       localStorage.setItem("redirect_after_login", window.location.href);
-      window.location.href = "/login"; // Update path if needed
+      window.location.href = "/login";
       return;
     }
+
+    // Step 1: Call the icon-download tracking API
+    try {
+      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 409) {
+        alert("⚠️ You have reached your download limit.");
+        return;
+      }
+
+      if (!res.ok) {
+        console.error("Download failed with status", res.status);
+        return;
+      }
+    } catch (err) {
+      console.warn("Download tracking API failed", err);
+      return;
+    }
+
+    // Step 2: Proceed to download the GIF
     const gifUrl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
 
     try {
@@ -456,6 +481,7 @@ export default function IconDetailPage() {
       console.error("GIF download failed:", error);
     }
   };
+
 
 
   const checkAlreadyPurchased = async (iconId, token) => {
