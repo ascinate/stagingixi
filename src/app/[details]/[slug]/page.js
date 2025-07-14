@@ -341,7 +341,7 @@ export default function IconDetailPage() {
     } catch (err) {
       console.warn("Download count API failed", err);
     }
-     if (res.status === 409) {
+     if (res.status === 403) {
       alert("⚠️ You have reached your download limit.");
       return;
        }
