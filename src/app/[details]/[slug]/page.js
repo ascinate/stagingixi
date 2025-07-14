@@ -345,7 +345,10 @@ export default function IconDetailPage() {
       alert("⚠️ You have reached your download limit.");
       return;
        }
-    
+    if (!res.ok) {
+      console.error("Download failed with status", res.status);
+      return;
+    }
 
     const finalSvg = applyColorAndSize(icon.icon_svg);
     const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
