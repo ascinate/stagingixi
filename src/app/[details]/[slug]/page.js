@@ -338,6 +338,16 @@ export default function IconDetailPage() {
           'Authorization': `Bearer ${token}`,
         },
       });
+      
+    if (res.status === 403) {
+      alert("⚠️ You have reached your download limit.");
+      return;
+    }
+
+    if (!res.ok) {
+      console.error("Download failed with status", res.status);
+      return;
+    }
     } catch (err) {
       console.warn("Download count API failed", err);
     }
