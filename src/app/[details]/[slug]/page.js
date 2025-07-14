@@ -332,7 +332,7 @@ export default function IconDetailPage() {
       return;
     }
     try {
-    await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+   const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -402,7 +402,7 @@ export default function IconDetailPage() {
       return;
     }
     try {
-       const res =await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+       const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
