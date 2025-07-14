@@ -40,8 +40,6 @@ export default function IconDetailPage() {
 
   const [dimensions, setDimensions] = useState("1024 X 1024 px");
   const [fileSize, setFileSize] = useState("N/A");
-  const [hasAccess, setHasAccess] = useState(false);
-
 
   useEffect(() => {
     if (!icon?.icon_svg) return;
@@ -74,75 +72,6 @@ export default function IconDetailPage() {
   }, [icon]);
 
 
-  var settings = {
-    dots: false,
-    arrows: true,
-    infinite: true,
-    margin: 20,
-    autoplay: false,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    initialSlide: 4,
-    autoplaySpeed: 2000,
-    pauseOnHover: true,
-    responsive: [
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-          infinite: true,
-          dots: false,
-          arrows: true,
-          margin: 20,
-        }
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          infinite: true,
-          arrows: true,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 668,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          initialSlide: 3,
-          infinite: true,
-          arrows: true,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          initialSlide: 3,
-          infinite: true,
-          arrows: true,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          infinite: true,
-          arrows: true,
-          dots: false
-        }
-      }
-    ]
-  };
-
   const handleCopy = async () => {
     navigator.clipboard.writeText(renderedSvg);
     setShowToast(true);
@@ -170,114 +99,6 @@ export default function IconDetailPage() {
 
     fetchIcon();
   }, [slug]);
-
-
-  useEffect(() => {
-  const checkAccess = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return setHasAccess(false);
-
-    try {
-      const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-access/${icon.Id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
-      if (res.ok && data?.can_download) {
-        setHasAccess(true);
-      } else {
-        setHasAccess(false);
-      }
-    } catch (err) {
-      console.error("Access check error:", err);
-      setHasAccess(false);
-    }
-  };
-
-  if (icon?.Id) {
-    checkAccess();
-  }
-}, [icon?.Id]);
-
-
-  const uploadIconAsImage = async () => {
-    if (icon.type === "Animated") {
-      const gifurl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
-      return gifurl;
-    }
-    else {
-      const svgString = icon.icon_svg;
-
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(svgBlob);
-
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = async () => {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0);
-          URL.revokeObjectURL(url);
-
-          canvas.toBlob(async (blob) => {
-            const formData = new FormData();
-            formData.append('image', blob, 'shared-image.png');
-
-            try {
-              const res = await fetch('https://iconsguru.ascinatetech.com/api/upload-temp-image', {
-                method: 'POST',
-                body: formData,
-              });
-
-              const data = await res.json();
-              resolve(data.url);
-            } catch (err) {
-              reject(err);
-            }
-          }, 'image/png');
-        };
-
-        img.onerror = reject;
-        img.src = url;
-      });
-    }
-
-  };
-
-  const shareToPinterest = async () => {
-    try {
-      const imageUrl = await uploadIconAsImage();
-      const pinterestUrl = `https://in.pinterest.com/pin-builder/?description=Check+out+this+icon&media=${encodeURIComponent(imageUrl)}&url=${window.location.href}`;
-      window.open(pinterestUrl, '_blank');
-    } catch (err) {
-      console.error("Pinterest share failed:", err);
-    }
-  };
-  const shareToFacebook = async () => {
-    try {
-      const imageUrl = await uploadIconAsImage();
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageUrl)}`;
-      window.open(facebookUrl, '_blank');
-    } catch (err) {
-      console.error("Facebook share failed:", err);
-    }
-  };
-  const shareToX = async () => {
-    try {
-      const tweetText = 'Check out this icon';
-      const tweetUrl = window.location.href;
-      const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(tweetUrl)}`;
-      window.open(xUrl, '_blank');
-    } catch (err) {
-      console.error("X share failed:",);
-    }
-
-  };
 
   useEffect(() => {
     if (!icon || !icon.Id) return;
@@ -352,80 +173,6 @@ export default function IconDetailPage() {
     return luminance > 200;
   };
 
-  const svgToCanvasDownload = async (type = "png") => {
-    if (!icon || !icon.icon_svg) {
-      console.error("Icon data is missing");
-      return;
-    }
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Please login first to purchase this icon.");
-      localStorage.setItem("redirect_after_login", window.location.href);
-      window.location.href = "/login";
-      return;
-    }
-    try {
-   const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      
-    if (res.status === 403) {
-      alert("⚠️ You have reached your download limit.");
-      return;
-    }
-
-    if (!res.ok) {
-      console.error("Download failed with status", res.status);
-      return;
-    }
-    } catch (err) {
-      console.warn("Download count API failed", err);
-    }
-
-
-    const finalSvg = applyColorAndSize(icon.icon_svg);
-    const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(svgBlob);
-
-    const img = new window.Image(); // ✅ Use native Image constructor
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, size, size);
-      ctx.drawImage(img, 0, 0, size, size);
-
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          console.error("Canvas export failed");
-          return;
-        }
-
-        const link = document.createElement("a");
-        link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
-        link.href = URL.createObjectURL(blob);
-        link.click();
-
-        URL.revokeObjectURL(link.href);
-      }, `image/${type}`);
-    };
-
-    img.onerror = (err) => {
-      console.error("Image load failed", err);
-      URL.revokeObjectURL(url);
-    };
-
-    img.src = url;
-  };
-
-
-
-
   const handleDownloadSVG = async () => {
     const token = localStorage.getItem("access_token");
     if (!token) {
@@ -461,61 +208,6 @@ export default function IconDetailPage() {
       console.error("Download tracking failed", error);
     }
   };
-
-
-  const handleDownloadGIF = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Please login first to purchase this icon.");
-      localStorage.setItem("redirect_after_login", window.location.href);
-      window.location.href = "/login";
-      return;
-    }
-
-    // Step 1: Call the icon-download tracking API
-    try {
-      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (res.status === 403) {
-        alert("⚠️ You have reached your download limit.");
-        return;
-      }
-
-      if (!res.ok) {
-        console.error("Download failed with status", res.status);
-        return;
-      }
-    } catch (err) {
-      console.warn("Download tracking API failed", err);
-      return;
-    }
-
-    // Step 2: Proceed to download the GIF
-    const gifUrl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
-
-    try {
-      const response = await fetch(gifUrl, { mode: 'cors' });
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.gif`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("GIF download failed:", error);
-    }
-  };
-
-
 
   const checkAlreadyPurchased = async (iconId, token) => {
     try {
@@ -669,48 +361,6 @@ export default function IconDetailPage() {
   if (!icon) return null;
 
   const renderedSvg = applyColorAndSize(icon.icon_svg);
-
-
-
-  const getSchema = (icon) => {
-    // Capitalize first letter of each word
-    const capitalize = (str) =>
-      str?.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-
-    const category = capitalize(icon.icon_category || '');
-    const type = capitalize(icon.type || '');
-    const name = capitalize(icon.icon_name || 'Icon');
-    const rawTags = icon.tags;
-    const tagsArray = Array.isArray(rawTags)
-      ? rawTags
-      : typeof rawTags === "string"
-        ? rawTags.split(',').map(tag => tag.trim())
-        : [];
-    const tags = tagsArray.length ? tagsArray.join(', ') : '';
-
-
-    const description = `Download free ${type} ${name} in ${category} category${tags ? ` with tags: ${tags}` : ''}.`;
-
-    return {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": name,
-      "image": "data:image/svg+xml;utf8,${encodeURIComponent(icon.icon_svg)}",
-      "description": description,
-      "sku": icon.id,
-      "offers": {
-        "@type": "Offer",
-        "url": "https://iconsguru.com/icon/${icon.slug}",
-        "price": "0.00",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
-      },
-      "isAccessibleForFree": true,
-      "license": "https://iconsguru.com/license"
-    };
-  };
-
-
 
   return (
     <>
@@ -961,7 +611,7 @@ export default function IconDetailPage() {
                           </button>
 
                           <ul className="dropdown-menu w-100">
-                            {icon.is_premium && !hasAccess ? (
+                            {icon.is_premium ? (
                               <li className="dropdown-item">
                                <div>
                                  <button id="paypalbuyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
