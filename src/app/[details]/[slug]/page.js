@@ -174,42 +174,30 @@ export default function IconDetailPage() {
   }, [slug]);
 
 
+
   useEffect(() => {
     const checkAccess = async () => {
-      setLoadingAccess(true); // Start loading
       const token = localStorage.getItem("access_token");
-      if (!token) {
-        setHasAccess(false);
-        setLoadingAccess(false); // Stop loading
-        return;
-      }
+      if (!token || !icon?.Id) return;
 
+      setLoadingAccess(true);
       try {
         const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-access/${icon.Id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
         const data = await res.json();
-        if (res.ok && data?.can_download) {
-          setHasAccess(true);
-        } else {
-          setHasAccess(false);
-        }
+        setHasAccess(data?.can_download);
       } catch (err) {
         console.error("Access check error:", err);
         setHasAccess(false);
       }
-
-      setLoadingAccess(false); // Stop loading after response
+      setLoadingAccess(false);
     };
 
-    if (icon?.Id) {
-      checkAccess();
-    }
+    if (icon?.Id) checkAccess();
   }, [icon?.Id]);
-
 
   const uploadIconAsImage = async () => {
     if (icon.type === "Animated") {
@@ -969,71 +957,70 @@ export default function IconDetailPage() {
                             Download
                           </button>
 
-                          <ul className="dropdown-menu w-100">
-                            {loadingAccess ? (
-                              <li className="dropdown-item text-center">
-                                <div className="spinner-border text-primary" role="status">
-                                  <span className="visually-hidden">Loading...</span>
-                                </div>
-                              </li>
-                            ) : icon?.is_premium && !hasAccess ? (
-                              <li className="dropdown-item">
-                                <div>
-                                  <button
-                                    id="paypalbuyNowBtn"
-                                    className="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm"
-                                  >
-                                    🛒 Buy Now (Standard License)
-                                  </button>
-                                </div>
-                              </li>
-                            ) : (
-                              <>
-                                {icon?.type !== "Animated" && (
-                                  <>
-                                    <li className="dropdown-item">
-                                      <button
-                                        type="button"
-                                        onClick={handleDownloadSVG}
-                                        className="btn w-100 svg-bn btn-comons01 crm-btn01"
-                                      >
-                                        SVG
-                                      </button>
-                                    </li>
-                                    <li className="dropdown-item">
-                                      <button
-                                        type="button"
-                                        onClick={() => svgToCanvasDownload("png")}
-                                        className="btn w-100 png-bn btn-comons01 crm-btn01"
-                                      >
-                                        PNG
-                                      </button>
-                                    </li>
-                                    <li className="dropdown-item">
-                                      <button
-                                        type="button"
-                                        onClick={() => svgToCanvasDownload("webp")}
-                                        className="btn w-100 png-bn btn-comons01 crm-btn01"
-                                      >
-                                        WEBP
-                                      </button>
-                                    </li>
-                                  </>
-                                )}
-                                {icon?.type === "Animated" && (
+                        <ul className="dropdown-menu w-100">
+                          {loadingAccess ? (
+                            <li className="dropdown-item text-center">
+                              <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Checking access...</span>
+                              </div>
+                            </li>
+                          ) : icon.is_premium && !hasAccess ? (
+                            <li className="dropdown-item">
+                              <button
+                                id="paypalbuyNowBtn"
+                                className="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm"
+                              >
+                                🛒 Buy Now (Standard License)
+                              </button>
+                            </li>
+                          ) : (
+                            <>
+                              {icon.type !== "Animated" && (
+                                <>
                                   <li className="dropdown-item">
                                     <button
                                       type="button"
-                                      onClick={handleDownloadGIF}
-                                      className="btn png-bn btn-comons01 crm-btn01"
+                                      onClick={handleDownloadSVG}
+                                      className="btn w-100 svg-bn btn-comons01 crm-btn01"
                                     >
-                                      GIF
+                                      SVG
                                     </button>
                                   </li>
-                                )}
-                              </>
-                            )}
-                          </ul>
+                                  <li className="dropdown-item">
+                                    <button
+                                      type="button"
+                                      onClick={() => svgToCanvasDownload("png")}
+                                      className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                    >
+                                      PNG
+                                    </button>
+                                  </li>
+                                  <li className="dropdown-item">
+                                    <button
+                                      type="button"
+                                      onClick={() => svgToCanvasDownload("webp")}
+                                      className="btn w-100 png-bn btn-comons01 crm-btn01"
+                                    >
+                                      WEBP
+                                    </button>
+                                  </li>
+                                </>
+                              )}
+                              {icon.type === "Animated" && (
+                                <li className="dropdown-item">
+                                  <button
+                                    type="button"
+                                    onClick={handleDownloadGIF}
+                                    className="btn png-bn btn-comons01 crm-btn01"
+                                  >
+                                    GIF
+                                  </button>
+                                </li>
+                              )}
+                            </>
+                          )}
+                        </ul>
+
 
 
                         </div>
