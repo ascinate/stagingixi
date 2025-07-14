@@ -40,7 +40,9 @@ export default function IconDetailPage() {
 
   const [dimensions, setDimensions] = useState("1024 X 1024 px");
   const [fileSize, setFileSize] = useState("N/A");
-  const [hasAccess, setHasAccess] = useState(false);
+ const [hasAccess, setHasAccess] = useState(false);
+  const [loadingAccess, setLoadingAccess] = useState(true); // NEW
+
 
 
   useEffect(() => {
@@ -173,33 +175,40 @@ export default function IconDetailPage() {
 
 
   useEffect(() => {
-  const checkAccess = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return setHasAccess(false);
+    const checkAccess = async () => {
+      setLoadingAccess(true); // Start loading
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        setHasAccess(false);
+        setLoadingAccess(false); // Stop loading
+        return;
+      }
 
-    try {
-      const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-access/${icon.Id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-access/${icon.Id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      const data = await res.json();
-      if (res.ok && data?.can_download) {
-        setHasAccess(true);
-      } else {
+        const data = await res.json();
+        if (res.ok && data?.can_download) {
+          setHasAccess(true);
+        } else {
+          setHasAccess(false);
+        }
+      } catch (err) {
+        console.error("Access check error:", err);
         setHasAccess(false);
       }
-    } catch (err) {
-      console.error("Access check error:", err);
-      setHasAccess(false);
-    }
-  };
 
-  if (icon?.Id) {
-    checkAccess();
-  }
-}, [icon?.Id]);
+      setLoadingAccess(false); // Stop loading after response
+    };
+
+    if (icon?.Id) {
+      checkAccess();
+    }
+  }, [icon?.Id]);
 
 
   const uploadIconAsImage = async () => {
@@ -961,17 +970,23 @@ export default function IconDetailPage() {
                           </button>
 
                           <ul className="dropdown-menu w-100">
-                            {icon?.is_premium && !hasAccess ? (
-                              <li className="dropdown-item">
-                               <div>
-                                 <button id="paypalbuyNowBtn" class="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm">
-                                 
-                                 🛒 Buy Now (Standard License)
-                                </button>
-                               </div>
-
+                            {loadingAccess ? (
+                              <li className="dropdown-item text-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
                               </li>
-
+                            ) : icon?.is_premium && !hasAccess ? (
+                              <li className="dropdown-item">
+                                <div>
+                                  <button
+                                    id="paypalbuyNowBtn"
+                                    className="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm"
+                                  >
+                                    🛒 Buy Now (Standard License)
+                                  </button>
+                                </div>
+                              </li>
                             ) : (
                               <>
                                 {icon?.type !== "Animated" && (
@@ -1019,6 +1034,7 @@ export default function IconDetailPage() {
                               </>
                             )}
                           </ul>
+
 
                         </div>
                         {/* PayPal Modal */}
