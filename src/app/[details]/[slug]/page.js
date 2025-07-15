@@ -42,6 +42,8 @@ export default function IconDetailPage() {
   const [fileSize, setFileSize] = useState("N/A");
  const [hasAccess, setHasAccess] = useState(false);
   const [loadingAccess, setLoadingAccess] = useState(true); // NEW
+  const [iconPrice, setIconPrice] = useState(0.10);
+
 
 
 
@@ -74,6 +76,7 @@ export default function IconDetailPage() {
     const sizeInKB = new Blob([icon.icon_svg], { type: "image/svg+xml" }).size / 1024;
     setFileSize(`${Math.ceil(sizeInKB)} KB`);
   }, [icon]);
+
 
 
   var settings = {
@@ -172,6 +175,20 @@ export default function IconDetailPage() {
 
     fetchIcon();
   }, [slug]);
+
+    
+// ✅ Fetch dynamic price
+  useEffect(() => {
+    const loadPrice = async () => {
+      const token = localStorage.getItem("access_token");
+      if (!token || !icon?.Id) return;
+
+      const price = await fetchIconPrice(icon.Id, token);
+      setIconPrice(price);
+    };
+
+    if (icon?.Id) loadPrice();
+  }, [icon?.Id]);
 
 
 
@@ -621,6 +638,20 @@ export default function IconDetailPage() {
     return () => clearInterval(interval);
   }, [icon, hasAccess]);
 
+  const fetchIconPrice = async (iconId, token) => {
+    try {
+      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-price/${iconId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      return res.ok ? data?.price || 0.10 : 0.10;
+    } catch (err) {
+      console.warn("❌ Failed to fetch icon price, using default.", err);
+      return 0.10;
+    }
+  };
 
   // ✅ Renders PayPal buttons
   const renderPayPalButton = () => {
@@ -630,17 +661,20 @@ export default function IconDetailPage() {
     container.innerHTML = "";
 
     window.paypal.Buttons({
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: "0.10",
-              currency_code: "USD",
-            },
-            description: `Purchase of ${icon.icon_name}`,
-          }],
-        });
-      },
+       createOrder: async (data, actions) => {
+      const token = localStorage.getItem("access_token");
+      const price = await fetchIconPrice(icon.Id, token); // 🟢 Fetch dynamic price here
+
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: price.toFixed(2),
+            currency_code: "USD",
+          },
+          description: `Purchase of ${icon.icon_name}`,
+        }],
+      });
+    },
 
       onApprove: async (data, actions) => {
         try {
@@ -1031,7 +1065,7 @@ export default function IconDetailPage() {
                                 id="paypalbuyNowBtn"
                                 className="btn btn-warning text-white fw-bold px-4 py-2 rounded-pill shadow-sm"
                               >
-                                🛒 Buy Now (Standard License)
+                                🛒 Buy Now – ${iconPrice.toFixed(2)}
                               </button>
                             </li>
                           ) : (
