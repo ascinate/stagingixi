@@ -178,6 +178,10 @@ export default function IconDetailPage() {
   useEffect(() => {
     const checkAccess = async () => {
       const token = localStorage.getItem("access_token");
+       if (!token) {
+      setHasAccess(false); // 🛑 Make sure to stop and mark no access
+      return;
+    }
       if (!token || !icon?.Id) return;
 
       setLoadingAccess(true);
