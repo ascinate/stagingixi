@@ -182,6 +182,7 @@ export default function IconDetailPage() {
       // ✅ Case 1: Not logged in — no access, no loading
       if (!token) {
         setHasAccess(false);
+        setLoadingAccess(false);
         return;
       }
 
