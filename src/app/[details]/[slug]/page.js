@@ -369,122 +369,21 @@ export default function IconDetailPage() {
       console.error("Icon data is missing");
       return;
     }
+
+    // ✅ Allow free icon download without login or API call
+    if (!icon.is_premium) {
+      return renderCanvasAndDownload(type);
+    }
+
+    // 🔐 Premium icon — require login
     const token = localStorage.getItem("access_token");
     if (!token) {
-      alert("Please login first to purchase this icon.");
-      localStorage.setItem("redirect_after_login", window.location.href);
-      window.location.href = "/login";
-      return;
-    }
-    try {
-   const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      
-    if (res.status === 403) {
-      alert("⚠️ You have reached your download limit.");
-      return;
-    }
-
-    if (!res.ok) {
-      console.error("Download failed with status", res.status);
-      return;
-    }
-    } catch (err) {
-      console.warn("Download count API failed", err);
-    }
-
-
-    const finalSvg = applyColorAndSize(icon.icon_svg);
-    const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(svgBlob);
-
-    const img = new window.Image(); // ✅ Use native Image constructor
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, size, size);
-      ctx.drawImage(img, 0, 0, size, size);
-
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          console.error("Canvas export failed");
-          return;
-        }
-
-        const link = document.createElement("a");
-        link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
-        link.href = URL.createObjectURL(blob);
-        link.click();
-
-        URL.revokeObjectURL(link.href);
-      }, `image/${type}`);
-    };
-
-    img.onerror = (err) => {
-      console.error("Image load failed", err);
-      URL.revokeObjectURL(url);
-    };
-
-    img.src = url;
-  };
-
-
-
-
-  const handleDownloadSVG = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Please login first to purchase this icon.");
-      localStorage.setItem("redirect_after_login", window.location.href);
-      window.location.href = "/login"; // Update path if needed
-      return;
-    }
-    try {
-       const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-       if (res.status === 403) {
-      alert("⚠️ You have reached your download limit.");
-      return;
-       }
-      if (!res.ok) {
-      console.error("Download failed with status", res.status);
-      return;
-    }
-
-      const svg = applyColorAndSize(icon.icon_svg);
-      const blob = new Blob([svg], { type: "image/svg+xml" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
-      link.click();
-    } catch (error) {
-      console.error("Download tracking failed", error);
-    }
-  };
-
-
-  const handleDownloadGIF = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Please login first to purchase this icon.");
+      alert("Please login first to download premium icons.");
       localStorage.setItem("redirect_after_login", window.location.href);
       window.location.href = "/login";
       return;
     }
 
-    // Step 1: Call the icon-download tracking API
     try {
       const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
         method: "POST",
@@ -503,11 +402,149 @@ export default function IconDetailPage() {
         return;
       }
     } catch (err) {
+      console.warn("Download count API failed", err);
+    }
+
+    renderCanvasAndDownload(type);
+  };
+
+  const renderCanvasAndDownload = (type) => {
+    const finalSvg = applyColorAndSize(icon.icon_svg);
+    const svgBlob = new Blob([finalSvg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
+
+    const img = new window.Image();
+    img.crossOrigin = "anonymous";
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, size, size);
+      ctx.drawImage(img, 0, 0, size, size);
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          console.error("Canvas export failed");
+          return;
+        }
+
+        const link = document.createElement("a");
+        link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}.${type}`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }, `image/${type}`);
+    };
+
+    img.onerror = (err) => {
+      console.error("Image load failed", err);
+      URL.revokeObjectURL(url);
+    };
+
+    img.src = url;
+  };
+
+
+
+
+
+  const handleDownloadSVG = async () => {
+    // ✅ If icon is free (not premium), allow download without login
+    if (!icon.is_premium) {
+      const svg = applyColorAndSize(icon.icon_svg);
+      const blob = new Blob([svg], { type: "image/svg+xml" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
+      link.click();
+      return;
+    }
+
+    // 🔒 Premium icon — require login
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Please login first to download premium icons.");
+      localStorage.setItem("redirect_after_login", window.location.href);
+      window.location.href = "/login";
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 403) {
+        alert("⚠️ You have reached your download limit.");
+        return;
+      }
+      if (!res.ok) {
+        console.error("Download failed with status", res.status);
+        return;
+      }
+
+      const svg = applyColorAndSize(icon.icon_svg);
+      const blob = new Blob([svg], { type: "image/svg+xml" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${icon.icon_name.replace(/\s+/g, "-").toLowerCase()}-${size}px.svg`;
+      link.click();
+    } catch (error) {
+      console.error("Download tracking failed", error);
+    }
+  };
+
+
+
+  const handleDownloadGIF = async () => {
+    if (!icon) return;
+
+    // ✅ Free icon — download directly without login
+    if (!icon.is_premium) {
+      return downloadGIFDirectly();
+    }
+
+    // 🔐 Premium icon — login required
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("Please login first to download premium icons.");
+      localStorage.setItem("redirect_after_login", window.location.href);
+      window.location.href = "/login";
+      return;
+    }
+
+    // ✅ Track download via backend
+    try {
+      const res = await fetch(`https://iconsguru.ascinatetech.com/api/icon-download/${icon.Id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 403) {
+        alert("⚠️ You have reached your download limit.");
+        return;
+      }
+
+      if (!res.ok) {
+        console.error("Download failed with status", res.status);
+        return;
+      }
+    } catch (err) {
       console.warn("Download tracking API failed", err);
       return;
     }
 
-    // Step 2: Proceed to download the GIF
+    downloadGIFDirectly();
+  };
+
+  const downloadGIFDirectly = async () => {
     const gifUrl = `https://iconsguru.ascinatetech.com/public/uploads/animated/${icon.icon_svg}`;
 
     try {
