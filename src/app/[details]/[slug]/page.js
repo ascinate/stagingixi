@@ -178,30 +178,40 @@ export default function IconDetailPage() {
   useEffect(() => {
     const checkAccess = async () => {
       const token = localStorage.getItem("access_token");
-       if (!token) {
-      setHasAccess(false); // 🛑 Make sure to stop and mark no access
-      return;
-    }
-      if (!token || !icon?.Id) return;
 
+      // ✅ Case 1: Not logged in — immediately mark no access
+      if (!token) {
+        setHasAccess(false);
+        setLoadingAccess(false);
+        return;
+      }
+
+      // ✅ Case 2: No icon ID — skip (not ready yet)
+      if (!icon?.Id) return;
+
+      // ✅ Start loading
       setLoadingAccess(true);
+
       try {
         const res = await fetch(`https://iconsguru.ascinatetech.com/api/check-access/${icon.Id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
         const data = await res.json();
-        setHasAccess(data?.can_download);
+        setHasAccess(res.ok && data?.can_download);
       } catch (err) {
         console.error("Access check error:", err);
         setHasAccess(false);
+      } finally {
+        setLoadingAccess(false);
       }
-      setLoadingAccess(false);
     };
 
-    if (icon?.Id) checkAccess();
+    checkAccess();
   }, [icon?.Id]);
+
 
   const uploadIconAsImage = async () => {
     if (icon.type === "Animated") {
