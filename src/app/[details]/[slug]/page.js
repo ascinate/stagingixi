@@ -179,17 +179,16 @@ export default function IconDetailPage() {
     const checkAccess = async () => {
       const token = localStorage.getItem("access_token");
 
-      // ✅ Case 1: Not logged in — immediately mark no access
+      // ✅ Case 1: Not logged in — no access, no loading
       if (!token) {
         setHasAccess(false);
-        setLoadingAccess(false);
         return;
       }
 
-      // ✅ Case 2: No icon ID — skip (not ready yet)
+      // ✅ Case 2: Wait for icon to be ready
       if (!icon?.Id) return;
 
-      // ✅ Start loading
+      // ✅ Only logged-in users trigger loading
       setLoadingAccess(true);
 
       try {
@@ -209,8 +208,9 @@ export default function IconDetailPage() {
       }
     };
 
-    checkAccess();
+    if (icon?.Id) checkAccess();
   }, [icon?.Id]);
+
 
 
   const uploadIconAsImage = async () => {
