@@ -142,8 +142,10 @@ function Footer(){
                 </div>
             
                 
-                <div className="col-lg-10 ms-auto">
+                
                     <div className="row row-cols-1 row-cols-lg-2 row-cols-lg-5">
+                        <div className="col d-lg-inline-block d-none">
+                         </div>
                         <div className="col d-lg-grid justify-content-center">
                             <div className="comon-footers-div01">
                             <h5 className="text-white"> For developers </h5>
@@ -199,7 +201,7 @@ function Footer(){
                             </div>
                         </div>
                     </div>
-                </div>
+                
                 <hr/>
                 <div className="row row-cols-1 trust01-div row-cols-sm-2 g-lg-0">
                    <div className="col">
