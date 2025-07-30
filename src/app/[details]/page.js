@@ -26,7 +26,6 @@ export default function Page() {
         
         <Searchlisting />
       </Suspense>
-    <FooterDetails/>
     </>
   );
 }
