@@ -32,6 +32,7 @@ export default function Icons() {
     '/gardening.svg',
     '/halloween.svg',
     '/health.svg',
+    '/heart.svg',
     '/hieroglyphs.svg',
     '/home.svg',
     '/interface.svg',
