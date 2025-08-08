@@ -15,6 +15,7 @@ export default function Icons() {
     '/animated.gif',
     '/arrow.svg',
     '/bar.svg',
+    '/building.svg',
     '/business.svg',
     '/daily-life.svg',
     '/dashboard.svg',
@@ -54,6 +55,7 @@ export default function Icons() {
     '/social.svg',
     '/sports.svg',
     '/birthday_stickers.svg',
+    '/time.svg',
     '/users.svg',
     '/weather.svg',
      
